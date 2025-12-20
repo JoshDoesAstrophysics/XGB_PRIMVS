@@ -97,10 +97,20 @@ for FOLD in $(seq 0 $((N_FOLDS - 1))); do
 module load ${MODULES_TO_LOAD}
 
 echo "Starting Fold ${FOLD} at \$(date)"
+
+# Start nvidia-smi in the background to log GPU usage
+nvidia-smi --query-gpu=timestamp,utilization.gpu,utilization.memory,memory.used,memory.total --format=csv -l 1 > XGB_gpu_\${SLURM_JOB_ID}.eff &
+NVSMI_PID=\$!
+
 # Run the script using the absolute paths resolved from the manual config
 python -u folding_xgb_run.py "${ABS_TRAIN_PATH}" "${ABS_TEST_PATH}" "${RUN_OUTPUT_FITS}" ${FOLD}
+PY_EXIT_CODE=\$?
+
+# Stop the nvidia-smi logging
+kill \$NVSMI_PID
 
 echo "Fold ${FOLD} finished at \$(date)"
+exit \$PY_EXIT_CODE
 EOF
 
     # Submit the job

@@ -565,7 +565,7 @@ def main():
     set_num_boost_round = 1000000 
     set_early_stopping_rounds = 5000
     set_use_adaptive_lr = True
-    set_test_size = 0.1
+    set_test_size = 0.05
     
     # CLI Argument Parsing
     if len(sys.argv) >= 3 and sys.argv[1] != "" and sys.argv[2] != "":
