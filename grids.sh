@@ -18,11 +18,10 @@
 LEARNING_RATES=(1E-3)
 MAX_DEPTHS=(20 50 80)
 SUBSAMPLES=(0.8 0.9 0.95)
-COLSAMPLES_BT=(1E-1 1E0 1E1)
-REG_ALPHAS=(1E-1 1E0 1E1)
-REG_LAMBDAS=(1E-9 1E-7 1E-5)
-NUM_BOOST_ROUNDS=(1000000)
-EARLY_STOPPING_ROUNDS=(5000)
+COLSAMPLES_BT=(0.01 0.1 1.0)
+REG_ALPHAS=(0.001 0.01 0.1)
+REG_LAMBDAS=(0.01 0.1 1.0)
+TEST_SIZES=(0.05 0.1 0.2) # Added Test Size array as requested
 
 # --- Path Configuration ---
 
@@ -32,12 +31,12 @@ VIS_SCRIPT_NAME="vis.py"
 
 # Set the paths to your training and test data
 # These paths must be accessible from the compute nodes
-TRAIN_DATA_PATH="../.data/PRIMVS_P_training_new.fits"
-TEST_DATA_PATH="../.data/PRIMVS_P.fits"
+TRAIN_DATA_PATH=".data/PRIMVS_P_training_new.fits"
+TEST_DATA_PATH=".data/PRIMVS_P.fits"
 
 # Base directory for all project code
 # Ensure this ends with a slash / if you want to simply concatenate variables
-PROJECT_DIR="/project/gr-vvv/jwanning/UWyo_PRIMVS/PRIMVS_ORDO/"
+PROJECT_DIR="/project/gr-vvv/jwanning/XGB_PRIMVS/"
 
 # Directory to store all run outputs
 # This will be created inside your PROJECT_DIR
@@ -103,11 +102,11 @@ for SS in "${SUBSAMPLES[@]}"; do
 for CS in "${COLSAMPLES_BT[@]}"; do
 for RA in "${REG_ALPHAS[@]}"; do
 for RL in "${REG_LAMBDAS[@]}"; do
-for NBR in "${NUM_BOOST_ROUNDS[@]}"; do
-for ESR in "${EARLY_STOPPING_ROUNDS[@]}"; do
+for TS in "${TEST_SIZES[@]}"; do # Added TS loop
 
     # Create a unique identifier for this run
-    RUN_ID="lr_${LR}_md_${MD}_ss_${SS}_cs_${CS}_ra_${RA}_rl_${RL}_nbr_${NBR}_esr_${ESR}"
+    # Removed NBR and ESR from ID, added TS
+    RUN_ID="lr_${LR}_md_${MD}_ss_${SS}_cs_${CS}_ra_${RA}_rl_${RL}_ts_${TS}"
     
     # *** FIX: Use Absolute Path for RUN_DIR ***
     # We combine PROJECT_DIR and GRID_RUNS_DIR to ensure the path is absolute.
@@ -132,15 +131,19 @@ for ESR in "${EARLY_STOPPING_ROUNDS[@]}"; do
     cp "$ABS_PYTHON_SCRIPT_PATH" "$RUN_SCRIPT_PATH"
     cp "$ABS_VIS_SCRIPT_PATH" "${RUN_DIR}/vis.py"
     
-    # Use robust sed commands to replace default values
+    # Use sed commands to replace default values
     sed -i -E "s/^(\s*set_learning_rate\s*=\s*).*/\1${LR}/" "$RUN_SCRIPT_PATH"
     sed -i -E "s/^(\s*set_max_depth\s*=\s*).*/\1${MD}/" "$RUN_SCRIPT_PATH"
     sed -i -E "s/^(\s*set_subsample\s*=\s*).*/\1${SS}/" "$RUN_SCRIPT_PATH"
     sed -i -E "s/^(\s*set_colsample_bytree\s*=\s*).*/\1${CS}/" "$RUN_SCRIPT_PATH"
     sed -i -E "s/^(\s*set_reg_alpha\s*=\s*).*/\1${RA}/" "$RUN_SCRIPT_PATH"
     sed -i -E "s/^(\s*set_reg_lambda\s*=\s*).*/\1${RL}/" "$RUN_SCRIPT_PATH"
-    sed -i -E "s/^(\s*set_num_boost_round\s*=\s*).*/\1${NBR}/" "$RUN_SCRIPT_PATH"
-    sed -i -E "s/^(\s*set_early_stopping_rounds\s*=\s*).*/\1${ESR}/" "$RUN_SCRIPT_PATH"
+    sed -i -E "s/^(\s*set_test_size\s*=\s*).*/\1${TS}/" "$RUN_SCRIPT_PATH"
+
+    # Comment out the joblib save line to prevent saving the model file
+    sed -i 's/joblib.dump((model, label_encoder), model_file_path)/# joblib.dump((model, label_encoder), model_file_path)/' "$RUN_SCRIPT_PATH"
+
+    # Removed replacements for num_boost_round and early_stopping_rounds
 
     # 2. Create the SLURM submission script for this run
     cat << EOF > "$RUN_SLURM_PATH"
@@ -199,8 +202,7 @@ done
 done
 done
 done
-done
-done
+done # Closed TS loop
 
 echo "---"
 echo "Grid search submission complete. Submitted $TOTAL_JOBS jobs."

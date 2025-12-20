@@ -356,7 +356,8 @@ def preprocess_data(train_df, test_df, features, label_col):
 #########################################
 
 def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, max_depth,
-              subsample, colsample_bytree, reg_alpha, reg_lambda, num_boost_round, early_stopping_rounds, use_adaptive_lr=True):
+              subsample, colsample_bytree, reg_alpha, reg_lambda, num_boost_round, early_stopping_rounds, 
+              test_size, use_adaptive_lr=True):
     """
     Execute the XGBoost training and inference workflow.
 
@@ -374,6 +375,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
         reg_lambda (float): L2 regularization term on weights.
         num_boost_round (int): Number of boosting rounds.
         early_stopping_rounds (int): Activates early stopping.
+        test_size (float): Proportion of the dataset to include in the validation split.
         use_adaptive_lr (bool): If True, applies cosine decay to learning rate.
         
     Returns:
@@ -395,8 +397,10 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     # Stratify to handle imbalanced classes, with a fallback for rare classes.
     class_counts = np.bincount(y)
     stratify_flag = y if np.min(class_counts) >= 2 else None
+    
+    print(f"Splitting training data with test_size={test_size}...")
     X_train_main, X_val, y_train_main, y_val = train_test_split(
-        X_train, y, test_size=0.2, random_state=42, stratify=stratify_flag
+        X_train, y, test_size=test_size, random_state=42, stratify=stratify_flag
     )
 
     # --- 3. Class Weighting ---
@@ -438,6 +442,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     hyperparams_to_save = params.copy()
     hyperparams_to_save['num_boost_round_config'] = num_boost_round
     hyperparams_to_save['early_stopping_rounds_config'] = early_stopping_rounds
+    hyperparams_to_save['test_size_config'] = test_size
     hyperparams_to_save['use_adaptive_lr'] = use_adaptive_lr
 
     # --- 5. Adaptive Learning Rate Scheduler (Cosine Decay) ---
@@ -662,13 +667,14 @@ def main():
     # --- Hyperparameters ---
     set_learning_rate = 1E-3
     set_max_depth = 50
-    set_subsample = 0.9
-    set_colsample_bytree = 0.9
-    set_reg_alpha = 0.1
-    set_reg_lambda = 1.0
-    set_num_boost_round = 500000 
-    set_early_stopping_rounds = 500
+    set_subsample = 0.95
+    set_colsample_bytree = 0.1
+    set_reg_alpha = 0.01
+    set_reg_lambda = 0.1
+    set_num_boost_round = 1000000 
+    set_early_stopping_rounds = 5000
     set_use_adaptive_lr = True
+    set_test_size = 0.2
 
     # --- File Path Handling ---
     if len(sys.argv) >= 3:
@@ -728,6 +734,7 @@ def main():
             'device': 'cuda' if num_gpus > 0 else 'cpu',
             'num_boost_round_config': set_num_boost_round,
             'early_stopping_rounds_config': set_early_stopping_rounds,
+            'test_size_config': set_test_size,
             'use_adaptive_lr': set_use_adaptive_lr # Included in check
         }
         
@@ -811,6 +818,7 @@ def main():
             subsample=set_subsample, colsample_bytree=set_colsample_bytree,
             reg_alpha=set_reg_alpha, reg_lambda=set_reg_lambda,
             num_boost_round=set_num_boost_round, early_stopping_rounds=set_early_stopping_rounds,
+            test_size=set_test_size,
             use_adaptive_lr=set_use_adaptive_lr
         )
         

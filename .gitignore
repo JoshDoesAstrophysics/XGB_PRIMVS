@@ -3,8 +3,9 @@
 *.csv
 pca_tuning/
 **/*figures/
-**/.ipynb_checkpoints/
+.ipynb_checkpoints/
 __pycache__/
-**/grid_search_runs/*
+grid_search_runs/
+n_folds/
 .*
 !.gitignore

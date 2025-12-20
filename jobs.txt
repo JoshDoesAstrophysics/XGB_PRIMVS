@@ -1,0 +1,2923 @@
+Starting Grid Search...
+Project Directory: /project/gr-vvv/jwanning/XGB_PRIMVS/
+Base Python Script: XGB.py
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48693835
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48693836
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48693837
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48693838
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48693839
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48693840
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48693841
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48693842
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48693843
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48693844
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48693845
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48693846
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48693847
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48693848
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48693849
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48693850
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48693851
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48693852
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48693853
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48693854
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48693855
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48693856
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48693857
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48693858
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48693859
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48693860
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48693861
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48693862
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48693863
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48693864
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48693865
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48693866
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48693867
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48693868
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48693869
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48693870
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48693871
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48693872
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48693873
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48693874
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48693875
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48693876
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48693877
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48693878
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48693879
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48693880
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48693881
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48693882
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48693883
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48693884
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48693885
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48693886
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48693887
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48693888
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48693889
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48693890
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48693891
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48693892
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48693893
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48693894
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48693895
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48693896
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48693897
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48693898
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48693899
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48693900
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48693901
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48693902
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48693903
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48693904
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48693905
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48693906
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48693907
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48693908
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48693909
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48693910
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48693911
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48693912
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48693913
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48693914
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48693915
+Submitted job for lr_1E-3_md_20_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48693916
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48693917
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48693918
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48693919
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48693920
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48693921
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48693922
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48693923
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48693924
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48693925
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48693926
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48693927
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48693928
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48693929
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48693930
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48693931
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48693932
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48693933
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48693934
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48693935
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48693936
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48693937
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48693938
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48693939
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48693940
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48693941
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48693942
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48693943
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48693944
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48693945
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48693946
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48693947
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48693948
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48693949
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48693950
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48693951
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48693952
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48693953
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48693954
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48693955
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48693956
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48693957
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48693958
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48693959
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48693960
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48693961
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48693962
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48693963
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48693964
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48693965
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48693966
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48693967
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48693968
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48693969
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48693970
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48693971
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48693972
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48693973
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48693974
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48693975
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48693976
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48693977
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48693978
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48693979
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48693980
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48693981
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48693982
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48693983
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48693984
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48693985
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48693986
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48693987
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48693988
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48693989
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48693990
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48693991
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48693992
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48693993
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48693994
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48693995
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48693996
+Submitted job for lr_1E-3_md_20_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48693997
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48693998
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48693999
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694000
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694001
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694002
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694003
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694004
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694005
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694006
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694007
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694008
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694009
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694010
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694011
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694012
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694013
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694014
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694015
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694016
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694017
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694018
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694019
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694020
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694021
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694022
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694023
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694024
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694025
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694026
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694027
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694028
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694029
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694030
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694031
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694032
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694033
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694034
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694035
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694036
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694037
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694038
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694039
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694040
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694041
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694042
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694043
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694044
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694045
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694046
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694047
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694048
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694049
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694050
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694051
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694052
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694053
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694054
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694055
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694056
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694057
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694058
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694059
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694060
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694061
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694062
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694063
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694064
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694065
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694066
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694067
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694068
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694069
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694070
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694071
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694072
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694073
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694074
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694075
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694076
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694077
+Submitted job for lr_1E-3_md_20_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694078
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694079
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694080
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694081
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694082
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694083
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694084
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694085
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694086
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694087
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694088
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694089
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694090
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694091
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694092
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694093
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694094
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694095
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694096
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694097
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694098
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694099
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694100
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694101
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694102
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694103
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694104
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694105
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694106
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694107
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694108
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694109
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694110
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694111
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694112
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694113
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694114
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694115
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694116
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694117
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694118
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694119
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694120
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694121
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694122
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694123
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694124
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694125
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694126
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694127
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694128
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694129
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694130
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694131
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694132
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694133
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694134
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694135
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694136
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694137
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694138
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694139
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694140
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694141
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694142
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694143
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694144
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694145
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694146
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694147
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694148
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694149
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694150
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694151
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694152
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694153
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694154
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694155
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694156
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694157
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694158
+Submitted job for lr_1E-3_md_50_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694159
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694160
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694161
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694162
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694163
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694164
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694165
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694166
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694167
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694168
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694169
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694170
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694171
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694172
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694173
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694174
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694175
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694176
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694177
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694178
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694179
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694180
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694181
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694182
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694183
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694184
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694185
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694186
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694187
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694188
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694189
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694190
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694191
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694192
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694193
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694194
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694195
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694196
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694197
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694198
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694199
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694200
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694201
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694202
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694203
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694204
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694205
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694206
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694207
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694208
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694209
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694210
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694211
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694212
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694213
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694214
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694215
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694216
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694217
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694218
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694219
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694220
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694221
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694222
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694223
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694224
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694225
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694226
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694227
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694228
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694229
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694230
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694231
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694232
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694233
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694234
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694235
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694236
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694237
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694238
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694239
+Submitted job for lr_1E-3_md_50_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694240
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694241
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694242
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694243
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694244
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694245
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694246
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694247
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694248
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694249
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694250
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694251
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694252
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694253
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694254
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694255
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694256
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694257
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694258
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694259
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694260
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694261
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694262
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694263
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694264
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694265
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694266
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694267
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694268
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694269
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694270
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694271
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694272
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694273
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694274
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694275
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694276
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694277
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694278
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694279
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694280
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694281
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694282
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694283
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694284
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694285
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694286
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694287
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694288
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694289
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694290
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694291
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694292
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694293
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694294
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694295
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694296
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694297
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694298
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694299
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694300
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694301
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694302
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694303
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694304
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694305
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694306
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694307
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694308
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694309
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694310
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694311
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694312
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694313
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694314
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694315
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694316
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694317
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694318
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694319
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694320
+Submitted job for lr_1E-3_md_50_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694321
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694322
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694323
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694324
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694325
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694326
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694327
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694328
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694329
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694330
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694331
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694332
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694333
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694334
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694335
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694336
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694337
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694338
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694339
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694340
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694341
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694342
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694343
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694344
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694345
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694346
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694347
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694348
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694349
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694350
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694351
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694352
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694353
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694354
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694355
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694356
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694357
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694358
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694359
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694360
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694361
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694362
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694363
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694364
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694365
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694366
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694367
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694368
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694369
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694370
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694371
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694372
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694373
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694374
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694375
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694376
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694377
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694378
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694379
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694380
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694381
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694382
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694383
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694384
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694385
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694386
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694387
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694388
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694389
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694390
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694391
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694392
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694393
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694394
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694395
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694396
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694397
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694398
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694399
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694400
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694401
+Submitted job for lr_1E-3_md_80_ss_0.8_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694402
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694403
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694404
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694405
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694406
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694407
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694408
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694409
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694410
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694411
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694412
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694413
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694414
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694415
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694416
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694417
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694418
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694419
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694420
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694421
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694422
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694423
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694424
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694425
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694426
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694427
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694428
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694429
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694430
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694431
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694432
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694433
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694434
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694435
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694436
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694437
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694438
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694439
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694440
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694441
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694442
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694443
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694444
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694445
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694446
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694447
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694448
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694449
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694450
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694451
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694452
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694453
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694454
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694455
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694456
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694457
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694458
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694459
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694460
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694461
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694462
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694463
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694464
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694465
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694466
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694467
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694468
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694469
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694470
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694471
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694472
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694473
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694474
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694475
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694476
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694477
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694478
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694479
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694480
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694481
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694482
+Submitted job for lr_1E-3_md_80_ss_0.9_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694483
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694484
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694485
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694486
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694487
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694488
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694489
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694490
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694491
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694492
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694493
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694494
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694495
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694496
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694497
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694498
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694499
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694500
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694501
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694502
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694503
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694504
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694505
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694506
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694507
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694508
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694509
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.01_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694510
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694511
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694512
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694513
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694514
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694515
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694516
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694517
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694518
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694519
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694520
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694521
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694522
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694523
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694524
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694525
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694526
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694527
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694528
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694529
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694530
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694531
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694532
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694533
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694534
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694535
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694536
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_0.1_ra_0.1_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+Submitted batch job 48694537
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+Submitted batch job 48694538
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+Submitted batch job 48694539
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+Submitted batch job 48694540
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+Submitted batch job 48694541
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+Submitted batch job 48694542
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+Submitted batch job 48694543
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+Submitted batch job 48694544
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+Submitted batch job 48694545
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.001_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+Submitted batch job 48694546
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+Submitted batch job 48694547
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+Submitted batch job 48694548
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+Submitted batch job 48694549
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+Submitted batch job 48694550
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+Submitted batch job 48694551
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+Submitted batch job 48694552
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+Submitted batch job 48694553
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+Submitted batch job 48694554
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.01_rl_1.0_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+Submitted batch job 48694555
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+Submitted batch job 48694556
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+Submitted batch job 48694557
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.01_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+Submitted batch job 48694558
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+Submitted batch job 48694559
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+Submitted batch job 48694560
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_0.1_ts_0.2
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+Submitted batch job 48694561
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.05
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+Submitted batch job 48694562
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.1
+---
+Preparing Job: lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+Submitted batch job 48694563
+Submitted job for lr_1E-3_md_80_ss_0.95_cs_1.0_ra_0.1_rl_1.0_ts_0.2
+---
+Grid search submission complete. Submitted 729 jobs.
+Monitor jobs with: squeue -u jwanning
+Outputs will be in: /project/gr-vvv/jwanning/XGB_PRIMVS//grid_search_runs/
