@@ -93,6 +93,13 @@ for FOLD in $(seq 0 $((N_FOLDS - 1))); do
 #SBATCH --time=${SBATCH_TIME}
 #SBATCH --chdir=${ABS_RUN_DIR}
 
+# Print info for debugging
+echo "Job ID: \$SLURM_JOB_ID"
+echo "Run ID: ${RUN_ID}"
+echo "Running on: \$(hostname)"
+echo "Starting at: \$(date)"
+echo "Working Directory: \$(pwd)"
+
 # Load environment
 module load ${MODULES_TO_LOAD}
 
