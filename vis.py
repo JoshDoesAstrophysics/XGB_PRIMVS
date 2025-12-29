@@ -12,8 +12,16 @@ from matplotlib.colors import ListedColormap
 # --- Unified Color Strategy ---
 def get_consistent_color_map(class_names):
     """
-    Returns a dictionary mapping class names to hex colors.
-    Uses a combination of Okabe-Ito (colorblind friendly) and Tab20.
+    Generate a consistent color mapping for a list of class names.
+
+    Ensures that the same class always gets the same color, utilizing a 
+    colorblind-friendly palette extended with Tab20 for larger numbers of classes.
+
+    Args:
+        class_names (list): A list of class names to generate colors for.
+
+    Returns:
+        dict: A dictionary mapping class names (keys) to hex color codes (values).
     """
     # Sort classes to ensure the mapping is deterministic regardless of data order
     sorted_classes = sorted(list(set(class_names)))
@@ -40,7 +48,15 @@ def get_consistent_color_map(class_names):
 
 
 def set_plot_style(large_text=False):
-    """Set the plot style for publication-quality figures"""
+    """
+    Configure global matplotlib settings for publication-quality figures.
+
+    Sets figure size, DPI, font sizes, line widths, and grid styles.
+
+    Args:
+        large_text (bool): If True, increases font sizes for better visibility 
+                           in presentations or posters. Defaults to False.
+    """
     plt.rcParams['figure.figsize'] = [8, 6]
     plt.rcParams['figure.dpi'] = 100
     plt.rcParams['savefig.dpi'] = 300
@@ -71,8 +87,17 @@ def set_plot_style(large_text=False):
 
 
 def plot_xgb_training_loss(evals_result, output_dir='figures'):
-    """Simple function to plot XGBoost training and validation loss"""
+    """
+    Plot the training and validation loss curves from XGBoost evaluation results.
+
+    Args:
+        evals_result (dict): The evaluation result dictionary returned by 
+                             xgb.train(). Expected structure: {'train': {...}, 'validation': {...}}.
+        output_dir (str): Directory where the plot will be saved. Defaults to 'figures'.
     
+    Returns:
+        matplotlib.pyplot: The plt object containing the plot.
+    """
     # Extract loss values - handles XGBoost's nested dictionary structure
     train_loss = list(evals_result['train'].values())[0]
     val_loss = list(evals_result['validation'].values())[0]
@@ -108,7 +133,18 @@ def plot_xgb_training_loss(evals_result, output_dir='figures'):
 
 def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0.7, min_confidence=0.9, max_entropy=0.2):
     """
-    Create a Bailey diagram showing period vs amplitude for variable stars, colored by class.
+    Create a Bailey diagram (Period vs. Amplitude) for variable stars.
+
+    Points are colored by class, with filters applied for probability, confidence, 
+    and entropy to show high-quality classifications.
+
+    Args:
+        df (pd.DataFrame): The dataframe containing star data (periods, amplitudes, predictions).
+        class_column (str): The column name containing the predicted class labels.
+        output_dir (str): Directory to save the figure. Defaults to 'class_figures'.
+        min_prob (float): Minimum probability threshold for including a point. Defaults to 0.7.
+        min_confidence (float): Minimum confidence score threshold. Defaults to 0.9.
+        max_entropy (float): Maximum entropy threshold. Defaults to 0.2.
     """
     # Set up figure parameters
     set_plot_style(large_text=True)
@@ -183,8 +219,18 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
 
 def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_prob=0.0, max_points_per_class=2000):
     """
-    Creates a single scatter plot showing the relationship between confidence and entropy.
-    Uses random subsampling per class to reduce overplotting and noise.
+    Generate a scatter plot of Model Confidence vs. Entropy.
+
+    Visualizes the relationship between the model's confidence in its prediction
+    and the entropy (uncertainty) of the prediction distribution.
+
+    Args:
+        df (pd.DataFrame): Dataframe containing prediction results (confidence, entropy columns).
+        class_column (str): The column name for predicted class labels.
+        output_dir (str): Directory to save the plot. Defaults to 'class_figures'.
+        min_prob (float): Minimum probability threshold for data inclusion. Defaults to 0.0.
+        max_points_per_class (int): Maximum number of points to plot per class 
+                                    (via random sampling) to prevent overplotting. Defaults to 2000.
     """
     # Create a copy to avoid modifying the original dataframe
     df = df.copy()
@@ -224,7 +270,7 @@ def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_pr
     for i, var_type in enumerate(unique_types):
         type_df = df[df[class_column] == var_type]
         
-        # --- NEW: Per-Class Subsampling ---
+        # --- Per-Class Subsampling ---
         # Randomly sample to preserve distribution shape while reducing density
         if len(type_df) > max_points_per_class:
             type_df = type_df.sample(n=max_points_per_class, random_state=42)
@@ -237,7 +283,7 @@ def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_pr
             type_df[y_col],
             color=color,
             marker=marker,
-            label=f"{var_type} (n={len(type_df)})", # Added n to legend
+            label=f"{var_type} (n={len(type_df)})", # Include sample count in legend
             s=10,       # Increased size for visibility after subsampling
             alpha=0.4   # Increased opacity for visibility after subsampling
         )
@@ -259,6 +305,15 @@ def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_pr
 
 
 def plot_confidence_distribution(confidences, predictions, class_names, output_dir="figures"):
+    """
+    Plot the Kernel Density Estimate (KDE) of model confidence for each class.
+
+    Args:
+        confidences (np.array): Array of confidence scores.
+        predictions (np.array): Array of integer class predictions.
+        class_names (list): List of class names corresponding to the integer predictions.
+        output_dir (str): Directory to save the plot. Defaults to "figures".
+    """
     # Get consistent colors
     color_map = get_consistent_color_map(class_names)
     
@@ -280,7 +335,13 @@ def plot_confidence_distribution(confidences, predictions, class_names, output_d
 
 def plot_xgb_feature_importance(feature_names, importance_values, top_n=20, output_dir='figures'):
     """
-    Plot feature importance from XGBoost model.
+    Plot the top N most important features from the XGBoost model.
+
+    Args:
+        feature_names (list): List of feature names.
+        importance_values (list or np.array): List of importance scores corresponding to feature names.
+        top_n (int): Number of top features to display. Defaults to 20.
+        output_dir (str): Directory to save the plot. Defaults to 'figures'.
     """
     # Sort features by importance
     indices = np.argsort(importance_values)[-top_n:]
@@ -300,8 +361,18 @@ def plot_xgb_feature_importance(feature_names, importance_values, top_n=20, outp
 
 def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures'):
     """
-    Calculates and prints macro-averaged AP and ROC AUC, plots
-    per-class metrics in a bar chart, and generates ROC and PR curves.
+    Calculate metrics and generate a combined ROC/PR visualization.
+
+    Calculates macro-averaged Average Precision (AP) and ROC AUC scores.
+    Generates two files:
+    1. A bar chart comparing per-class AP and ROC AUC scores.
+    2. A combined PDF plot containing ROC curves and Precision-Recall curves.
+
+    Args:
+        df (pd.DataFrame): Dataframe containing true labels and predicted probabilities.
+        true_label_col (str): Name of the column containing the ground truth labels.
+        label_encoder (LabelEncoder): The encoder used to transform class labels.
+        output_dir (str): Directory to save the figures. Defaults to 'figures'.
     """
     print("\nCalculating AP and ROC AUC metrics...")
     
@@ -327,8 +398,8 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
     class_labels = []
     
     # Storage for curve plotting
-    roc_data = []
-    pr_data = []  # List to store Precision-Recall data
+    # We use a dict to associate metrics with class names for the legend
+    class_metrics_data = {} 
     
     total_ap = 0
     total_roc = 0
@@ -343,6 +414,16 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
         neg_count = len(y_true_class) - pos_count
         total_count = len(y_true_class)
         
+        # Initialize dictionary for this class
+        class_metrics_data[class_name] = {
+            'count': pos_count,
+            'ap': np.nan,
+            'roc': np.nan,
+            'pr_curve': None,
+            'roc_curve': None,
+            'no_skill': 0
+        }
+        
         # Check if class has any true samples
         if pos_count > 0:
             try:
@@ -351,21 +432,15 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
                 per_class_ap.append(ap)
                 total_ap += ap
                 valid_ap_classes += 1
+                class_metrics_data[class_name]['ap'] = ap
                 
                 # 2. Calculate Precision-Recall Curve (Vector)
                 precision, recall, _ = precision_recall_curve(y_true_class, y_proba_class)
                 
                 # Calculate No Skill (Prevalence)
                 no_skill = pos_count / total_count
-                
-                pr_data.append({
-                    'class': class_name,
-                    'precision': precision,
-                    'recall': recall,
-                    'ap': ap,
-                    'count': pos_count,
-                    'no_skill': no_skill
-                })
+                class_metrics_data[class_name]['no_skill'] = no_skill
+                class_metrics_data[class_name]['pr_curve'] = (precision, recall)
                 
             except ValueError:
                 per_class_ap.append(np.nan)
@@ -377,16 +452,11 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
                     per_class_roc.append(roc)
                     total_roc += roc
                     valid_roc_classes += 1
+                    class_metrics_data[class_name]['roc'] = roc
                     
                     # Calculate ROC curve points
                     fpr, tpr, _ = roc_curve(y_true_class, y_proba_class)
-                    roc_data.append({
-                        'class': class_name,
-                        'fpr': fpr,
-                        'tpr': tpr,
-                        'auc': roc,
-                        'count': pos_count
-                    })
+                    class_metrics_data[class_name]['roc_curve'] = (fpr, tpr)
                     
                 except ValueError:
                     per_class_roc.append(np.nan)
@@ -429,7 +499,7 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
         y_pos = np.arange(len(metrics_df))
         bar_height = 0.4
         
-        # Use simple colors for bar chart (no need to match scatter plots)
+        # Use simple colors for bar chart
         ax.barh(y_pos - bar_height / 2, metrics_df['AP'], height=bar_height, label='Avg. Precision (AP)', color='C0')
         ax.barh(y_pos + bar_height / 2, metrics_df['ROC_AUC'], height=bar_height, label='ROC AUC', color='C2')
         
@@ -450,63 +520,81 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
         plt.savefig(f'{output_dir}/per_class_metrics.jpg', dpi=300, bbox_inches='tight')
         plt.close()
 
-    # --- Unified Colors for Curves ---
-    # We collect all unique classes present in either ROC or PR data
-    all_curve_classes = set(d['class'] for d in roc_data).union(set(d['class'] for d in pr_data))
-    color_map = get_consistent_color_map(list(all_curve_classes))
-
-    # --- Plot ROC Curves ---
-    if roc_data:
-        plt.figure(figsize=(12, 8)) # Increased width for legend
-        
-        for item in roc_data:
-            color = color_map[item['class']]
-            # Updated Label with Count
-            label_str = f"{item['class']} (n={int(item['count'])}) (AUC = {item['auc']:.2f})"
-            plt.plot(item['fpr'], item['tpr'], lw=2, color=color, label=label_str)
-        
-        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-        plt.xlim([0.0, 1.0])
-        plt.ylim([0.0, 1.05])
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.title('Receiver Operating Characteristic (ROC) by Class')
-        
-        # Legend Outside
-        plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left", borderaxespad=0, fontsize='small', ncol=1)
-        
-        plt.grid(alpha=0.3)
-        # Use bbox_inches='tight' in savefig to handle outside legend
-        plt.savefig(f'{output_dir}/roc_curves.png', dpi=300, bbox_inches='tight')
-        plt.close()
-        print(f"Saved ROC curves to {output_dir}/roc_curves.png")
-
-    # --- Plot Precision-Recall Curves ---
-    if pr_data:
-        plt.figure(figsize=(12, 8)) # Increased width for legend
-        
-        for item in pr_data:
-            color = color_map[item['class']]
-            # Updated Label with Count
-            label_str = f"{item['class']} (n={int(item['count'])}) (AP = {item['ap']:.2f})"
-            plt.plot(item['recall'], item['precision'], lw=2, color=color, label=label_str)
+    # --- Combined ROC and PR Metric Plot ---
+    # Prepare unified figure with two subplots
+    # Reduced figsize to make the plot less huge and text relatively larger
+    fig, axes = plt.subplots(1, 2, figsize=(15, 7))
+    
+    # Get consistent colors
+    valid_class_names = [cls for cls, data in class_metrics_data.items() if data['count'] > 0]
+    color_map = get_consistent_color_map(valid_class_names)
+    
+    # Subplot 1: ROC Curves
+    ax_roc = axes[0]
+    has_roc_data = False
+    
+    for class_name in valid_class_names:
+        data = class_metrics_data[class_name]
+        if data['roc_curve'] is not None:
+            fpr, tpr = data['roc_curve']
+            color = color_map[class_name]
             
-            # --- Plot No Skill Line ---
-            # Plots a dotted horizontal line at y = P / (P + N)
-            plt.plot([0, 1], [item['no_skill'], item['no_skill']], 
-                     linestyle=':', lw=1.5, color=color, alpha=0.7)
+            # Label with Class, Population (n), AUC, and AP
+            auc_val = data['roc']
+            ap_val = data['ap']
+            count = data['count']
+            
+            # Format the label string
+            label_str = f"{class_name} (n={int(count)}) AUC={auc_val:.2f} AP={ap_val:.2f}"
+            
+            ax_roc.plot(fpr, tpr, lw=2, color=color, label=label_str)
+            has_roc_data = True
+
+    if has_roc_data:
+        ax_roc.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+        ax_roc.set_xlim([0.0, 1.0])
+        ax_roc.set_ylim([0.0, 1.05])
+        ax_roc.set_xlabel('False Positive Rate')
+        ax_roc.set_ylabel('True Positive Rate')
+        ax_roc.set_title('Receiver Operating Characteristic (ROC)')
         
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
-        plt.title('Precision-Recall Curves by Class')
-        plt.xlim([0.0, 1.0])
-        plt.ylim([0.0, 1.05])
+        # Legend on bottom right for ROC
+        # Increased fontsize (removed 'small', set to 10)
+        ax_roc.legend(loc="lower right", fontsize=10, ncol=1)
+        ax_roc.grid(alpha=0.3)
+    else:
+        ax_roc.text(0.5, 0.5, "No valid ROC data available", ha='center', va='center')
+
+    # Subplot 2: Precision-Recall Curves
+    ax_pr = axes[1]
+    has_pr_data = False
+    
+    for class_name in valid_class_names:
+        data = class_metrics_data[class_name]
+        if data['pr_curve'] is not None:
+            precision, recall = data['pr_curve']
+            color = color_map[class_name]
+            
+            # Plot without label (legend is in ROC plot)
+            ax_pr.plot(recall, precision, lw=2, color=color)
+            
+            has_pr_data = True
+
+    if has_pr_data:
+        ax_pr.set_xlabel('Recall')
+        ax_pr.set_ylabel('Precision')
+        ax_pr.set_title('Precision-Recall Curves')
+        ax_pr.set_xlim([0.0, 1.0])
+        ax_pr.set_ylim([0.0, 1.05])
         
-        # Legend Outside
-        plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left", borderaxespad=0, fontsize='small', ncol=1)
-        
-        plt.grid(alpha=0.3)
-        # Use bbox_inches='tight' in savefig to handle outside legend
-        plt.savefig(f'{output_dir}/pr_curves.png', dpi=300, bbox_inches='tight')
-        plt.close()
-        print(f"Saved Precision-Recall curves to {output_dir}/pr_curves.png")
+        # No legend here (relies on ROC legend)
+        ax_pr.grid(alpha=0.3)
+    else:
+        ax_pr.text(0.5, 0.5, "No valid PR data available", ha='center', va='center')
+
+    # Save as PDF for high quality tiling
+    plt.tight_layout()
+    pdf_path = f'{output_dir}/metrics_summary.pdf'
+    plt.savefig(pdf_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved combined metrics plot to {pdf_path}")
