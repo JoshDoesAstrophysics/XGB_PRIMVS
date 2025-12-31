@@ -15,9 +15,8 @@ The main workflow consists of:
 - Generating a visualization dashboard of the results.
 - Caching: If the output .fits and .joblib files are detected and the
   hyperparameters in the .fits header match the current script settings,
-  training and inference will be skipped, and the script will proceed
-  directly to visualization.
-- Selective Output: The output FITS file now contains only the unique ID,
+  training and inference are skipped to proceed directly to visualization.
+- Selective Output: The output FITS file contains only the unique ID,
   the input feature (parameter) columns, and the inference output columns.
 
 To run from the command line:
@@ -62,6 +61,7 @@ except ImportError:
     def plot_confidence_distribution(*args, **kwargs): pass
     def plot_confidence_entropy(*args, **kwargs): pass
     def plot_and_print_auc_ap(*args, **kwargs): pass
+
 #########################################
 # SECTION 1: UTILITY FUNCTIONS
 #########################################
@@ -385,7 +385,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     start_time = time.time()
     
     # --- 0. Label Propagation ---
-    # Match labels from train_df to test_df BEFORE preprocessing using unique IDs
+    # Match labels from training data to test data using unique IDs
     test_df = propagate_labels(test_df, train_df, label_col)
     
     # --- 1. Data Preparation ---
@@ -404,7 +404,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     )
 
     # --- 3. Class Weighting ---
-    # Smoothed class weighting to handle imbalance
+    # Apply smoothed class weighting to address imbalance during training.
     total_samples = len(y_train_main)
     num_classes = len(class_counts)
     class_weights_map = {
@@ -478,7 +478,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
         evals=[(dtrain, 'train'), (dval, 'validation')],
         evals_result=evals_result,
         verbose_eval=100,
-        callbacks=callbacks_list # <--- Injected here
+        callbacks=callbacks_list
     )
     
     # --- 7. Prediction and Evaluation ---
@@ -486,7 +486,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     hyperparams_to_save['best_iteration_result'] = best_iter
     print(f"\nTraining complete. Best iteration: {best_iter}")
 
-    # Store best training and validation losses for FITS header
+    # Record best training and validation losses for storage in FITS header
     if 'train' in evals_result and 'mlogloss' in evals_result['train'] and len(evals_result['train']['mlogloss']) > best_iter:
         best_train_loss = evals_result['train']['mlogloss'][best_iter]
         hyperparams_to_save['best_train_loss'] = float(best_train_loss) # Ensure it's a standard float
@@ -505,7 +505,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     log_probs = np.log(probs, out=np.zeros_like(probs, dtype=float), where=(probs > 0))
     entropy = np.abs(np.sum(probs * log_probs, axis=1))
 
-    # Create the FULL dataframe for visualization and return
+    # Construct the FULL dataframe for visualization and return
     # This dataframe contains all original test columns + predictions
     test_df_result = test_df.copy()
 
@@ -514,7 +514,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     if label_col in test_df.columns:
         test_df_result['xgb_training_class'] = test_df[label_col]
     else:
-        # Force creation of the column with 'UNKNOWN' values if missing (shouldn't happen with prop)
+        # Force creation of the column with 'UNKNOWN' values if missing
         print(f"Warning: Label column '{label_col}' missing in test data even after propagation attempt.")
         test_df_result[label_col] = 'UNKNOWN'
         test_df_result['xgb_training_class'] = 'UNKNOWN'
@@ -573,7 +573,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     out_fits_file, _ = os.path.splitext(out_file)
     out_fits_file += ".fits"
     
-    # Use the selective output_df to create the Astropy Table
+    # Convert the DataFrame to an Astropy Table for FITS storage
     out_table = Table.from_pandas(output_df) 
 
     print("Adding hyperparameters to FITS header...")
@@ -613,10 +613,7 @@ def generate_visualizations(model, label_encoder, test_df_result, label_col, eva
     os.makedirs('figures', exist_ok=True)
     
     # --- Classification Report ---
-    # We now check for 'xgb_training_class' first. If it's not there,
-    # we fall back to the original 'label_col'. The plotting function
-    # 'plot_and_print_auc_ap' has its own internal check, but we do
-    # one here for the classification report.
+    # Determine the correct ground-truth label column, prioritizing propagated labels.
     true_label_col_to_use = 'xgb_training_class'
     if true_label_col_to_use not in test_df_result.columns:
         print(f"Warning: '{true_label_col_to_use}' not found, falling back to '{label_col}' for classification report.")
@@ -755,7 +752,7 @@ def main():
                     print(f"  Loading data from {out_fits_file}...")
                     test_df_result_table = Table(hdul[1].data) 
                     
-                    # This 'test_df_result' is the MINIMAL one.
+                    # The cached table contains the minimal output subset.
                     # We need to load the FULL test_df for visualizations
                     print(f"  Loading full test data from {test_path} for visualization...")
                     test_df_full_for_vis = load_fits_to_df(test_path)
@@ -767,7 +764,7 @@ def main():
                     test_df_minimal = test_df_result_table.to_pandas()
                     print("  Data loaded.")
 
-                    # Fix for FITS byte-to-string conversion issue
+                    # Decode byte strings in the class column to ensure string compatibility.
                     if not test_df_minimal.empty and isinstance(test_df_minimal['xgb_predicted_class'].iloc[0], bytes):
                         print("  Converting 'xgb_predicted_class' column from bytes to string for plotting...")
                         test_df_minimal['xgb_predicted_class'] = test_df_minimal['xgb_predicted_class'].str.decode('utf-8')
@@ -797,7 +794,7 @@ def main():
                     return # Exit script
                 
                 else:
-                    # This 'else' corresponds to 'if are_params_identical'
+                    # Parameters match failed, triggering retraining
                     print("Hyperparameters mismatch. Re-training model.")
             
         else:
