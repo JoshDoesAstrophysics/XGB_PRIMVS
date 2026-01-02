@@ -233,7 +233,7 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
     plt.close()
 
 
-def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_prob=0.0):
+def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_prob=0.0, use_brg_cmap=False):
     """
     Plots Prediction Confidence vs. Prediction Entropy using Faceted 2D Histograms.
     
@@ -257,6 +257,7 @@ def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_pr
         class_column (str): The column containing class labels.
         output_dir (str): Directory to save output.
         min_prob (float): Filter points below this probability (optional).
+        use_brg_cmap (bool): If True, overrides custom colormaps with the 'brg' colormap.
     """
     df = df.copy()
 
@@ -311,39 +312,43 @@ def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_pr
         
         if len(type_df) == 0:
             continue
-            
-        # --- Create Custom "Density" Colormap for this Class ---
-        base_color = color_map[var_type]
         
-        # Detect if the base color is Black (or very dark)
-        # If so, we need a grayscale gradient to preserve dynamic range.
-        is_black = (base_color.lower() == '#000000') or (base_color.lower() == 'black')
-        
-        if is_black:
-            # Special Grayscale Gradient for Black class
-            colors = [
-                '#D0D0D0', # Light Gray (Low Density) - Visible on white background
-                '#606060', # Dark Gray (Medium Density)
-                '#000000'  # Black (Peak Density)
-            ]
+        # Determine which colormap to use
+        if use_brg_cmap:
+            cmap = 'brg'
         else:
-            # Standard Gradient for Colored classes
-            # 1. Low Density: Light tint (mix with white) so it pops against white background
-            # 2. Medium Density: The class color itself
-            # 3. Peak Density: Black (to show high concentration core)
+            # --- Create Custom "Density" Colormap for this Class ---
+            base_color = color_map[var_type]
             
-            rgb = to_rgba(base_color)[:3]
-            # Mix with white (80% white, 20% color) for the light tint
-            light_tint = [(0.2 * c + 0.8) for c in rgb] 
+            # Detect if the base color is Black (or very dark)
+            # If so, we need a grayscale gradient to preserve dynamic range.
+            is_black = (base_color.lower() == '#000000') or (base_color.lower() == 'black')
             
-            colors = [
-                light_tint, # Very light version of class color
-                base_color, # The class color
-                '#000000'   # Black for the core
-            ]
-        
-        # Create the colormap
-        cmap = LinearSegmentedColormap.from_list(f"cmap_{var_type}", colors)
+            if is_black:
+                # Special Grayscale Gradient for Black class
+                colors = [
+                    '#D0D0D0', # Light Gray (Low Density) - Visible on white background
+                    '#606060', # Dark Gray (Medium Density)
+                    '#000000'  # Black (Peak Density)
+                ]
+            else:
+                # Standard Gradient for Colored classes
+                # 1. Low Density: Light tint (mix with white) so it pops against white background
+                # 2. Medium Density: The class color itself
+                # 3. Peak Density: Black (to show high concentration core)
+                
+                rgb = to_rgba(base_color)[:3]
+                # Mix with white (80% white, 20% color) for the light tint
+                light_tint = [(0.2 * c + 0.8) for c in rgb] 
+                
+                colors = [
+                    light_tint, # Very light version of class color
+                    base_color, # The class color
+                    '#000000'   # Black for the core
+                ]
+            
+            # Create the colormap
+            cmap = LinearSegmentedColormap.from_list(f"cmap_{var_type}", colors)
 
         # Plot 2D Histogram (Heatmap)
         # norm=LogNorm() scales colors logarithmically, ensuring both sparse outliers 

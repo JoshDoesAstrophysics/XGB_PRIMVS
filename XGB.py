@@ -647,10 +647,9 @@ def generate_visualizations(model, label_encoder, test_df_result, label_col, eva
     
     # Pass the correctly determined label column name
     plot_and_print_auc_ap(test_df_result, true_label_col_to_use, label_encoder, output_dir='figures')
-    
     plot_bailey_diagram(test_df_result, "xgb_predicted_class", output_dir='figures')
     plot_confidence_distribution(confs, preds_int, label_encoder.classes_, output_dir="figures")
-    plot_confidence_entropy(test_df_result, "xgb_predicted_class", output_dir='figures')
+    plot_confidence_entropy(test_df_result, "xgb_predicted_class", output_dir='figures', use_brg_cmap=True)
     
     print("Visualizations saved to: figures/")
 
