@@ -21,7 +21,7 @@ SUBSAMPLES=(0.8 0.9 0.95)
 COLSAMPLES_BT=(0.01 0.1 1.0)
 REG_ALPHAS=(0.001 0.01 0.1)
 REG_LAMBDAS=(0.01 0.1 1.0)
-TEST_SIZES=(0.05 0.1 0.2) # Added Test Size array as requested
+TEST_SIZES=(0.05 0.1 0.2)
 
 # --- Path Configuration ---
 

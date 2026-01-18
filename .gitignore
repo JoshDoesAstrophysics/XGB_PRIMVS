@@ -7,5 +7,6 @@ pca_tuning/
 __pycache__/
 grid_search_runs/
 n_folds/
+pca/
 .*
 !.gitignore

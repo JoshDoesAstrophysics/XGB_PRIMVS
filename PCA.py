@@ -122,33 +122,39 @@ def save_pca_data(pca_df, original_df, pca_model, output_file='pca_results.fits'
 def main(n_components=12):
     sample_size = None
 
-    input_file = "../.data/PRIMVS_P.fits"
-    output_dir = f"./pca_tuning/ps10/"
+    input_file = "./.data/PRIMVS_P.fits"
+    output_dir = f"./pca/"
     output_file = f"{output_dir}pca_results.fits"
 
+    # Curated feature set for variable star classification.
     features = [
-        #JJW Standard params and quality
-        #"best_fap", 
+        # --- Basic Parameters & Quality Metrics ---
+        #"best_fap",
         "true_period", "true_amplitude",
         #"chisq", "uwe",
-        #JJW photomtery and color indices
+
+        # --- Photometry & Color Indices ---
         #"ks_med_mag", "j_med_mag", "h_med_mag",
-        "z_med_mag-ks_med_mag", "y_med_mag-ks_med_mag",
+        "z_med_mag-ks_med_mag",
+        "y_med_mag-ks_med_mag",
         "j_med_mag-ks_med_mag",
         #"h_med_mag-ks_med_mag",
-        #JJW position data
-        #"l", 
-        "b",
-        #"parallax", 
+
+        # --- Positional Data ---
+        #"l",
+        #"b",
+        #"parallax",
         #"pmra", "pmdec",
-        #JJW peroidgram fittings
+
+        # --- Periodogram Fitting Results ---
         #"ls_y_y_0", "ls_peak_width_0",
         #"pdm_y_y_0", "pdm_peak_width_0",
         #"ce_y_y_0", "ce_peak_width_0",
-        #JJW light curve analysis
-        "Cody_M", "stet_k", "eta_e", "med_BRP", "range_cum_sum",
-        "max_slope", "MAD", "mean_var", "percent_amp",
-        "roms", "p_to_p_var", "lag_auto", "AD", "std_nxs",
+
+        # --- Light Curve Shape & Variability Analysis ---
+        "Cody_M", "stet_k",
+        "eta_e", "med_BRP", "range_cum_sum", "max_slope", "MAD", "mean_var",
+        "percent_amp", "roms", "p_to_p_var", "lag_auto", "AD", "std_nxs",
         "skew", "kurt"
     ]
 

@@ -44,11 +44,19 @@ def get_consistent_color_map(class_names):
         '#332288', # Indigo (Contrasts with Sky Blue)
         '#882255', # Wine/Dark Red (Contrasts with Orange)
         '#CC79A7', # Reddish Purple
-        '#000000'  # Black
+        '#000000', # Black
+        # Extended high-contrast colors to avoid limiting to 8
+        '#88CCEE', # Cyan
+        '#44AA99', # Teal
+        '#117733', # Green
+        '#999933', # Olive
+        '#DDCC77', # Sand
+        '#CC6677', # Rose
+        '#AA4499', # Purple
     ]
     
     # Secondary Palette: Tab20
-    # If there are more classes than the primary palette can handle (8), we extend
+    # If there are more classes than the primary palette can handle, we extend
     # the palette using Matplotlib's Tab20.
     if len(sorted_classes) > len(palette):
         tab20 = plt.cm.tab20.colors # Returns RGB tuples (0-1)
@@ -696,3 +704,242 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
     plt.savefig(pdf_path, dpi=300, bbox_inches='tight')
     plt.close()
     print(f"Saved combined metrics plot to {pdf_path}")
+
+
+#########################################
+# SECTION 3: PCA VISUALIZATION FUNCTIONS
+#########################################
+
+def visualize_pca(pca_df, original_df, pca_model, output_dir='./figures'):
+    """
+    Generates a suite of visualizations to analyze Principal Component Analysis (PCA) results.
+
+    Plots generated:
+    1. PC1 vs PC2 Scatter Plot: Basic projection of data points.
+    2. Density Plot: KDE plot to show concentrations in PCA space.
+    3. 2D Histogram: Binned heatmap of PC density.
+    4. Scree Plot: Explained variance per component to judge dimensionality.
+    5. Loadings Heatmap: Shows which original features contribute most to PC1/PC2.
+    6. Feature Overlays: Scatter plots colored by 'best_fap', 'Period', and 'Amplitude'.
+
+    Args:
+        pca_df (pd.DataFrame): DataFrame containing the PCA components (PC1, PC2, etc.).
+        original_df (pd.DataFrame): The original dataframe with feature columns (for coloring points).
+        pca_model (sklearn.decomposition.PCA): The trained PCA model object.
+        output_dir (str): Directory to save plots.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    set_plot_style()
+
+    # 1. Scatter Plot
+    plt.figure()
+    plt.scatter(pca_df['PC1'], pca_df['PC2'], s=5, alpha=0.5)
+    plt.xlabel(f"PC1 ({pca_model.explained_variance_ratio_[0]:.2%})")
+    plt.ylabel(f"PC2 ({pca_model.explained_variance_ratio_[1]:.2%})")
+    plt.title("PCA: PC1 vs PC2")
+    plt.grid()
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/pca_scatter.png")
+    plt.close()
+
+    # 2. Density Plot
+    plt.figure()
+    sns.kdeplot(x=pca_df['PC1'], y=pca_df['PC2'], cmap="Blues", fill=True)
+    plt.xlabel("PC1")
+    plt.ylabel("PC2")
+    plt.title("PCA Density")
+    plt.grid()
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/pca_density.png")
+    plt.close()
+
+    # 3. 2D Histogram
+    plt.figure()
+    h = plt.hist2d(pca_df['PC1'], pca_df['PC2'], bins=100, cmap='viridis', norm=LogNorm())
+    plt.colorbar(h[3])
+    plt.xlabel("PC1")
+    plt.ylabel("PC2")
+    plt.title("PCA Histogram")
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/pca_histogram.png")
+    plt.close()
+
+    # 4. Scree Plot
+    plt.figure()
+    plt.bar(range(1, len(pca_model.explained_variance_ratio_)+1), pca_model.explained_variance_ratio_)
+    plt.step(range(1, len(pca_model.explained_variance_ratio_)+1), np.cumsum(pca_model.explained_variance_ratio_), label='Cumulative')
+    plt.xlabel('PC')
+    plt.ylabel('Explained Variance')
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/pca_scree.png")
+    plt.close()
+
+    # 5. Loadings Heatmap
+    if hasattr(pca_model, 'feature_names_in_'):
+        feature_names = pca_model.feature_names_in_
+    else:
+        # Fallback if feature names weren't stored in the model
+        feature_names = [f"Feature {i}" for i in range(pca_model.components_.shape[1])]
+
+    load = pd.DataFrame(pca_model.components_.T, 
+                        index=feature_names, 
+                        columns=[f'PC{i+1}' for i in range(pca_model.n_components_)])
+    
+    # Select features. We want to show all significant features.
+    # We increase the limit to ensure we don't accidentally cut off features if the user has ~15.
+    top = pd.concat([
+        load['PC1'].abs().sort_values(ascending=False), 
+        load['PC2'].abs().sort_values(ascending=False)
+    ]).index.unique()[:50] # Increased limit to 50 to ensure all 15+ features are shown
+    
+    plt.figure(figsize=(10, max(6, len(top) * 0.4)))
+    sns.heatmap(load.loc[top, ['PC1', 'PC2']], annot=True, cmap='coolwarm', center=0)
+    plt.title("Feature Loadings (PC1 & PC2)")
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/pca_loadings.png")
+    plt.close()
+
+    # 6. Coloured Scatter Plots (Overlaying Physical Properties)
+    if 'best_fap' in original_df.columns:
+        plt.figure()
+        plt.scatter(pca_df['PC1'], pca_df['PC2'], c=original_df['best_fap'], cmap='viridis_r', s=10, alpha=0.7)
+        plt.colorbar(label='FAP')
+        plt.xlabel("PC1")
+        plt.ylabel("PC2")
+        plt.tight_layout()
+        plt.savefig(f"{output_dir}/pca_fap.png")
+        plt.close()
+
+    if 'true_period' in original_df.columns:
+        plt.figure()
+        # Log scale for Period to handle large dynamic range
+        plt.scatter(pca_df['PC1'], pca_df['PC2'], 
+                   c=np.log10(np.clip(original_df['true_period'].values, 0.01, None)), 
+                   cmap='plasma', s=10, alpha=0.7)
+        plt.colorbar(label='log10(Period)')
+        plt.xlabel("PC1")
+        plt.ylabel("PC2")
+        plt.tight_layout()
+        plt.savefig(f"{output_dir}/pca_period.png")
+        plt.close()
+
+    if 'true_amplitude' in original_df.columns:
+        plt.figure()
+        # Log scale for Amplitude
+        plt.scatter(pca_df['PC1'], pca_df['PC2'], 
+                   c=np.log10(np.clip(original_df['true_amplitude'].values, 0.001, None)), 
+                   cmap='inferno', s=10, alpha=0.7)
+        plt.colorbar(label='log10(Amplitude)')
+        plt.xlabel("PC1")
+        plt.ylabel("PC2")
+        plt.tight_layout()
+        plt.savefig(f"{output_dir}/pca_amplitude.png")
+        plt.close()
+
+
+def plot_pca_degeneracy_analysis(pca_df, df, pca_model, features, output_dir='./figures', n_pcs_limit=5, threshold=0.4):
+    """
+    Analyzes the structural relationship between original features and Principal Components.
+    
+    Generates two plots:
+    1. Full Structure Matrix: All PCs (up to 20), features sorted by max correlation.
+       Filename: pca_degeneracy_correlation.png
+    2. Reduced Structure Matrix: Top N PCs (controlled by n_pcs_limit), features in 
+       original input order, low correlations masked.
+       Filename: pca_degeneracy_reduced.png
+
+    Args:
+        pca_df (pd.DataFrame): DataFrame containing the PCA components.
+        df (pd.DataFrame): Original dataframe containing the raw feature values.
+        pca_model (sklearn.decomposition.PCA): The trained PCA model.
+        features (list): List of feature names used for PCA.
+        output_dir (str): Directory to save plots.
+        n_pcs_limit (int): Number of PCs to show in the reduced plot.
+        threshold (float): Correlation threshold for masking in the reduced plot.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    set_plot_style()
+    
+    # Ensure we only use features that exist in the dataframe
+    valid_features = [f for f in features if f in df.columns]
+    
+    if not valid_features:
+        print("Warning: No valid features found for degeneracy analysis.")
+        return
+
+    # --- PART 1: FULL PLOT (Sorted, Many PCs, No Masking) ---
+    
+    # Combine PCs and Features into one temp dataframe for correlation calculation
+    # Show more PCs if available, but limit to keep horizontal size reasonable
+    n_pcs_full = min(20, pca_df.shape[1]) 
+    pc_cols_full = [f'PC{i+1}' for i in range(n_pcs_full)]
+    
+    analysis_df = pd.concat([pca_df[pc_cols_full].reset_index(drop=True), 
+                            df[valid_features].reset_index(drop=True)], axis=1)
+    
+    # Calculate correlation matrix
+    corr_matrix_full = analysis_df.corr()
+    
+    # Extract only the sub-matrix of interest: Features vs PCs
+    feature_pc_corr_full = corr_matrix_full.loc[valid_features, pc_cols_full]
+    
+    # Sort features by their maximum correlation with any PC for better visualization organization
+    feature_pc_corr_full['max_corr'] = feature_pc_corr_full.abs().max(axis=1)
+    feature_pc_corr_full = feature_pc_corr_full.sort_values('max_corr', ascending=False).drop(columns=['max_corr'])
+    
+    # Plot Full Heatmap
+    fig_height_full = max(10, len(valid_features) * 0.6)
+    plt.figure(figsize=(14, fig_height_full))
+    
+    sns.heatmap(feature_pc_corr_full, annot=True, cmap='RdBu', center=0, fmt='.2f', 
+                vmin=-1, vmax=1, yticklabels=True)
+                
+    plt.title("Feature-Component Correlations (Full Structure Matrix)")
+    plt.xlabel("Principal Components")
+    plt.ylabel("Original Features")
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/pca_degeneracy_correlation.png")
+    plt.close()
+    
+    # --- PART 2: REDUCED PLOT (Input Order, Limited PCs, Masked NUMBERS only) ---
+    
+    # Limit PCs to n_pcs_limit
+    n_pcs_reduced = min(n_pcs_limit, pca_df.shape[1])
+    pc_cols_reduced = [f'PC{i+1}' for i in range(n_pcs_reduced)]
+    
+    # Correlation (Features vs PCs)
+    # Re-calculate or slice from full matrix, but CRITICALLY: use valid_features to enforce input order
+    # (Do not use the sorted index from Part 1)
+    feature_pc_corr_reduced = corr_matrix_full.loc[valid_features, pc_cols_reduced]
+    
+    # Create Mask for Annotations (Text)
+    # Default Rule: Show text if abs(value) >= threshold
+    show_text_mask = feature_pc_corr_reduced.abs() >= threshold
+    
+    # Exception Rule: ALWAYS show the max association per feature (row)
+    row_max_indices = feature_pc_corr_reduced.abs().idxmax(axis=1)
+    for row_idx, col_name in row_max_indices.items():
+        if pd.notna(col_name):
+            show_text_mask.loc[row_idx, col_name] = True
+
+    # Generate custom annotations
+    annot_labels = feature_pc_corr_reduced.applymap(lambda x: f"{x:.2f}")
+    annot_labels = annot_labels.where(show_text_mask, "")
+
+    # Plot Reduced Heatmap
+    fig_height_reduced = max(8, len(valid_features) * 0.5)
+    plt.figure(figsize=(10, fig_height_reduced)) 
+    
+    # Use fmt='' because annot_labels are strings
+    sns.heatmap(feature_pc_corr_reduced, annot=annot_labels, cmap='RdBu', center=0, fmt='', 
+                vmin=-1, vmax=1, cbar_kws={'label': 'Correlation'})
+    
+    plt.title(f"Reduced Feature-Component Correlations (Top {n_pcs_reduced} PCs)\n(Numbers hidden if |corr| < {threshold})")
+    plt.xlabel("Principal Components")
+    plt.ylabel("Original Features")
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/pca_degeneracy_reduced.png")
+    plt.close()
+    
+    print(f"Saved PCA degeneracy analyses to:\n  - {output_dir}/pca_degeneracy_correlation.png (Full)\n  - {output_dir}/pca_degeneracy_reduced.png (Reduced)")
