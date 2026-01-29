@@ -16,8 +16,10 @@ The main workflow consists of:
 - Caching: If the output .fits and .joblib files are detected and the
   hyperparameters in the .fits header match the current script settings,
   training and inference are skipped to proceed directly to visualization.
-- Selective Output: The output FITS file contains only the unique ID,
+- Selective Output: The output FITS file contains the unique ID, coordinates,
   the input feature (parameter) columns, and the inference output columns.
+- Header Updates: Saves optimal probability thresholds (derived from PR curves)
+  back to the FITS file header for future use.
 
 To run from the command line:
     python GXGB.py <path_to_train.fits> <path_to_test.fits> [output_file.fits]
@@ -60,7 +62,8 @@ except ImportError:
     def plot_xgb_feature_importance(*args, **kwargs): pass
     def plot_confidence_distribution(*args, **kwargs): pass
     def plot_confidence_entropy(*args, **kwargs): pass
-    def plot_and_print_auc_ap(*args, **kwargs): pass
+    # Dummy returns None, which is handled safely
+    def plot_and_print_auc_ap(*args, **kwargs): return {}
 
 #########################################
 # SECTION 1: UTILITY FUNCTIONS
@@ -151,6 +154,42 @@ def propagate_labels(target_df, source_df, label_col):
             target_df[label_col] = 'UNKNOWN'
             
     return target_df
+
+def save_thresholds_to_header(fits_path, thresholds_dict):
+    """
+    Updates the FITS header with optimal thresholds found during visualization.
+    
+    Args:
+        fits_path (str): Path to the FITS file to update.
+        thresholds_dict (dict): Dictionary mapping class names to threshold floats.
+    """
+    if not thresholds_dict:
+        return
+
+    print(f"Updating FITS header in {fits_path} with optimal thresholds...")
+    try:
+        # Open in update mode
+        with fits.open(fits_path, mode='update') as hdul:
+            # Target the table extension (usually 1, fallback to 0)
+            target_hdu = hdul[1] if len(hdul) > 1 else hdul[0]
+            header = target_hdu.header
+            
+            # Add a separator comment
+            header['COMMENT'] = '--- OPTIMAL PROBABILITY THRESHOLDS (PR CURVE) ---'
+            
+            for cls, thresh in thresholds_dict.items():
+                # Use HIERARCH keyword convention (handled automatically by astropy) 
+                # to allow for long keys (e.g., class names).
+                # We prefix with THR_ to categorize them cleanly.
+                key = f"THR_{cls}"
+                
+                # Ensure value is float and add comment
+                header[key] = (float(thresh), f"Optimal threshold for {cls}")
+                
+            hdul.flush()
+            print("  Header updated successfully.")
+    except Exception as e:
+        print(f"  Warning: Failed to update FITS header: {e}")
 
 def get_feature_list(train, test):
     """
@@ -529,8 +568,8 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     # --- Create the SELECTIVE output DataFrame for FITS file ---
     print("Building selective output FITS file...")
     
-    # Start with a new DataFrame, preserving the index
-    output_df = pd.DataFrame(index=test_df.index) 
+    # We will build a list of columns to export to ensure no duplicates
+    cols_to_export = []
     
     # 1. Add the uniqueid column (if found)
     id_col = None
@@ -541,16 +580,33 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
             break
     
     if id_col:
+        cols_to_export.append(id_col)
         print(f"  Adding ID column: {id_col}")
-        output_df[id_col] = test_df[id_col]
     else:
         print("  Warning: No 'uniqueid', 'source_id', or 'id' column found.")
 
-    # 2. Add the parameter columns (features) from the original test_df
+    # 2. Add requested coordinate/position columns (Update)
+    coord_cols = ['ra', 'ra_error', 'dec', 'dec_error', 'l', 'b']
+    print(f"  Adding coordinate columns: {coord_cols}")
+    for col in coord_cols:
+        if col in test_df.columns:
+            # Avoid duplicates if ID column happened to be one of these (unlikely but safe)
+            if col not in cols_to_export:
+                cols_to_export.append(col)
+        else:
+            # Optional: Warning for missing coords?
+            pass
+
+    # 3. Add the parameter columns (features) from the original test_df
     print(f"  Adding {len(features)} parameter (feature) columns...")
-    output_df = pd.concat([output_df, test_df[features]], axis=1)
+    for col in features:
+        if col not in cols_to_export:
+            cols_to_export.append(col)
+
+    # Create the output dataframe based on the selected columns
+    output_df = test_df[cols_to_export].copy()
     
-    # 3. Add the output columns from inference
+    # 4. Add the output columns from inference
     print("  Adding inference output columns...")
     output_df['xgb_predicted_class'] = pred_labels
     output_df['xgb_confidence'] = confs
@@ -608,6 +664,9 @@ def generate_visualizations(model, label_encoder, test_df_result, label_col, eva
                                      (This is the FULL dataframe, not the selective one)
         label_col (str): Name of the true label column (for evaluation).
         evals_result (dict, optional): Results from training (for loss plot).
+        
+    Returns:
+        dict: The dictionary of optimal probability thresholds calculated from PR curves.
     """
     print("\nGenerating visualizations...")
     os.makedirs('figures', exist_ok=True)
@@ -646,12 +705,16 @@ def generate_visualizations(model, label_encoder, test_df_result, label_col, eva
     preds_int = label_encoder.transform(test_df_result['xgb_predicted_class'])
     
     # Pass the correctly determined label column name
-    plot_and_print_auc_ap(test_df_result, true_label_col_to_use, label_encoder, output_dir='figures')
+    # Capture the thresholds dictionary returned by the PR curve function
+    thresholds_dict = plot_and_print_auc_ap(test_df_result, true_label_col_to_use, label_encoder, output_dir='figures')
+    
     plot_bailey_diagram(test_df_result, "xgb_predicted_class", output_dir='figures')
     plot_confidence_distribution(confs, preds_int, label_encoder.classes_, output_dir="figures")
     plot_confidence_entropy(test_df_result, "xgb_predicted_class", output_dir='figures', use_brg_cmap=True)
     
     print("Visualizations saved to: figures/")
+    
+    return thresholds_dict
 
 
 #########################################
@@ -784,10 +847,13 @@ def main():
                     print("  Model loaded.")
                     
                     # Generate plots from existing files
-                    generate_visualizations(
+                    thresholds_dict = generate_visualizations(
                         model, label_encoder, test_df_result_for_vis, 
                         label_col, evals_result=None
                     )
+                    
+                    # Update FITS header with the calculated thresholds (even in cached mode)
+                    save_thresholds_to_header(out_fits_file, thresholds_dict)
                     
                     print("\n=== XGBoost Visualization Complete (Skipped Training) ===")
                     return # Exit script
@@ -819,10 +885,13 @@ def main():
         )
         
         # Generate plots
-        generate_visualizations(
+        thresholds_dict = generate_visualizations(
             model, label_encoder, test_df_result, 
             label_col, evals_result=evals_result
         )
+
+        # Update FITS header with the calculated thresholds
+        save_thresholds_to_header(out_fits_file, thresholds_dict)
 
         print("\n=== XGBoost Training Complete ===")
 

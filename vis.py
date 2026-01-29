@@ -12,6 +12,7 @@ from sklearn.metrics import (
 )
 from sklearn.preprocessing import label_binarize
 from matplotlib.colors import ListedColormap, LogNorm, LinearSegmentedColormap, to_rgba
+from matplotlib.ticker import FuncFormatter
 
 #########################################
 # SECTION 1: STYLE & UTILITY FUNCTIONS
@@ -199,7 +200,7 @@ def plot_xgb_training_loss(evals_result, output_dir='figures'):
     return plt
 
 
-def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0.7, min_confidence=0.9, max_entropy=0.2):
+def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0.7, min_confidence=0.9, max_entropy=0.2, thresholds_dict=None):
     """
     Creates a Bailey diagram (Period vs. Amplitude), a standard diagnostic tool in
     variable star astronomy. 
@@ -211,9 +212,11 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
         df (pd.DataFrame): The dataframe containing 'true_period', 'true_amplitude', and predictions.
         class_column (str): The column name containing the class labels.
         output_dir (str): Directory to save the plot.
-        min_prob (float): Minimum probability threshold for including a point.
-        min_confidence (float): Minimum confidence margin threshold.
-        max_entropy (float): Maximum entropy threshold (filters out uncertain predictions).
+        min_prob (float): Minimum probability threshold (used only if thresholds_dict is None).
+        min_confidence (float): Minimum confidence margin threshold (used only if thresholds_dict is None).
+        max_entropy (float): Maximum entropy threshold (used only if thresholds_dict is None).
+        thresholds_dict (dict): Dictionary mapping class names to optimal probability thresholds.
+                                If provided, this overrides other filter arguments.
     """
     # Set plot style with larger text for readability
     set_plot_style(large_text=True)
@@ -221,51 +224,53 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
     
     # Work on a copy to prevent side effects on the main dataframe
     df = df.copy()
-
-    # --- Pre-cleaning (Consistent with Training Diagram & XGB) ---
-    # Apply robust quantile clipping to Period and Amplitude to clean up extreme outliers.
-    cols_to_clean = ['true_period', 'true_amplitude']
-    for col in cols_to_clean:
-        if col in df.columns:
-            # Handle Infinite values
-            df[col] = df[col].replace([np.inf, -np.inf], np.nan)
-            
-            # Calculate 0.1% and 99.9% quantiles based on the CURRENT dataframe
-            # This ensures we clean outliers specific to the dataset being plotted
-            q001 = df[col].quantile(0.001)
-            q999 = df[col].quantile(0.999)
-            
-            # Clip values
-            df[col] = df[col].clip(lower=q001, upper=q999)
     
-    # Filter out unphysical or extreme outliers for a cleaner plot
+    # Filter out unphysical or extreme outliers for a cleaner plot (Keep limits broad for now)
     if 'true_amplitude' in df.columns:
-        df = df[df['true_amplitude'] < 2]
+        df = df[df['true_amplitude'] < 5] # Increased to 5 per request
     
     # Ensure log period exists for the x-axis
     if 'log_true_period' not in df.columns and 'true_period' in df.columns:
-        # Ensure positive periods before log
-        df = df[df['true_period'] > 0]
         df['log_true_period'] = np.log10(df['true_period'])
     
-    if 'log_true_period' in df.columns:
-        df = df[df['log_true_period'] < 2.7]
-    
-    # Filter data based on prediction confidence to show only high-quality classifications
-    prob_col = class_column.replace('predicted_class', 'confidence')
-    if prob_col in df.columns:
-        df = df[df[prob_col] > min_prob]
-    
-    if 'xgb_confidence' in df.columns:
-        df = df[df['xgb_confidence'] > min_confidence]
-    if 'xgb_entropy' in df.columns:
-        df = df[df['xgb_entropy'] < max_entropy]
+    # Dynamic Filtering Logic
+    if thresholds_dict is not None:
+        print("Using optimal PR curve thresholds for Bailey Diagram filtering.")
+        # Filter based on per-class thresholds
+        # Create a boolean mask initialized to False
+        keep_mask = pd.Series(False, index=df.index)
+        
+        unique_classes = df[class_column].unique()
+        for cls in unique_classes:
+            prob_col = f'prob_{cls}'
+            if prob_col in df.columns:
+                threshold = thresholds_dict.get(cls, 0.5) # Default to 0.5 if not found
+                # Select rows where (Pred Class is cls) AND (Prob > Threshold)
+                cls_mask = (df[class_column] == cls) & (df[prob_col] >= threshold)
+                keep_mask |= cls_mask
+        
+        df = df[keep_mask]
+    else:
+        # Fallback to old logic if no dictionary provided
+        prob_col = class_column.replace('predicted_class', 'confidence')
+        if prob_col in df.columns:
+            df = df[df[prob_col] > min_prob]
+        
+        if 'xgb_confidence' in df.columns:
+            df = df[df['xgb_confidence'] > min_confidence]
+        if 'xgb_entropy' in df.columns:
+            df = df[df['xgb_entropy'] < max_entropy]
     
     # Limit the number of points per class to prevent the plot from becoming a solid block of color.
-    # We take the top N most confident predictions per class.
-    sampled_df = df.groupby(class_column).apply(
-        lambda x: x.nlargest(n=min(len(x), 10000), columns=prob_col)
-    ).reset_index(drop=True)
+    # We take the top N most confident predictions per class using sort_values + groupby + head.
+    prob_sort_col = class_column.replace('predicted_class', 'confidence')
+    if prob_sort_col not in df.columns:
+        prob_sort_col = 'xgb_confidence' # Fallback
+        
+    if prob_sort_col in df.columns:
+        sampled_df = df.sort_values(prob_sort_col, ascending=False).groupby(class_column).head(10000).reset_index(drop=True)
+    else:
+        sampled_df = df.groupby(class_column).head(10000).reset_index(drop=True)
     
     # Get consistent colors
     unique_types = sorted(sampled_df[class_column].unique())
@@ -285,13 +290,16 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
                    marker=marker, 
                    label=var_type, s=7, alpha=0.3)
     
-    leg = plt.legend(bbox_to_anchor=(0.1, 0.8), ncol=2, markerscale=5)
+    # Legend at Top Center
+    leg = plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.0), ncol=min(len(unique_types), 5), markerscale=5, frameon=True)
     for handle in leg.legend_handles: handle.set_alpha(1.0)
+    
     ax.set_xlabel(r'log$_{10}$(Period) [days]')
     ax.set_ylabel(r'Amplitude [mag]')
     
-    ax.set_xlim(-1, 2.7)
-    ax.set_ylim(0, 2)
+    # Updated Limits
+    ax.set_xlim(left=-1) # Remove upper limit
+    ax.set_ylim(0, 5)    # Increase y limit to 5
     
     os.makedirs(output_dir, exist_ok=True)
     plt.savefig(f'{output_dir}/bailey_diagram.jpg', dpi=300, bbox_inches='tight')
@@ -341,7 +349,7 @@ def plot_training_bailey_diagram(df, class_column, output_dir='figures'):
     # The quantile clipping above handles the majority, but we keep the < 2 limit 
     # for the y-axis standard of Bailey diagrams unless the data genuinely goes higher.
     if 'true_amplitude' in df.columns:
-        df = df[df['true_amplitude'] < 2]
+        df = df[df['true_amplitude'] < 5] # Increased to 5 per request
     
     # Ensure log period exists for the x-axis
     if 'log_true_period' not in df.columns and 'true_period' in df.columns:
@@ -350,21 +358,20 @@ def plot_training_bailey_diagram(df, class_column, output_dir='figures'):
         df['log_true_period'] = np.log10(df['true_period'])
     
     if 'log_true_period' in df.columns:
-        df = df[df['log_true_period'] < 2.7]
+        # df = df[df['log_true_period'] < 2.7] # Removed upper limit
+        pass
     
     # Sample to prevent overplotting. 
     # To mimic the "high confidence" filtering of the prediction plot, we 
     # prioritize samples with the lowest False Alarm Probability (best_fap) if available.
     # This ensures we see the highest quality training data, rather than random noise.
+    # We use sort_values + groupby + head instead of apply to avoid DeprecationWarnings.
     if 'best_fap' in df.columns:
         print("Using 'best_fap' to prioritize high-quality samples for training diagram.")
-        sampled_df = df.groupby(class_column).apply(
-            lambda x: x.nsmallest(n=min(len(x), 10000), columns='best_fap')
-        ).reset_index(drop=True)
+        sampled_df = df.sort_values('best_fap', ascending=True).groupby(class_column).head(10000).reset_index(drop=True)
     else:
-        sampled_df = df.groupby(class_column).apply(
-            lambda x: x.sample(n=min(len(x), 10000), random_state=42)
-        ).reset_index(drop=True)
+        # For random sampling, we shuffle the whole DF first, then take the head of each group.
+        sampled_df = df.sample(frac=1, random_state=42).groupby(class_column).head(10000).reset_index(drop=True)
     
     # Get consistent colors
     unique_types = sorted(sampled_df[class_column].unique())
@@ -384,14 +391,16 @@ def plot_training_bailey_diagram(df, class_column, output_dir='figures'):
                    marker=marker, 
                    label=var_type, s=7, alpha=0.3)
     
-    leg = plt.legend(bbox_to_anchor=(0.1, 0.8), ncol=2, markerscale=5)
+    # Legend at Top Center
+    leg = plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.0), ncol=min(len(unique_types), 5), markerscale=5, frameon=True)
     for handle in leg.legend_handles: handle.set_alpha(1.0)
     ax.set_xlabel(r'log$_{10}$(Period) [days]')
     ax.set_ylabel(r'Amplitude [mag]')
     ax.set_title('Training Data Bailey Diagram (Clipped & Quality Filtered)')
     
-    ax.set_xlim(-1, 2.7)
-    ax.set_ylim(0, 2)
+    # Updated Limits
+    ax.set_xlim(left=-1) # Remove upper limit
+    ax.set_ylim(0, 5)    # Increase y limit to 5
     
     os.makedirs(output_dir, exist_ok=True)
     plt.savefig(f'{output_dir}/bailey_diagram_training.jpg', dpi=300, bbox_inches='tight')
@@ -635,12 +644,17 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
         true_label_col (str): Column name for the ground truth labels.
         label_encoder (LabelEncoder): Encoder object to map class names to integers.
         output_dir (str): Directory to save plots.
+    
+    Returns:
+        dict: A dictionary mapping class names to their optimal probability threshold found on the PR curve.
     """
     print("\nCalculating AP and ROC AUC metrics...")
     
+    optimal_thresholds = {}
+
     if true_label_col not in df.columns:
         print(f"Warning: True label column '{true_label_col}' not found. Skipping metrics.")
-        return
+        return optimal_thresholds
 
     classes = label_encoder.classes_
     prob_cols = [f'prob_{cls}' for cls in classes]
@@ -649,7 +663,7 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
     missing_cols = [col for col in prob_cols if col not in df.columns]
     if missing_cols:
         print(f"Warning: Missing probability columns, skipping AP/AUC calculation: {missing_cols}")
-        return
+        return optimal_thresholds
         
     # Binarize labels for One-vs-Rest calculation (e.g., "Is Class A" vs "Is NOT Class A")
     y_true_raw = df[true_label_col].fillna('UNKNOWN')
@@ -743,7 +757,7 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
     # --- Plot 1: Per-Class Bar Chart ---
     if not class_labels:
         print("No classes with true samples found.")
-        return
+        return optimal_thresholds
 
     metrics_df = pd.DataFrame({
         'Class': class_labels,
@@ -865,6 +879,9 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
             else:
                 best_thresh = 1.0
             
+            # Store this best threshold for return
+            optimal_thresholds[class_name] = best_thresh
+            
             # Plot the specific point
             ax_pr.scatter(best_r, best_p, color=color, s=50, edgecolor='white', zorder=5)
             
@@ -886,7 +903,7 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
     if has_pr_data:
         ax_pr.set_xlabel('Recall')
         ax_pr.set_ylabel('Precision')
-        ax_pr.set_title('Precision-Recall Curves\n(Annotated with optimal probability thresholds)')
+        ax_pr.set_title('Precision-Recall Curves')
         ax_pr.set_xlim([0.0, 1.0])
         ax_pr.set_ylim([0.0, 1.05])
         
@@ -901,6 +918,8 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
     plt.savefig(pdf_path, dpi=300, bbox_inches='tight')
     plt.close()
     print(f"Saved combined metrics plot to {pdf_path}")
+    
+    return optimal_thresholds
 
 
 #########################################
@@ -1142,7 +1161,7 @@ def plot_period_comparison(periods_path, output_dir='figures'):
     """
     Plots a comparison of periods from a single FITS file containing both data sources.
     
-    Loads data from a single FITS file and plots 'true_period' vs 'P_1' on a log-log scale.
+    Loads data from a single FITS file and plots 'log10(true_period)' vs 'log10(P_1)'.
 
     Args:
         periods_path (str): Path to the periods FITS file.
@@ -1168,16 +1187,15 @@ def plot_period_comparison(periods_path, output_dir='figures'):
         set_plot_style()
         plt.figure(figsize=(8, 8))
         
-        # Filter for positive periods for log scale
+        # Filter for positive periods for log scale calculation
         valid_data = df[(df[x_col] > 0) & (df[y_col] > 0)]
-        x = valid_data[x_col]
-        y = valid_data[y_col]
         
-        # Log scale
-        plt.xscale('log')
-        plt.yscale('log')
+        # Transform to log10 space
+        x_log = np.log10(valid_data[x_col])
+        y_log = np.log10(valid_data[y_col])
         
-        plt.scatter(x, y, s=10, alpha=0.1, c='black', edgecolors='none')
+        # Plot scatter in log-log space (linear axes of log values)
+        plt.scatter(x_log, y_log, s=10, alpha=0.1, c='black', edgecolors='none')
         
         # Capture the auto-scaled limits from the scatter plot BEFORE adding lines.
         # This is critical for avoiding excessive whitespace.
@@ -1186,22 +1204,112 @@ def plot_period_comparison(periods_path, output_dir='figures'):
         
         # Determine plot bounds for the reference lines.
         # We calculate the union of x and y ranges to ensure the lines span the 
-        # entire relevant area (e.g., if x goes to 10 but y goes to 100, the 1:1 line needs to go to 100).
+        # entire relevant area.
         min_line = min(xlim[0], ylim[0])
         max_line = max(xlim[1], ylim[1])
         
-        # Identity line (1:1)
-        plt.plot([min_line, max_line], [min_line, max_line], 'r--', alpha=0.5, label='1:1')
+        # Use colorblind-friendly palette from get_consistent_color_map (hardcoded for stability)
+        # 1:1 Line: Reddish Purple (#CC79A7)
+        # Harmonics (2:1, 1:2): Bluish Green (#009E73)
+        # 1-day Alias: Sky Blue (#56B4E9)
+        # 1/2-day Alias: Cyan (#88CCEE)
+        # 2-day Alias: Purple (#AA4499)
+
+        # Identity line (1:1) -> log(y) = log(x)
+        plt.plot([min_line, max_line], [min_line, max_line], color='#CC79A7', linestyle='--', alpha=0.8, label='1:1', linewidth=2)
         
-        # 2:1 Harmonic (y = 2x) - The line above the diagonal
-        plt.plot([min_line, max_line], [min_line * 2, max_line * 2], 'g-.', alpha=0.5, label='2:1')
+        # 2:1 Harmonic (y = 2x) -> log(y) = log(x) + log10(2)
+        log2 = np.log10(2)
+        plt.plot([min_line, max_line], [min_line + log2, max_line + log2], color='#009E73', linestyle='-.', alpha=0.8, label='2:1 / 1:2', linewidth=1.5)
+
+        # 1:2 Harmonic (y = 0.5x) -> log(y) = log(x) + log10(0.5)
+        log05 = np.log10(0.5)
+        plt.plot([min_line, max_line], [min_line + log05, max_line + log05], color='#009E73', linestyle='-.', alpha=0.8, linewidth=1.5)
         
+        # --- Sidereal Day Aliases (k=1, 1 cycle/day) ---
+        # Frequency domain: f_obs = |f_true +/- k * f_sampling|
+        # Period domain: P_obs = 1 / |1/P_true +/- k| = P_true / |1 +/- k*P_true|
+        
+        # Create a grid in log space, convert to linear for formula, then back to log for plotting
+        x_grid_log = np.linspace(min_line, max_line, 2000)
+        x_grid_linear = 10**x_grid_log
+        
+        # k=1 (f_obs = f_true + 1)
+        y_alias_plus = x_grid_linear / (1 + x_grid_linear)
+        plt.plot(x_grid_log, np.log10(y_alias_plus), color='#56B4E9', linestyle='--', alpha=0.8, label='1-day Aliases', linewidth=1.5)
+        
+        # k=-1 (f_obs = |f_true - 1|)
+        # Note: Pole at P=1 (log P=0)
+        y_alias_minus = x_grid_linear / np.abs(1 - x_grid_linear)
+        
+        mask_lower = x_grid_linear < 0.99
+        mask_upper = x_grid_linear > 1.01
+        plt.plot(x_grid_log[mask_lower], np.log10(y_alias_minus[mask_lower]), color='#56B4E9', linestyle='--', alpha=0.8, linewidth=1.5)
+        plt.plot(x_grid_log[mask_upper], np.log10(y_alias_minus[mask_upper]), color='#56B4E9', linestyle='--', alpha=0.8, linewidth=1.5)
+
+        # --- Period Doubled 1-day Aliases (P_obs = 2 * P_alias_1d) ---
+        # This represents an alias (f +/- 1) that is period doubled (2:1)
+        # Formula: y = 2 * [ P / (1 +/- P) ]
+        
+        # k=1
+        y_dbl_alias_plus = 2 * x_grid_linear / (1 + x_grid_linear)
+        plt.plot(x_grid_log, np.log10(y_dbl_alias_plus), color='#E69F00', linestyle=':', alpha=0.8, label='2:1 1-day Aliases', linewidth=1.5)
+        
+        # k=-1 (Pole at P=1, same as standard 1-day alias)
+        y_dbl_alias_minus = 2 * x_grid_linear / np.abs(1 - x_grid_linear)
+        plt.plot(x_grid_log[mask_lower], np.log10(y_dbl_alias_minus[mask_lower]), color='#E69F00', linestyle=':', alpha=0.8, linewidth=1.5)
+        plt.plot(x_grid_log[mask_upper], np.log10(y_dbl_alias_minus[mask_upper]), color='#E69F00', linestyle=':', alpha=0.8, linewidth=1.5)
+
+        # --- Sidereal Day Aliases (k=2, 2 cycles/day -> 1/2 day period) ---
+        # k=2 (f_obs = f_true + 2)
+        y_alias_2_plus = x_grid_linear / (1 + 2 * x_grid_linear)
+        plt.plot(x_grid_log, np.log10(y_alias_2_plus), color='#88CCEE', linestyle='--', alpha=0.6, label='0.5-day Aliases', linewidth=1.2)
+        
+        # k=-2 (f_obs = |f_true - 2|)
+        # Note: Pole at P=0.5 (log P=-0.301)
+        y_alias_2_minus = x_grid_linear / np.abs(1 - 2 * x_grid_linear)
+
+        # Handle singularity at P=0.5
+        mask_lower_2 = x_grid_linear < 0.495
+        mask_upper_2 = x_grid_linear > 0.505
+        plt.plot(x_grid_log[mask_lower_2], np.log10(y_alias_2_minus[mask_lower_2]), color='#88CCEE', linestyle='--', alpha=0.6, linewidth=1.2)
+        plt.plot(x_grid_log[mask_upper_2], np.log10(y_alias_2_minus[mask_upper_2]), color='#88CCEE', linestyle='--', alpha=0.6, linewidth=1.2)
+
+        # --- Sidereal Day Aliases (k=0.5, 0.5 cycles/day -> 2 day period) ---
+        # k=0.5 (f_obs = f_true + 0.5)
+        y_alias_05_plus = x_grid_linear / (1 + 0.5 * x_grid_linear)
+        plt.plot(x_grid_log, np.log10(y_alias_05_plus), color='#AA4499', linestyle='--', alpha=0.6, label='2-day Aliases', linewidth=1.2)
+        
+        # k=-0.5 (f_obs = |f_true - 0.5|)
+        # Note: Pole at P=2.0 (log P=0.301)
+        y_alias_05_minus = x_grid_linear / np.abs(1 - 0.5 * x_grid_linear)
+
+        # Handle singularity at P=2.0
+        mask_lower_05 = x_grid_linear < 1.98
+        mask_upper_05 = x_grid_linear > 2.02
+        plt.plot(x_grid_log[mask_lower_05], np.log10(y_alias_05_minus[mask_lower_05]), color='#AA4499', linestyle='--', alpha=0.6, linewidth=1.2)
+        plt.plot(x_grid_log[mask_upper_05], np.log10(y_alias_05_minus[mask_upper_05]), color='#AA4499', linestyle='--', alpha=0.6, linewidth=1.2)
+
+        # --- Period Halved (1:2) 2-day Aliases (P_obs = 0.5 * P_alias_2d) ---
+        # This represents an alias (f +/- 0.5) that is period halved (1:2)
+        # Formula: y = 0.5 * [ P / (1 +/- 0.5*P) ]
+        
+        # k=0.5
+        y_half_alias_05_plus = 0.5 * x_grid_linear / (1 + 0.5 * x_grid_linear)
+        plt.plot(x_grid_log, np.log10(y_half_alias_05_plus), color='#AA4499', linestyle=':', alpha=0.8, label='1:2 2-day Aliases', linewidth=1.5)
+        
+        # k=-0.5 (Pole at P=2.0, same as standard 2-day alias)
+        y_half_alias_05_minus = 0.5 * x_grid_linear / np.abs(1 - 0.5 * x_grid_linear)
+        plt.plot(x_grid_log[mask_lower_05], np.log10(y_half_alias_05_minus[mask_lower_05]), color='#AA4499', linestyle=':', alpha=0.8, linewidth=1.5)
+        plt.plot(x_grid_log[mask_upper_05], np.log10(y_half_alias_05_minus[mask_upper_05]), color='#AA4499', linestyle=':', alpha=0.8, linewidth=1.5)
+
         # Restore the original limits to ensure the lines don't force the plot to expand.
         plt.xlim(xlim)
         plt.ylim(ylim)
         
-        plt.xlabel("PRIMVS Periods")
-        plt.ylabel("OGLE-IV periods")
+        # Update axis labels to be scientific and consistent with Bailey diagram style
+        plt.xlabel(r'log$_{10}$(PRIMVS Period) [days]')
+        plt.ylabel(r'log$_{10}$(OGLE-IV Period) [days]')
         plt.title("Period Comparison")
         plt.legend(loc='upper left')
         
@@ -1215,12 +1323,180 @@ def plot_period_comparison(periods_path, output_dir='figures'):
         import traceback
         traceback.print_exc()
 
+def plot_rrlyr_galactic_distribution(fits_path, output_dir='figures'):
+    """
+    Plots the Galactic distribution (l vs b) of predicted RRLyr stars.
+    
+    This function:
+    1. Loads predictions from the FITS file.
+    2. Extracts the RRLyr confidence threshold from the header (THR_RRLyr).
+    3. Filters for sources predicted as RRLyr with probability > threshold.
+    4. Categorizes sources based on their training status:
+       - Known RRLyr (Training Class == RRLyr)
+       - New Candidate (Training Class == UNKNOWN)
+       - Reclassified (Training Class != RRLyr & != UNKNOWN)
+    
+    Args:
+        fits_path (str): Path to the XGBoost predictions FITS file.
+        output_dir (str): Directory to save the plot.
+    """
+    print(f"Generating RRLyr Galactic Distribution plot using {fits_path}...")
+    
+    try:
+        # Load data AND header
+        with fits.open(fits_path) as hdul:
+            data = hdul[1].data if len(hdul) > 1 else hdul[0].data
+            header = hdul[1].header if len(hdul) > 1 else hdul[0].header
+            
+            # Convert to Pandas
+            if not hasattr(data, 'names') or not data.names:
+                df = pd.DataFrame(np.asarray(data))
+            else:
+                data_dict = {}
+                for col in data.names:
+                    col_data = np.asarray(data[col])
+                    if col_data.dtype.byteorder not in ('=', '|'):
+                        col_data = col_data.astype(col_data.dtype.newbyteorder('='))
+                    data_dict[col] = col_data
+                df = pd.DataFrame(data_dict)
+        
+        # Verify required columns
+        req_cols = ['l', 'b', 'xgb_predicted_class', 'xgb_training_class', 'prob_RRLyr']
+        missing = [c for c in req_cols if c not in df.columns]
+        if missing:
+            print(f"Missing required columns for RRLyr plot: {missing}")
+            return
+
+        # 1. Get Threshold from Header
+        # Look for THR_RRLyr (generated by XGB.py). Default to 0.5 if not found.
+        threshold = 0.5
+        if 'THR_RRLyr' in header:
+            threshold = float(header['THR_RRLyr'])
+            print(f"Using RRLyr threshold from header: {threshold:.3f}")
+        else:
+            print("Warning: THR_RRLyr not found in header. Defaulting to 0.5")
+
+        # 2. Filter Data
+        # Predicted as RRLyr AND Probability > Threshold
+        subset = df[
+            (df['xgb_predicted_class'].str.strip() == 'RRLyr') & 
+            (df['prob_RRLyr'] >= threshold)
+        ].copy()
+        
+        if subset.empty:
+            print("No RRLyr candidates found above threshold.")
+            return
+
+        print(f"Found {len(subset)} RRLyr candidates above threshold.")
+
+        # 3. Categorize (Hue Logic)
+        # Clean training class strings just in case
+        subset['xgb_training_class'] = subset['xgb_training_class'].astype(str).str.strip()
+
+        conditions = [
+            (subset['xgb_training_class'] == 'RRLyr'),
+            (subset['xgb_training_class'] == 'UNKNOWN'),
+            (subset['xgb_training_class'] != 'RRLyr') & (subset['xgb_training_class'] != 'UNKNOWN')
+        ]
+        choices = ['Known RRLyr', 'New Candidate', 'Reclassified']
+        
+        subset['Status'] = np.select(conditions, choices, default='Unknown')
+
+        # --- MODIFICATION START ---
+        # Center coordinates on l=0 (Galactic Center)
+        # Standard range becomes [-180, 180] roughly, where values > 180 are wrapped to negative.
+        # This maps 350 -> -10, 10 -> 10, putting 0 in the middle.
+        subset['l_centered'] = subset['l'].apply(lambda x: x - 360 if x > 180 else x)
+        # --- MODIFICATION END ---
+        
+        # Sort by status to control z-order (Known -> New -> Reclassified)
+        # We want Reclassified on top (last), Known at bottom (first)
+        status_rank = {'Known RRLyr': 0, 'New Candidate': 1, 'Reclassified': 2, 'Unknown': -1}
+        subset['rank'] = subset['Status'].map(status_rank)
+        subset = subset.sort_values('rank')
+
+        # 4. Plot
+        set_plot_style()
+        plt.figure(figsize=(12, 7))
+        
+        # Define colors mapping to logic
+        # Known = Green (Confirmation)
+        # New = Blue (Discovery)
+        # Reclassified = Red/Orange (Correction)
+        palette = {
+            'Known RRLyr': '#009E73',    # Bluish Green
+            'New Candidate': '#56B4E9',  # Sky Blue
+            'Reclassified': '#D55E00'    # Vermilion
+        }
+        
+        # Plot using Seaborn for easy categorical handling
+        sns.scatterplot(
+            data=subset, 
+            x='l_centered',  # Changed from 'l'
+            y='b', 
+            hue='Status', 
+            palette=palette,
+            style='Status',
+            markers={'Known RRLyr': 'o', 'New Candidate': '*', 'Reclassified': 'X'},
+            s=7, 
+            alpha=0.8,
+            edgecolor='none'
+        )
+
+        plt.xlabel('Galactic Longitude ($l$) [deg]')
+        plt.ylabel('Galactic Latitude ($b$) [deg]')
+        plt.title(f'Galactic Distribution of Predicted RRLyr (p > {threshold:.2f})')
+        
+        # --- MODIFICATION START ---
+        # Set dynamic limits based on the actual centered data range plus padding
+        l_min = subset['l_centered'].min()
+        l_max = subset['l_centered'].max()
+        l_pad = max(1, (l_max - l_min) * 0.05) # Min padding of 5 degrees
+        
+        # Invert x-axis: Start at positive (left), end at negative (right)
+        # This matches standard astronomical convention (East Left, West Right)
+        plt.xlim(l_max + l_pad, l_min - l_pad)
+
+        # Dynamic Y limits based on data range
+        b_min = subset['b'].min()
+        b_max = subset['b'].max()
+        b_pad = max(1, (b_max - b_min) * 0.05)
+        plt.ylim(b_min - b_pad, b_max + b_pad)
+        
+        # Format ticks to show positive values (0-360)
+        def format_l(x, pos):
+            val = x + 360 if x < 0 else x
+            return f"{val:.0f}"
+        
+        plt.gca().xaxis.set_major_formatter(FuncFormatter(format_l))
+        # --- MODIFICATION END ---
+        
+        # Improve Legend
+        # Increase markerscale to make legend symbols larger, similar to Bailey diagram
+        leg = plt.legend(title='Classification Status', bbox_to_anchor=(1.05, 1), loc='upper left', markerscale=3)
+        for handle in leg.legend_handles: 
+            handle.set_alpha(1.0)
+        
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        
+        out_path = f"{output_dir}/rrlyr_galactic_distribution.png"
+        plt.savefig(out_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Saved RRLyr galactic plot to {out_path}")
+
+    except Exception as e:
+        print(f"Error creating RRLyr galactic plot: {e}")
+        import traceback
+        traceback.print_exc()
+
 if __name__ == "__main__":
     # --- Main execution block for running specific plots directly ---
     
     # Default file paths
     periods_file = ".data/periods.fits" 
     training_file = ".data/PRIMVS_P_training_new.fits"
+    predictions_file = "./xgb_predictions.fits"
 
     # Allow command line arguments to override defaults
     if len(sys.argv) >= 2:
@@ -1256,3 +1532,9 @@ if __name__ == "__main__":
             print(f"Error plotting training diagram: {e}")
     else:
         print(f"File not found: {training_file}. Skipping training Bailey diagram.")
+
+    # 3. Run RRLyr Galactic Distribution Plot (if file exists)
+    if os.path.exists(predictions_file):
+        plot_rrlyr_galactic_distribution(predictions_file)
+    else:
+        print(f"File not found: {predictions_file}. Skipping RRLyr galactic plot.")
