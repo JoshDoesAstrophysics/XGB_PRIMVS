@@ -3,7 +3,10 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import os
+import sys
 import math
+from astropy.io import fits
+from astropy.table import Table
 from sklearn.metrics import (
     average_precision_score, roc_auc_score, roc_curve, precision_recall_curve
 )
@@ -13,6 +16,42 @@ from matplotlib.colors import ListedColormap, LogNorm, LinearSegmentedColormap, 
 #########################################
 # SECTION 1: STYLE & UTILITY FUNCTIONS
 #########################################
+
+def load_fits_to_df(path):
+    """
+    Load data from a FITS file into a pandas DataFrame.
+
+    Handles potential endianness issues and gracefully manages FITS file structures.
+    Identical implementation to XGB.py for consistency.
+
+    Args:
+        path (str): The file path to the FITS file.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the loaded data.
+    """
+    print(f"Loading {path}...")
+    try:
+        with fits.open(path) as hdul:
+            # Check if extension 1 exists and has data, otherwise use extension 0
+            data = hdul[1].data if len(hdul) > 1 and hdul[1].data is not None else hdul[0].data
+            
+            if not hasattr(data, 'names') or not data.names:
+                df = pd.DataFrame(np.asarray(data))
+            else:
+                data_dict = {}
+                for col in data.names:
+                    col_data = np.asarray(data[col])
+                    # Fix endianness if necessary (pandas requires native byte order)
+                    if col_data.dtype.byteorder not in ('=', '|'):
+                        col_data = col_data.astype(col_data.dtype.newbyteorder('='))
+                    data_dict[col] = col_data
+                df = pd.DataFrame(data_dict)
+            print(f"Loaded {len(df)} samples with {len(df.columns)} features")
+            return df
+    except Exception as e:
+        print(f"Error loading FITS file: {e}")
+        raise
 
 def get_consistent_color_map(class_names):
     """
@@ -182,6 +221,22 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
     
     # Work on a copy to prevent side effects on the main dataframe
     df = df.copy()
+
+    # --- Pre-cleaning (Consistent with Training Diagram & XGB) ---
+    # Apply robust quantile clipping to Period and Amplitude to clean up extreme outliers.
+    cols_to_clean = ['true_period', 'true_amplitude']
+    for col in cols_to_clean:
+        if col in df.columns:
+            # Handle Infinite values
+            df[col] = df[col].replace([np.inf, -np.inf], np.nan)
+            
+            # Calculate 0.1% and 99.9% quantiles based on the CURRENT dataframe
+            # This ensures we clean outliers specific to the dataset being plotted
+            q001 = df[col].quantile(0.001)
+            q999 = df[col].quantile(0.999)
+            
+            # Clip values
+            df[col] = df[col].clip(lower=q001, upper=q999)
     
     # Filter out unphysical or extreme outliers for a cleaner plot
     if 'true_amplitude' in df.columns:
@@ -189,6 +244,8 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
     
     # Ensure log period exists for the x-axis
     if 'log_true_period' not in df.columns and 'true_period' in df.columns:
+        # Ensure positive periods before log
+        df = df[df['true_period'] > 0]
         df['log_true_period'] = np.log10(df['true_period'])
     
     if 'log_true_period' in df.columns:
@@ -239,6 +296,107 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
     os.makedirs(output_dir, exist_ok=True)
     plt.savefig(f'{output_dir}/bailey_diagram.jpg', dpi=300, bbox_inches='tight')
     plt.close()
+
+
+def plot_training_bailey_diagram(df, class_column, output_dir='figures'):
+    """
+    Creates a Bailey diagram for the training data (Ground Truth).
+    
+    Unlike the prediction plot, this DOES NOT apply any confidence, probability, 
+    or entropy filters, ensuring we visualize the raw distribution of the training set.
+    
+    However, it applies quantile clipping (0.1% - 99.9%) to remove extreme outliers,
+    mimicking the XGBoost preprocessing step for a cleaner view.
+
+    Args:
+        df (pd.DataFrame): The training dataframe.
+        class_column (str): The column name containing the true class labels.
+        output_dir (str): Directory to save the plot.
+    """
+    # Set plot style with larger text for readability
+    set_plot_style(large_text=True)
+    plt.rcParams['legend.fontsize'] = 15
+    
+    # Work on a copy to prevent side effects on the main dataframe
+    df = df.copy()
+
+    # --- Pre-cleaning (borrowed from XGB.py logic) ---
+    # Apply robust quantile clipping to Period and Amplitude to clean up extreme outliers.
+    # This aligns the visualization with the data distribution seen by the model.
+    cols_to_clean = ['true_period', 'true_amplitude']
+    for col in cols_to_clean:
+        if col in df.columns:
+            # Handle Infinite values
+            df[col] = df[col].replace([np.inf, -np.inf], np.nan)
+            
+            # Calculate 0.1% and 99.9% quantiles based on the CURRENT dataframe
+            # This ensures we clean outliers specific to the dataset being plotted
+            q001 = df[col].quantile(0.001)
+            q999 = df[col].quantile(0.999)
+            
+            # Clip values
+            df[col] = df[col].clip(lower=q001, upper=q999)
+    
+    # Filter out unphysical or extreme outliers for a cleaner plot (optional but recommended)
+    # The quantile clipping above handles the majority, but we keep the < 2 limit 
+    # for the y-axis standard of Bailey diagrams unless the data genuinely goes higher.
+    if 'true_amplitude' in df.columns:
+        df = df[df['true_amplitude'] < 2]
+    
+    # Ensure log period exists for the x-axis
+    if 'log_true_period' not in df.columns and 'true_period' in df.columns:
+        # Ensure positive periods before log
+        df = df[df['true_period'] > 0]
+        df['log_true_period'] = np.log10(df['true_period'])
+    
+    if 'log_true_period' in df.columns:
+        df = df[df['log_true_period'] < 2.7]
+    
+    # Sample to prevent overplotting. 
+    # To mimic the "high confidence" filtering of the prediction plot, we 
+    # prioritize samples with the lowest False Alarm Probability (best_fap) if available.
+    # This ensures we see the highest quality training data, rather than random noise.
+    if 'best_fap' in df.columns:
+        print("Using 'best_fap' to prioritize high-quality samples for training diagram.")
+        sampled_df = df.groupby(class_column).apply(
+            lambda x: x.nsmallest(n=min(len(x), 10000), columns='best_fap')
+        ).reset_index(drop=True)
+    else:
+        sampled_df = df.groupby(class_column).apply(
+            lambda x: x.sample(n=min(len(x), 10000), random_state=42)
+        ).reset_index(drop=True)
+    
+    # Get consistent colors
+    unique_types = sorted(sampled_df[class_column].unique())
+    color_map = get_consistent_color_map(unique_types)
+    markers = ['o', 's', '^', 'D', 'v', 'X', 'P', '*', 'h']
+    
+    fig, ax = plt.subplots(figsize=(15, 10))
+    
+    for i, var_type in enumerate(unique_types):
+        type_df = sampled_df[sampled_df[class_column] == var_type]
+        
+        color = color_map[var_type]
+        marker = markers[i % len(markers)]
+            
+        plt.scatter(type_df['log_true_period'], type_df['true_amplitude'], 
+                   color=color, 
+                   marker=marker, 
+                   label=var_type, s=7, alpha=0.3)
+    
+    leg = plt.legend(bbox_to_anchor=(0.1, 0.8), ncol=2, markerscale=5)
+    for handle in leg.legend_handles: handle.set_alpha(1.0)
+    ax.set_xlabel(r'log$_{10}$(Period) [days]')
+    ax.set_ylabel(r'Amplitude [mag]')
+    ax.set_title('Training Data Bailey Diagram (Clipped & Quality Filtered)')
+    
+    ax.set_xlim(-1, 2.7)
+    ax.set_ylim(0, 2)
+    
+    os.makedirs(output_dir, exist_ok=True)
+    plt.savefig(f'{output_dir}/bailey_diagram_training.jpg', dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved training Bailey diagram to {output_dir}/bailey_diagram_training.jpg")
 
 
 def plot_confidence_entropy(df, class_column, output_dir='class_figures', min_prob=0.0, use_brg_cmap=False):
@@ -540,12 +698,13 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
                 class_metrics_data[class_name]['ap'] = ap
                 
                 # 2. Precision-Recall Curve Data
-                precision, recall, _ = precision_recall_curve(y_true_class, y_proba_class)
+                # Note: thresholds has length n, precision/recall have length n+1
+                precision, recall, thresholds = precision_recall_curve(y_true_class, y_proba_class)
                 
                 # "No Skill" baseline is the prevalence (ratio of positive cases)
                 no_skill = pos_count / total_count
                 class_metrics_data[class_name]['no_skill'] = no_skill
-                class_metrics_data[class_name]['pr_curve'] = (precision, recall)
+                class_metrics_data[class_name]['pr_curve'] = (precision, recall, thresholds)
                 
             except ValueError:
                 per_class_ap.append(np.nan)
@@ -678,18 +837,56 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
     for class_name in valid_class_names:
         data = class_metrics_data[class_name]
         if data['pr_curve'] is not None:
-            precision, recall = data['pr_curve']
+            precision, recall, thresholds = data['pr_curve']
             color = color_map[class_name]
+            no_skill = data['no_skill']
             
             # Plot without label (legend is already in ROC plot)
             ax_pr.plot(recall, precision, lw=2, color=color)
+            
+            # Add no skill baseline for this class
+            ax_pr.plot([0, 1], [no_skill, no_skill], linestyle=':', lw=1.5, color=color, alpha=0.7)
+
+            # --- Find and Annotate Best Threshold (Closest to 1,1) ---
+            # Calculate Euclidean distance from each point on the curve to (1, 1)
+            # Distance^2 = (1 - recall)^2 + (1 - precision)^2
+            distances = (1 - recall)**2 + (1 - precision)**2
+            best_idx = np.argmin(distances)
+            
+            # Coordinates of the best point
+            best_r = recall[best_idx]
+            best_p = precision[best_idx]
+            
+            # Retrieve the corresponding threshold
+            # Note: precision/recall arrays are length n_thresholds + 1
+            # If best_idx is the last element, it corresponds to threshold=1.0 (implicitly)
+            if best_idx < len(thresholds):
+                best_thresh = thresholds[best_idx]
+            else:
+                best_thresh = 1.0
+            
+            # Plot the specific point
+            ax_pr.scatter(best_r, best_p, color=color, s=50, edgecolor='white', zorder=5)
+            
+            # Annotate with the threshold value
+            # We offset the text slightly to avoid overlapping the curve too much
+            ax_pr.annotate(
+                f"{best_thresh:.2f}",
+                xy=(best_r, best_p),
+                xytext=(5, 5),
+                textcoords='offset points',
+                fontsize=8,
+                color=color,
+                fontweight='bold',
+                bbox=dict(boxstyle="round,pad=0.1", fc="white", alpha=0.6, ec="none")
+            )
             
             has_pr_data = True
 
     if has_pr_data:
         ax_pr.set_xlabel('Recall')
         ax_pr.set_ylabel('Precision')
-        ax_pr.set_title('Precision-Recall Curves')
+        ax_pr.set_title('Precision-Recall Curves\n(Annotated with optimal probability thresholds)')
         ax_pr.set_xlim([0.0, 1.0])
         ax_pr.set_ylim([0.0, 1.05])
         
@@ -842,12 +1039,12 @@ def plot_pca_degeneracy_analysis(pca_df, df, pca_model, features, output_dir='./
     """
     Analyzes the structural relationship between original features and Principal Components.
     
-    Generates two plots:
-    1. Full Structure Matrix: All PCs (up to 20), features sorted by max correlation.
-       Filename: pca_degeneracy_correlation.png
-    2. Reduced Structure Matrix: Top N PCs (controlled by n_pcs_limit), features in 
-       original input order, low correlations masked.
-       Filename: pca_degeneracy_reduced.png
+    Generates a Structure Matrix Heatmap:
+    - Shows correlations between Features (rows) and PCs (columns).
+    - Features are ordered by the input list (grouping physical variables together).
+    - Numbers are hidden if they are below the threshold, unless they are the 
+      max correlation for that feature.
+    - X-axis labels include the explained variance percentage.
 
     Args:
         pca_df (pd.DataFrame): DataFrame containing the PCA components.
@@ -855,8 +1052,8 @@ def plot_pca_degeneracy_analysis(pca_df, df, pca_model, features, output_dir='./
         pca_model (sklearn.decomposition.PCA): The trained PCA model.
         features (list): List of feature names used for PCA.
         output_dir (str): Directory to save plots.
-        n_pcs_limit (int): Number of PCs to show in the reduced plot.
-        threshold (float): Correlation threshold for masking in the reduced plot.
+        n_pcs_limit (int): Unused (kept for compatibility). 
+        threshold (float): Correlation threshold for masking text.
     """
     os.makedirs(output_dir, exist_ok=True)
     set_plot_style()
@@ -868,78 +1065,194 @@ def plot_pca_degeneracy_analysis(pca_df, df, pca_model, features, output_dir='./
         print("Warning: No valid features found for degeneracy analysis.")
         return
 
-    # --- PART 1: FULL PLOT (Sorted, Many PCs, No Masking) ---
+    # --- FULL PLOT WITH CUSTOM ANNOTATIONS ---
     
-    # Combine PCs and Features into one temp dataframe for correlation calculation
-    # Show more PCs if available, but limit to keep horizontal size reasonable
+    # Use top 20 PCs or whatever is available
     n_pcs_full = min(20, pca_df.shape[1]) 
     pc_cols_full = [f'PC{i+1}' for i in range(n_pcs_full)]
     
+    # Construct labels with Explained Variance Percentage
+    if hasattr(pca_model, 'explained_variance_ratio_'):
+        explained_variance = pca_model.explained_variance_ratio_[:n_pcs_full]
+        pc_labels = [f"PC{i+1} ({var:.1%})" for i, var in enumerate(explained_variance)]
+    else:
+        pc_labels = pc_cols_full
+
+    # Combine PCs and Features into one temp dataframe for correlation calculation
     analysis_df = pd.concat([pca_df[pc_cols_full].reset_index(drop=True), 
                             df[valid_features].reset_index(drop=True)], axis=1)
     
     # Calculate correlation matrix
     corr_matrix_full = analysis_df.corr()
     
-    # Extract only the sub-matrix of interest: Features vs PCs
-    feature_pc_corr_full = corr_matrix_full.loc[valid_features, pc_cols_full]
+    # Extract only the sub-matrix: Features (rows) vs PCs (cols)
+    # CRITICAL: We use 'valid_features' to enforce the user's input order (Physical, then others...)
+    # We do NOT sort by magnitude.
+    feature_pc_corr = corr_matrix_full.loc[valid_features, pc_cols_full]
     
-    # Sort features by their maximum correlation with any PC for better visualization organization
-    feature_pc_corr_full['max_corr'] = feature_pc_corr_full.abs().max(axis=1)
-    feature_pc_corr_full = feature_pc_corr_full.sort_values('max_corr', ascending=False).drop(columns=['max_corr'])
+    # --- Create Mask for Annotations (Clean Look) ---
+    # Rule 1: Show text if abs(value) >= threshold
+    show_text_mask = feature_pc_corr.abs() >= threshold
     
-    # Plot Full Heatmap
-    fig_height_full = max(10, len(valid_features) * 0.6)
-    plt.figure(figsize=(14, fig_height_full))
-    
-    sns.heatmap(feature_pc_corr_full, annot=True, cmap='RdBu', center=0, fmt='.2f', 
-                vmin=-1, vmax=1, yticklabels=True)
-                
-    plt.title("Feature-Component Correlations (Full Structure Matrix)")
-    plt.xlabel("Principal Components")
-    plt.ylabel("Original Features")
-    plt.tight_layout()
-    plt.savefig(f"{output_dir}/pca_degeneracy_correlation.png")
-    plt.close()
-    
-    # --- PART 2: REDUCED PLOT (Input Order, Limited PCs, Masked NUMBERS only) ---
-    
-    # Limit PCs to n_pcs_limit
-    n_pcs_reduced = min(n_pcs_limit, pca_df.shape[1])
-    pc_cols_reduced = [f'PC{i+1}' for i in range(n_pcs_reduced)]
-    
-    # Correlation (Features vs PCs)
-    # Re-calculate or slice from full matrix, but CRITICALLY: use valid_features to enforce input order
-    # (Do not use the sorted index from Part 1)
-    feature_pc_corr_reduced = corr_matrix_full.loc[valid_features, pc_cols_reduced]
-    
-    # Create Mask for Annotations (Text)
-    # Default Rule: Show text if abs(value) >= threshold
-    show_text_mask = feature_pc_corr_reduced.abs() >= threshold
-    
-    # Exception Rule: ALWAYS show the max association per feature (row)
-    row_max_indices = feature_pc_corr_reduced.abs().idxmax(axis=1)
+    # Rule 2: ALWAYS show the max association per feature (row)
+    # This ensures every feature has at least one number explaining where it went.
+    row_max_indices = feature_pc_corr.abs().idxmax(axis=1)
     for row_idx, col_name in row_max_indices.items():
         if pd.notna(col_name):
             show_text_mask.loc[row_idx, col_name] = True
 
-    # Generate custom annotations
-    annot_labels = feature_pc_corr_reduced.applymap(lambda x: f"{x:.2f}")
+    # Generate custom annotation strings
+    annot_labels = feature_pc_corr.applymap(lambda x: f"{x:.2f}")
     annot_labels = annot_labels.where(show_text_mask, "")
-
-    # Plot Reduced Heatmap
-    fig_height_reduced = max(8, len(valid_features) * 0.5)
-    plt.figure(figsize=(10, fig_height_reduced)) 
     
-    # Use fmt='' because annot_labels are strings
-    sns.heatmap(feature_pc_corr_reduced, annot=annot_labels, cmap='RdBu', center=0, fmt='', 
-                vmin=-1, vmax=1, cbar_kws={'label': 'Correlation'})
+    # Plotting
+    # Make width significantly larger to accommodate "PC1 (25.0%)" labels
+    fig_height = max(10, len(valid_features) * 0.6)
+    plt.figure(figsize=(20, fig_height))
     
-    plt.title(f"Reduced Feature-Component Correlations (Top {n_pcs_reduced} PCs)\n(Numbers hidden if |corr| < {threshold})")
-    plt.xlabel("Principal Components")
+    sns.heatmap(feature_pc_corr, 
+                annot=annot_labels, 
+                cmap='RdBu', 
+                center=0, 
+                fmt='', # fmt='' is required because annot contains strings
+                vmin=-1, 
+                vmax=1, 
+                xticklabels=pc_labels,
+                yticklabels=True,
+                cbar_kws={'label': 'Correlation'})
+                
+    plt.title(f"Feature-Component Structure Matrix")
+    plt.xlabel("Principal Components (Explained Variance)")
     plt.ylabel("Original Features")
+    plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/pca_degeneracy_reduced.png")
+    
+    filename = f"{output_dir}/pca_degeneracy_matrix.png"
+    plt.savefig(filename)
     plt.close()
     
-    print(f"Saved PCA degeneracy analyses to:\n  - {output_dir}/pca_degeneracy_correlation.png (Full)\n  - {output_dir}/pca_degeneracy_reduced.png (Reduced)")
+    print(f"Saved PCA degeneracy analysis to {filename}")
+
+
+#########################################
+# SECTION 4: DATA COMPARISON PLOTS
+#########################################
+
+def plot_period_comparison(periods_path, output_dir='figures'):
+    """
+    Plots a comparison of periods from a single FITS file containing both data sources.
+    
+    Loads data from a single FITS file and plots 'true_period' vs 'P_1' on a log-log scale.
+
+    Args:
+        periods_path (str): Path to the periods FITS file.
+        output_dir (str): Directory to save the output plot.
+    """
+    print(f"Generating Period-Period comparison plot using {periods_path}...")
+    
+    # Load data
+    try:
+        # Load Periods using robust loader
+        df = load_fits_to_df(periods_path)
+        
+        # Check period columns
+        x_col = 'true_period'
+        y_col = 'P_1'
+        
+        if x_col not in df.columns or y_col not in df.columns:
+            print(f"Missing period columns. Expected '{x_col}' and '{y_col}' in {periods_path}")
+            print(f"Columns found: {df.columns.tolist()}")
+            return
+            
+        # Plot
+        set_plot_style()
+        plt.figure(figsize=(8, 8))
+        
+        # Filter for positive periods for log scale
+        valid_data = df[(df[x_col] > 0) & (df[y_col] > 0)]
+        x = valid_data[x_col]
+        y = valid_data[y_col]
+        
+        # Log scale
+        plt.xscale('log')
+        plt.yscale('log')
+        
+        plt.scatter(x, y, s=10, alpha=0.1, c='black', edgecolors='none')
+        
+        # Capture the auto-scaled limits from the scatter plot BEFORE adding lines.
+        # This is critical for avoiding excessive whitespace.
+        xlim = plt.gca().get_xlim()
+        ylim = plt.gca().get_ylim()
+        
+        # Determine plot bounds for the reference lines.
+        # We calculate the union of x and y ranges to ensure the lines span the 
+        # entire relevant area (e.g., if x goes to 10 but y goes to 100, the 1:1 line needs to go to 100).
+        min_line = min(xlim[0], ylim[0])
+        max_line = max(xlim[1], ylim[1])
+        
+        # Identity line (1:1)
+        plt.plot([min_line, max_line], [min_line, max_line], 'r--', alpha=0.5, label='1:1')
+        
+        # 2:1 Harmonic (y = 2x) - The line above the diagonal
+        plt.plot([min_line, max_line], [min_line * 2, max_line * 2], 'g-.', alpha=0.5, label='2:1')
+        
+        # Restore the original limits to ensure the lines don't force the plot to expand.
+        plt.xlim(xlim)
+        plt.ylim(ylim)
+        
+        plt.xlabel("PRIMVS Periods")
+        plt.ylabel("OGLE-IV periods")
+        plt.title("Period Comparison")
+        plt.legend(loc='upper left')
+        
+        os.makedirs(output_dir, exist_ok=True)
+        plt.savefig(f"{output_dir}/period_comparison.png", dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Saved plot to {output_dir}/period_comparison.png")
+        
+    except Exception as e:
+        print(f"Error creating period plot: {e}")
+        import traceback
+        traceback.print_exc()
+
+if __name__ == "__main__":
+    # --- Main execution block for running specific plots directly ---
+    
+    # Default file paths
+    periods_file = ".data/periods.fits" 
+    training_file = ".data/PRIMVS_P_training_new.fits"
+
+    # Allow command line arguments to override defaults
+    if len(sys.argv) >= 2:
+        periods_file = sys.argv[1]
+    if len(sys.argv) >= 3:
+        training_file = sys.argv[2]
+        
+    # 1. Run Period Comparison Plot (if file exists)
+    if os.path.exists(periods_file):
+        plot_period_comparison(periods_file)
+    else:
+        print(f"File not found: {periods_file}. Skipping period comparison.")
+
+    # 2. Run Training Bailey Diagram Plot (if file exists)
+    if os.path.exists(training_file):
+        print(f"Generating Training Bailey Diagram using {training_file}...")
+        try:
+            df_train = load_fits_to_df(training_file)
+            
+            # Auto-detect label column if not standard 'Type'
+            class_col = "Type"
+            if class_col not in df_train.columns:
+                 candidates = [c for c in df_train.columns if 'type' in c.lower() or 'class' in c.lower()]
+                 if candidates:
+                     class_col = candidates[0]
+                     print(f"Using detected class column: {class_col}")
+            
+            if class_col in df_train.columns:
+                plot_training_bailey_diagram(df_train, class_col)
+            else:
+                print("Could not find class column (e.g., 'Type') in training file.")
+        except Exception as e:
+            print(f"Error plotting training diagram: {e}")
+    else:
+        print(f"File not found: {training_file}. Skipping training Bailey diagram.")
