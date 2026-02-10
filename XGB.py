@@ -1,53 +1,73 @@
 """
-XGBoost Training and Inference Script.
+XGBoost Training and Inference Script for Astronomical Data.
 
-This script provides a complete workflow for training an XGBoost model on astronomical
-data from FITS files. It is designed for robust performance and includes several
-key features:
+This script performs the complete machine learning workflow for classifying variable stars
+(or other astronomical objects) using the XGBoost algorithm. It takes data stored in
+FITS files as input and produces classified catalogues and diagnostic plots.
 
-The main workflow consists of:
-- Loading training and test data from FITS files.
-- Preprocessing features, including robust outlier clipping and imputation.
-- Training an XGBoost model with class balancing and early stopping to prevent overfitting.
-- Performing inference on the test set.
-- Saving the final predictions and additional data to a FITS file.
-- Saving the trained model object using joblib.
-- Generating a visualization dashboard of the results.
-- Caching: If the output .fits and .joblib files are detected and the
-  hyperparameters in the .fits header match the current script settings,
-  training and inference are skipped to proceed directly to visualization.
-- Selective Output: The output FITS file contains the unique ID, coordinates,
-  the input feature (parameter) columns, and the inference output columns.
-- Header Updates: Saves optimal probability thresholds (derived from PR curves)
-  back to the FITS file header for future use.
+Intended Audience:
+    This script is designed for researchers and students. Comments are written to explain
+    *why* specific steps are taken (e.g., scaling, outlier clipping, stratified splitting)
+    to help you understand the machine learning pipeline.
 
-To run from the command line:
-    python GXGB.py <path_to_train.fits> <path_to_test.fits> [output_file.fits]
+Workflow Overview:
+    1.  **Data Loading**: Reads training and testing data from FITS files.
+    2.  **Label Propagation**: If the test data lacks labels but shares object IDs with
+        the training data, labels are copied over.
+    3.  **Preprocessing**:
+        * **Clipping**: Removes extreme outliers (top/bottom 0.1%) to prevent them from
+            skewing the model.
+        * **Imputation**: Fills missing values (NaNs) with the median of that column.
+        * **Scaling**: Standardizes the range of features using RobustScaler (insensitive to outliers).
+        * **Encoding**: Converts string class names (e.g., "RR Lyrae") into integers (0, 1, 2...).
+    4.  **Training**: Trains an XGBoost classifier.
+        * Uses **Class Weighting** to handle imbalanced data (lots of one class, few of another).
+        * Uses **Early Stopping** to stop training when the model stops improving (prevents overfitting).
+        * Uses **Cosine Decay** for the learning rate to fine-tune the model as it learns.
+    5.  **Inference**: Applies the trained model to the test set to predict classes and probabilities.
+    6.  **Output**: Saves a FITS file with predictions and a .joblib file with the trained model.
+    7.  **Visualization**: Generates performance plots (Confusion matrices, Feature importance, etc.).
+
+Usage:
+    Run this script from the command line:
+    python XGB.py <path_to_train.fits> <path_to_test.fits> [output_file.fits]
+
+    Example:
+    python XGB.py training_data.fits survey_data.fits results.fits
 """
+
 import sys
 import os
+import time
+import gc
+import math
+import subprocess
+import warnings
+import joblib
+
+# Data manipulation libraries
 import pandas as pd
 import numpy as np
+
+# Machine Learning libraries
 import xgboost as xgb
 from sklearn.preprocessing import LabelEncoder, RobustScaler
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+
+# Astronomy file handling
 from astropy.io import fits
 from astropy.table import Table
-import time
-import gc
-import joblib
-import subprocess
-import warnings
-import math
 from astropy.io.fits.card import VerifyWarning
 
-# Suppress warnings about FITS header keywords being too long.
-# astropy handles this automatically by using HIERARCH cards.
+# Suppress specific FITS header warnings. 
+# Long keywords are automatically handled by Astropy's HIERARCH convention, so these warnings are safe to ignore.
 warnings.simplefilter('ignore', category=VerifyWarning)
 
-# Import visualization functions from vis.py
+# Import visualization functions from a local module named 'vis'.
+# We use a try-except block here so the script can still run (just without plots)
+# if the 'vis.py' file is missing.
 try:
     from vis import (
         plot_xgb_training_loss, plot_bailey_diagram,
@@ -56,13 +76,12 @@ try:
     )
 except ImportError:
     print("Warning: 'vis' module not found. Visualization will be skipped.")
-    # Define placeholder functions to avoid NameError
+    # Define placeholder functions that do nothing if 'vis' is missing.
     def plot_xgb_training_loss(*args, **kwargs): pass
     def plot_bailey_diagram(*args, **kwargs): pass
     def plot_xgb_feature_importance(*args, **kwargs): pass
     def plot_confidence_distribution(*args, **kwargs): pass
     def plot_confidence_entropy(*args, **kwargs): pass
-    # Dummy returns None, which is handled safely
     def plot_and_print_auc_ap(*args, **kwargs): return {}
 
 #########################################
@@ -71,12 +90,13 @@ except ImportError:
 
 def load_fits_to_df(path):
     """
-    Load data from a FITS file into a pandas DataFrame.
-
-    Handles potential endianness issues and gracefully manages FITS file structures.
-
+    Loads data from a FITS file into a Pandas DataFrame.
+    
+    FITS (Flexible Image Transport System) is the standard data format in astronomy.
+    Tables in FITS files are usually in extension [1], but sometimes [0].
+    
     Args:
-        path (str): The file path to the FITS file.
+        path (str): The file path to the .fits file.
 
     Returns:
         pd.DataFrame: A DataFrame containing the loaded data.
@@ -84,17 +104,23 @@ def load_fits_to_df(path):
     print(f"Loading {path}...")
     try:
         with fits.open(path) as hdul:
+            # Check if data is in extension 1 (standard for tables) or extension 0 (primary)
             data = hdul[1].data if len(hdul) > 1 and hdul[1].data is not None else hdul[0].data
+            
+            # Convert FITS data (which is a structured array) to a Pandas DataFrame
             if not hasattr(data, 'names') or not data.names:
                 df = pd.DataFrame(np.asarray(data))
             else:
                 data_dict = {}
                 for col in data.names:
                     col_data = np.asarray(data[col])
+                    # Fix Endianness: FITS is Big-Endian, most modern CPUs are Little-Endian.
+                    # This converts the byte order so Pandas/NumPy can read it efficiently.
                     if col_data.dtype.byteorder not in ('=', '|'):
                         col_data = col_data.astype(col_data.dtype.newbyteorder('='))
                     data_dict[col] = col_data
                 df = pd.DataFrame(data_dict)
+            
             print(f"Loaded {len(df)} samples with {len(df.columns)} features")
             return df
     except Exception as e:
@@ -103,23 +129,26 @@ def load_fits_to_df(path):
 
 def propagate_labels(target_df, source_df, label_col):
     """
-    Propagate labels from source_df to target_df based on a common unique ID.
-    Useful when the test/inference dataframe is missing labels but shares objects
-    with the training dataframe.
+    Fills missing labels in the target dataset using labels from the source dataset.
     
+    This is useful if you have a test set that technically contains "known" objects 
+    from your training set, but the label column is missing or empty in the test file.
+    It matches rows based on unique identifiers (like 'source_id').
+
     Args:
-        target_df (pd.DataFrame): The dataframe receiving labels (e.g. test_df).
-        source_df (pd.DataFrame): The dataframe providing labels (e.g. train_df).
-        label_col (str): The name of the label column.
+        target_df (pd.DataFrame): The dataframe receiving labels (e.g., test_df).
+        source_df (pd.DataFrame): The dataframe providing labels (e.g., train_df).
+        label_col (str): The name of the column containing the class labels (e.g., "Type").
         
     Returns:
-        pd.DataFrame: The target dataframe with labels filled/updated.
+        pd.DataFrame: The target dataframe with the label column filled where possible.
     """
     print(f"Attempting to match labels from source to target for column '{label_col}'...")
     id_col = None
+    # We look for common names used for unique identifiers in astronomical catalogues.
     potential_id_cols = ['uniqueid', 'source_id', 'id']
     
-    # Find common ID column
+    # Find which ID column exists in both dataframes
     for col in potential_id_cols:
         if col in target_df.columns and col in source_df.columns:
             id_col = col
@@ -127,20 +156,20 @@ def propagate_labels(target_df, source_df, label_col):
             
     if id_col and label_col in source_df.columns:
         print(f"  Matching based on unique ID column: {id_col}")
-        # Create mapping dictionary
+        # Create a dictionary mapping ID -> Label from the source
         label_map = dict(zip(source_df[id_col], source_df[label_col]))
         
-        # Map to a matched series
+        # Apply this map to the target's ID column
         matched_labels = target_df[id_col].map(label_map)
         
-        # Fill target label column
+        # If the column doesn't exist in target, create it.
         if label_col not in target_df.columns:
              target_df[label_col] = matched_labels
         else:
-             # Only fill missing values to respect existing data if present
+             # If it exists, only fill the missing (NaN) values to preserve existing data
              target_df[label_col] = target_df[label_col].fillna(matched_labels)
         
-        # Fill remaining NaNs with 'UNKNOWN' to prevent downstream errors
+        # Fill any remaining NaNs with 'UNKNOWN' so the code doesn't crash later
         na_count = target_df[label_col].isna().sum()
         if na_count > 0:
             target_df[label_col] = target_df[label_col].fillna('UNKNOWN')
@@ -149,7 +178,7 @@ def propagate_labels(target_df, source_df, label_col):
         print(f"  Labels propagated. {known_count}/{len(target_df)} samples now have known labels.")
     else:
         print("  Could not propagate labels (missing ID column or source labels).")
-        # Ensure column exists even if matching failed
+        # Ensure column exists even if matching failed so downstream code works
         if label_col not in target_df.columns:
             target_df[label_col] = 'UNKNOWN'
             
@@ -157,8 +186,12 @@ def propagate_labels(target_df, source_df, label_col):
 
 def save_thresholds_to_header(fits_path, thresholds_dict):
     """
-    Updates the FITS header with optimal thresholds found during visualization.
+    Saves the optimal probability thresholds to the FITS file header.
     
+    After training, we calculate the best probability threshold for each class 
+    (e.g., "Only classify as Star X if probability > 0.8"). We save this into the 
+    data file itself so future scripts know how to interpret the predictions.
+
     Args:
         fits_path (str): Path to the FITS file to update.
         thresholds_dict (dict): Dictionary mapping class names to threshold floats.
@@ -168,22 +201,18 @@ def save_thresholds_to_header(fits_path, thresholds_dict):
 
     print(f"Updating FITS header in {fits_path} with optimal thresholds...")
     try:
-        # Open in update mode
+        # Open in 'update' mode to modify the header without rewriting the whole file
         with fits.open(fits_path, mode='update') as hdul:
             # Target the table extension (usually 1, fallback to 0)
             target_hdu = hdul[1] if len(hdul) > 1 else hdul[0]
             header = target_hdu.header
             
-            # Add a separator comment
             header['COMMENT'] = '--- OPTIMAL PROBABILITY THRESHOLDS (PR CURVE) ---'
             
             for cls, thresh in thresholds_dict.items():
-                # Use HIERARCH keyword convention (handled automatically by astropy) 
-                # to allow for long keys (e.g., class names).
-                # We prefix with THR_ to categorize them cleanly.
+                # We prefix keys with 'THR_' to keep the header organized.
+                # 'HIERARCH' allows keys longer than 8 characters (standard FITS limit).
                 key = f"THR_{cls}"
-                
-                # Ensure value is float and add comment
                 header[key] = (float(thresh), f"Optimal threshold for {cls}")
                 
             hdul.flush()
@@ -193,18 +222,18 @@ def save_thresholds_to_header(fits_path, thresholds_dict):
 
 def get_feature_list(train, test):
     """
-    Define and filter a list of features to be used for training.
+    Determines which columns to use as input features for the model.
 
-    This function defines a curated list of features and also includes embeddings.
-    It then finds the intersection of these features with the columns available
-    in both the training and testing dataframes.
+    This function contains a manually curated list of features relevant to 
+    variable star physics (periods, amplitudes, colors). It checks which of these 
+    features exist in BOTH the training and testing files.
 
     Args:
         train (pd.DataFrame): The training dataframe.
         test (pd.DataFrame): The testing dataframe.
 
     Returns:
-        list: A list of feature names (strings) to be used in the model.
+        list: A list of column names (strings) to be used as inputs.
     """
     # Curated feature set for variable star classification.
     features = [
@@ -238,11 +267,12 @@ def get_feature_list(train, test):
         "skew", "kurt"
     ]
     
-    # Assumes 128-dimensional embeddings from a contrastive learning model.
+    # 2. Add Embedding features (Machine Learning extracted features)
+    # Assumes we have 128 columns named "0", "1", ... "127" from a pre-trained neural net.
     embeddings = [str(i) for i in range(128)]
     full_feature_set = features + embeddings
     
-    # Determine which of the predefined features are actually available.
+    # 3. Find intersection: Use only features present in both datasets
     train_cols = set(train.columns)
     test_cols = set(test.columns)
     common_cols = train_cols.intersection(test_cols)
@@ -253,6 +283,7 @@ def get_feature_list(train, test):
     print(f"Common features: {len(common_cols)}")
     print(f"Using {len(usable_features)} of {len(full_feature_set)} predefined features.")
     
+    # Fallback: If none of our curated features are found, use ALL common numeric columns.
     if not usable_features:
         print("Warning: No predefined features found. Falling back to all common numeric columns.")
         exclude_cols = {'source_id', 'id', 'index', 'best_class_name', 'uniqueid'}
@@ -266,7 +297,7 @@ def get_feature_list(train, test):
 
 def get_gpu_count():
     """
-    Detect the number of available NVIDIA GPUs.
+    Checks for available NVIDIA GPUs to accelerate training.
 
     Returns:
         int: The number of GPUs detected.
@@ -279,7 +310,10 @@ def get_gpu_count():
 
 def check_hyperparameters(fits_header, current_params):
     """
-    Compare current hyperparameters with those in a FITS header.
+    Checks if the settings in an existing output file match the current script settings.
+    
+    This is used for caching: if the file already exists and was created with the 
+    exact same parameters, we don't need to re-run the expensive training.
 
     Args:
         fits_header (astropy.io.fits.Header): The header from the existing FITS file.
@@ -304,10 +338,10 @@ def check_hyperparameters(fits_header, current_params):
                 return False
         
         try:
-            # Cast header value to the type of the current value for comparison
+            # Convert header string to the correct type (float/int) for comparison
             header_val_typed = type(current_val)(header_val)
             
-            # Use np.isclose for floating point comparisons
+            # Use specific comparison for floats to handle slight precision differences
             if isinstance(current_val, float):
                 if not np.isclose(header_val_typed, current_val):
                     print(f"  Mismatch: Key '{key}'. Current: {current_val}, Header: {header_val}")
@@ -328,57 +362,62 @@ def check_hyperparameters(fits_header, current_params):
 
 def preprocess_data(train_df, test_df, features, label_col):
     """
-    Preprocess training and test data for the XGBoost model.
+    Prepares raw data for the XGBoost model.
 
-    This involves:
-    1. Handling infinite values.
-    2. Clipping outliers to the 0.1st and 99.9th percentiles for robustness.
-    3. Filling any remaining NaN values with the column median.
-    4. Scaling features using RobustScaler.
-    5. Encoding labels into integer format.
+    Machine learning models require clean, numerical data. This function performs:
+    1. **Clipping**: Replaces extreme outliers (top/bottom 0.1%) with boundary values.
+    2. **Imputation**: Fills missing values (NaNs) with the column median.
+    3. **Scaling**: Centers and scales data using RobustScaler (better for data with outliers).
+    4. **Encoding**: Converts string labels (e.g., "RR Lyrae") to integers (0, 1, ...).
 
     Args:
         train_df (pd.DataFrame): Training dataframe.
         test_df (pd.DataFrame): Test dataframe.
-        features (list): List of feature column names.
+        features (list): List of feature column names to process.
         label_col (str): Name of the target label column.
 
     Returns:
-        tuple: A tuple containing processed dataframes and the fitted label encoder:
-               (X_train_processed, X_test_processed, y_train_encoded, label_encoder).
+        tuple: (X_train_processed, X_test_processed, y_train_encoded, label_encoder)
     """
     print("Preprocessing data...")
     if label_col not in train_df.columns:
         raise ValueError(f"Label column '{label_col}' not found in training data")
 
+    # Replace infinite values with NaN so they can be handled by the imputer
     X_train = train_df[features].copy().replace([np.inf, -np.inf], np.nan)
     X_test = test_df[features].copy().replace([np.inf, -np.inf], np.nan)
 
-    # Clip outliers based on training data distribution.
+    # --- Step 1: Clip Outliers ---
+    # We clip data to the 0.1st and 99.9th percentiles. This prevents a single 
+    # garbage value (e.g., magnitude = 9999) from ruining the scaling.
     q001 = X_train.quantile(0.001)
     q999 = X_train.quantile(0.999)
     X_train = X_train.clip(lower=q001, upper=q999, axis=1)
     X_test = X_test.clip(lower=q001, upper=q999, axis=1)
 
-    # Impute missing values with the median from the training data.
+    # --- Step 2: Impute Missing Values ---
+    # Fills NaNs with the median of that column from the training set.
     imputer = SimpleImputer(strategy='median')
     X_train_imputed = imputer.fit_transform(X_train)
     X_test_imputed = imputer.transform(X_test)
 
-    # Scale features using a scaler robust to outliers.
+    # --- Step 3: Scale Features ---
+    # RobustScaler uses the median and Interquartile Range (IQR). 
+    # Unlike Standard Scaler (mean/std), it doesn't get distorted by outliers.
     scaler = RobustScaler()
     X_train_scaled = scaler.fit_transform(X_train_imputed)
     X_test_scaled = scaler.transform(X_test_imputed)
 
-    # Convert back to DataFrames
+    # Convert back to readable DataFrames
     X_train_processed = pd.DataFrame(X_train_scaled, columns=features, index=X_train.index)
     X_test_processed = pd.DataFrame(X_test_scaled, columns=features, index=X_test.index)
     
-    # Encode labels.
+    # --- Step 4: Encode Labels ---
     label_encoder = LabelEncoder()
     train_labels = train_df[label_col].fillna('UNKNOWN')
     y_train_encoded = label_encoder.fit_transform(train_labels)
     
+    # Print class stats for the user
     num_classes = len(label_encoder.classes_)
     print(f"Number of classes: {num_classes}")
     print("Class distribution:")
@@ -398,24 +437,34 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
               subsample, colsample_bytree, reg_alpha, reg_lambda, num_boost_round, early_stopping_rounds, 
               test_size, use_adaptive_lr=True):
     """
-    Execute the XGBoost training and inference workflow.
+    Executes the full XGBoost training and inference pipeline.
+
+    Flow of Control:
+    1. **Label Propagation**: Fills labels in test_df if matching IDs are found in train_df.
+    2. **Preprocessing**: Cleans, imputes, and scales the data.
+    3. **Splitting**: Separates a validation set from the training data (stratified).
+    4. **Weighting**: Calculates class weights to handle dataset imbalance.
+    5. **Training**: Runs XGBoost with specified hyperparameters and callbacks.
+    6. **Inference**: Predicts classes and probabilities for the test set.
+    7. **Formatting**: Selects columns and builds the final output dataframe.
+    8. **Saving**: Saves the model (.joblib) and data (.fits).
 
     Args:
         train_df (pd.DataFrame): The training data.
         test_df (pd.DataFrame): The test data.
-        features (list): List of feature names.
+        features (list): List of feature names to use.
         label_col (str): The name of the label column.
         out_file (str): Path to save the output FITS file.
-        learning_rate (float): Step size shrinkage.
-        max_depth (int): Maximum depth of a tree.
-        subsample (float): Subsample ratio of the training instance.
-        colsample_bytree (float): Subsample ratio of columns when constructing each tree.
-        reg_alpha (float): L1 regularization term on weights.
-        reg_lambda (float): L2 regularization term on weights.
-        num_boost_round (int): Number of boosting rounds.
-        early_stopping_rounds (int): Activates early stopping.
-        test_size (float): Proportion of the dataset to include in the validation split.
-        use_adaptive_lr (bool): If True, applies cosine decay to learning rate.
+        learning_rate (float): Initial step size for the optimizer.
+        max_depth (int): Max depth of a tree (controls complexity).
+        subsample (float): Fraction of samples used per tree (prevents overfitting).
+        colsample_bytree (float): Fraction of features used per tree.
+        reg_alpha (float): L1 regularization (lasso).
+        reg_lambda (float): L2 regularization (ridge).
+        num_boost_round (int): Maximum number of training iterations.
+        early_stopping_rounds (int): Stop if validation loss doesn't improve for N rounds.
+        test_size (float): Fraction of data to use for validation (e.g., 0.05).
+        use_adaptive_lr (bool): If True, reduces learning rate over time.
         
     Returns:
         tuple: (test_df_result, evals_result, model, label_encoder)
@@ -423,17 +472,17 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     print("\n=== XGBoost Training Workflow ===")
     start_time = time.time()
     
-    # --- 0. Label Propagation ---
-    # Match labels from training data to test data using unique IDs
+    # --- 1. Label Propagation ---
     test_df = propagate_labels(test_df, train_df, label_col)
     
-    # --- 1. Data Preparation ---
+    # --- 2. Data Preparation ---
     X_train, X_test, y, label_encoder = preprocess_data(
         train_df, test_df, features, label_col
     )
     
-    # --- 2. Create Train/Validation Split ---
-    # Stratify to handle imbalanced classes, with a fallback for rare classes.
+    # --- 3. Create Train/Validation Split ---
+    # Stratify ensures that the validation set has the same proportion of classes 
+    # as the training set, which is crucial for imbalanced astronomical data.
     class_counts = np.bincount(y)
     stratify_flag = y if np.min(class_counts) >= 2 else None
     
@@ -442,8 +491,9 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
         X_train, y, test_size=test_size, random_state=42, stratify=stratify_flag
     )
 
-    # --- 3. Class Weighting ---
-    # Apply smoothed class weighting to address imbalance during training.
+    # --- 4. Class Weighting ---
+    # Astronomical datasets are often imbalanced (e.g., many variable stars, few supernovae).
+    # We calculate weights so the model pays more attention to rare classes.
     total_samples = len(y_train_main)
     num_classes = len(class_counts)
     class_weights_map = {
@@ -453,7 +503,8 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     sample_weights = np.array([class_weights_map[label] for label in y_train_main])
     print("Applied class weights to training data.")
 
-    # --- 4. Model, Parameters, and Data Setup ---
+    # --- 5. XGBoost Setup ---
+    # DMatrix is an internal data structure that XGBoost uses for speed and memory efficiency.
     dtrain = xgb.DMatrix(X_train_main, label=y_train_main, weight=sample_weights)
     dval = xgb.DMatrix(X_val, label=y_val)
     dtest = xgb.DMatrix(X_test)
@@ -462,10 +513,10 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     print(f"Auto-detected {num_gpus} GPUs.")
     
     params = {
-        'objective': 'multi:softprob',
+        'objective': 'multi:softprob', # Output probability distribution over classes
         'num_class': len(label_encoder.classes_),
-        'eval_metric': 'mlogloss',
-        'learning_rate': learning_rate, # This is the INITIAL learning rate
+        'eval_metric': 'mlogloss',     # Multi-class Log Loss (standard error metric)
+        'learning_rate': learning_rate,
         'max_depth': max_depth,
         'min_child_weight': 10,
         'subsample': subsample,
@@ -473,33 +524,30 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
         'colsample_bylevel': 0.7,
         'reg_alpha': reg_alpha,
         'reg_lambda': reg_lambda,
-        'tree_method': 'hist',
+        'tree_method': 'hist',         # Histogram-based method (fast)
         'grow_policy': 'lossguide',
         'device': 'cuda' if num_gpus > 0 else 'cpu'
     }
     
+    # Copy params to a dict for saving later.
     hyperparams_to_save = params.copy()
     hyperparams_to_save['num_boost_round_config'] = num_boost_round
     hyperparams_to_save['early_stopping_rounds_config'] = early_stopping_rounds
     hyperparams_to_save['test_size_config'] = test_size
     hyperparams_to_save['use_adaptive_lr'] = use_adaptive_lr
 
-    # --- 5. Adaptive Learning Rate Scheduler (Cosine Decay) ---
+    # --- Adaptive Learning Rate (Cosine Decay) ---
     callbacks_list = []
     if use_adaptive_lr:
         print(f"Enabling Adaptive Learning Rate (Cosine Decay). Initial: {learning_rate}")
         
         def cosine_decay_scheduler(boosting_round):
             """
-            Cosine annealing scheduler.
-            Decreases LR from initial 'learning_rate' to 'min_lr' following a cosine curve.
+            Slowly lowers learning rate following a cosine curve.
+            This helps the model 'settle' into a minimum as it gets closer to the solution.
             """
-            min_lr = 1e-3 # Floor for the learning rate
-            # Total iterations roughly estimated by num_boost_round
-            # Note: With early stopping, this might decay slower than expected, but is generally stable.
+            min_lr = 1e-3 # Minimum learning rate floor
             progress = boosting_round / num_boost_round 
-            
-            # Compute new LR
             new_lr = min_lr + 0.5 * (learning_rate - min_lr) * (1 + math.cos(math.pi * progress))
             return new_lr
 
@@ -520,40 +568,43 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
         callbacks=callbacks_list
     )
     
-    # --- 7. Prediction and Evaluation ---
+    # --- 7. Prediction ---
     best_iter = model.best_iteration
     hyperparams_to_save['best_iteration_result'] = best_iter
     print(f"\nTraining complete. Best iteration: {best_iter}")
 
-    # Record best training and validation losses for storage in FITS header
+    # Log best losses for the FITS header
     if 'train' in evals_result and 'mlogloss' in evals_result['train'] and len(evals_result['train']['mlogloss']) > best_iter:
         best_train_loss = evals_result['train']['mlogloss'][best_iter]
-        hyperparams_to_save['best_train_loss'] = float(best_train_loss) # Ensure it's a standard float
+        hyperparams_to_save['best_train_loss'] = float(best_train_loss)
         print(f"  Best Train mlogloss: {best_train_loss:.6f}")
     
     if 'validation' in evals_result and 'mlogloss' in evals_result['validation'] and len(evals_result['validation']['mlogloss']) > best_iter:
         best_val_loss = evals_result['validation']['mlogloss'][best_iter]
-        hyperparams_to_save['best_val_loss'] = float(best_val_loss) # Ensure it's a standard float
+        hyperparams_to_save['best_val_loss'] = float(best_val_loss)
         print(f"  Best Validation mlogloss: {best_val_loss:.6f}")
 
+    # Generate predictions using the best state of the model
     probs = model.predict(dtest, iteration_range=(0, best_iter + 1))
-    preds = np.argmax(probs, axis=1)
+    preds = np.argmax(probs, axis=1) # The class index with highest probability
+    
+    # Calculate Confidence: Difference between top-1 and top-2 probability
     top_two = np.partition(probs, -2, axis=1)[:, -2:]
     confs = np.max(top_two, axis=1) - np.min(top_two, axis=1)
+    
+    # Convert integer predictions back to string labels
     pred_labels = label_encoder.inverse_transform(preds)
+    
+    # Calculate Entropy (uncertainty measure)
     log_probs = np.log(probs, out=np.zeros_like(probs, dtype=float), where=(probs > 0))
     entropy = np.abs(np.sum(probs * log_probs, axis=1))
 
-    # Construct the FULL dataframe for visualization and return
-    # This dataframe contains all original test columns + predictions
+    # Create the FULL results dataframe (for internal use/plotting)
     test_df_result = test_df.copy()
 
-    # If the original true label column exists in the test data (it should now via propagation),
-    # copy it to a new standard column name 'xgb_training_class'.
     if label_col in test_df.columns:
         test_df_result['xgb_training_class'] = test_df[label_col]
     else:
-        # Force creation of the column with 'UNKNOWN' values if missing
         print(f"Warning: Label column '{label_col}' missing in test data even after propagation attempt.")
         test_df_result[label_col] = 'UNKNOWN'
         test_df_result['xgb_training_class'] = 'UNKNOWN'
@@ -564,16 +615,15 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     for i, class_name in enumerate(label_encoder.classes_):
         test_df_result[f'prob_{class_name}'] = probs[:, i]
 
-
-    # --- Create the SELECTIVE output DataFrame for FITS file ---
+    # --- 8. Build Selective Output FITS File ---
     print("Building selective output FITS file...")
     
-    # We will build a list of columns to export to ensure no duplicates
+    # We create a cleaner output file that only contains IDs, coordinates, inputs, and results.
     cols_to_export = []
     
-    # 1. Add the uniqueid column (if found)
+    # Find ID column
     id_col = None
-    potential_id_cols = ['uniqueid', 'source_id', 'id'] # Prioritize user's request
+    potential_id_cols = ['uniqueid', 'source_id', 'id']
     for col in potential_id_cols:
         if col in test_df.columns:
             id_col = col
@@ -585,63 +635,53 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     else:
         print("  Warning: No 'uniqueid', 'source_id', or 'id' column found.")
 
-    # 2. Add requested coordinate/position columns (Update)
+    # Find Coordinate columns
     coord_cols = ['ra', 'ra_error', 'dec', 'dec_error', 'l', 'b']
     print(f"  Adding coordinate columns: {coord_cols}")
     for col in coord_cols:
         if col in test_df.columns:
-            # Avoid duplicates if ID column happened to be one of these (unlikely but safe)
             if col not in cols_to_export:
                 cols_to_export.append(col)
-        else:
-            # Optional: Warning for missing coords?
-            pass
 
-    # 3. Add the parameter columns (features) from the original test_df
+    # Add Feature columns
     print(f"  Adding {len(features)} parameter (feature) columns...")
     for col in features:
         if col not in cols_to_export:
             cols_to_export.append(col)
 
-    # Create the output dataframe based on the selected columns
     output_df = test_df[cols_to_export].copy()
     
-    # 4. Add the output columns from inference
+    # Add Prediction columns
     print("  Adding inference output columns...")
     output_df['xgb_predicted_class'] = pred_labels
     output_df['xgb_confidence'] = confs
     output_df['xgb_entropy'] = entropy
 
-    # Also add the training class, if it was available.
     if 'xgb_training_class' in test_df_result.columns:
         print("  Adding 'xgb_training_class' (true label) to output.")
         output_df['xgb_training_class'] = test_df_result['xgb_training_class']
     
-    # Add per-class probabilities to the output
     for i, class_name in enumerate(label_encoder.classes_):
         output_df[f'prob_{class_name}'] = probs[:, i]
 
-    # Save model object and label encoder
+    # Save model object (joblib)
     model_file_path = 'xgb_model.joblib'
     joblib.dump((model, label_encoder), model_file_path)
     print(f"Saved trained XGBoost model and label encoder to {model_file_path}")
     
+    # Save FITS file
     out_fits_file, _ = os.path.splitext(out_file)
     out_fits_file += ".fits"
     
-    # Convert the DataFrame to an Astropy Table for FITS storage
     out_table = Table.from_pandas(output_df) 
 
     print("Adding hyperparameters to FITS header...")
     out_table.meta['COMMENT'] = '--- XGBOOST HYPERPARAMETERS ---'
     for key, value in hyperparams_to_save.items():
-        # FITS headers don't like None, so convert to string.
         if value is None:
             value_to_save = 'None'
         else:
             value_to_save = value
-        
-        # Add to meta dictionary. astropy will format this into the header.
         out_table.meta[key] = value_to_save
 
     out_table.write(out_fits_file, format='fits', overwrite=True)
@@ -650,33 +690,39 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     elapsed_time = time.time() - start_time
     print(f"\nXGBoost workflow completed in {elapsed_time:.1f} seconds.")
     
-    # Return the FULL dataframe for visualizations
     return test_df_result, evals_result, model, label_encoder
 
 def generate_visualizations(model, label_encoder, test_df_result, label_col, evals_result=None):
     """
-    Generate and save all visualization plots.
+    Generates diagnostic plots to evaluate the model's performance.
+
+    Plots generated (saved in 'figures/' folder):
+    1. **Classification Report**: Precision/Recall/F1-score textual report.
+    2. **Feature Importance**: Which physics parameters mattered most?
+    3. **Training Loss**: Did the model converge? (Log-loss vs Iterations)
+    4. **Bailey Diagram**: (Specific to astronomy) Period vs Amplitude plot.
+    5. **Confidence Distribution**: How sure is the model about its predictions?
+    6. **Confidence Entropy**: Another view of uncertainty.
     
     Args:
         model (xgb.Booster): The trained XGBoost model.
-        label_encoder (LabelEncoder): The fitted LabelEncoder.
-        test_df_result (pd.DataFrame): DataFrame with test data and predictions.
-                                     (This is the FULL dataframe, not the selective one)
-        label_col (str): Name of the true label column (for evaluation).
-        evals_result (dict, optional): Results from training (for loss plot).
+        label_encoder (LabelEncoder): The encoder used to translate class names.
+        test_df_result (pd.DataFrame): DataFrame containing predictions and probabilities.
+        label_col (str): Name of the true label column.
+        evals_result (dict, optional): Training history for loss plotting.
         
     Returns:
-        dict: The dictionary of optimal probability thresholds calculated from PR curves.
+        dict: A dictionary of optimal probability thresholds derived from PR curves.
     """
     print("\nGenerating visualizations...")
     os.makedirs('figures', exist_ok=True)
     
     # --- Classification Report ---
-    # Determine the correct ground-truth label column, prioritizing propagated labels.
+    # We prefer the propagated labels ('xgb_training_class') if available.
     true_label_col_to_use = 'xgb_training_class'
     if true_label_col_to_use not in test_df_result.columns:
         print(f"Warning: '{true_label_col_to_use}' not found, falling back to '{label_col}' for classification report.")
-        true_label_col_to_use = label_col # Fallback
+        true_label_col_to_use = label_col 
 
     if true_label_col_to_use in test_df_result.columns:
         y_true = test_df_result[true_label_col_to_use].fillna('UNKNOWN')
@@ -700,12 +746,11 @@ def generate_visualizations(model, label_encoder, test_df_result, label_col, eva
         print("Skipping training loss plot (no evals_result provided).")
 
     # --- Other Plots ---
-    # Re-create preds (int) and confs from the dataframe for plotting
     confs = test_df_result['xgb_confidence']
     preds_int = label_encoder.transform(test_df_result['xgb_predicted_class'])
     
-    # Pass the correctly determined label column name
-    # Capture the thresholds dictionary returned by the PR curve function
+    # plot_and_print_auc_ap calculates Precision-Recall curves and determines
+    # the optimal probability threshold for each class.
     thresholds_dict = plot_and_print_auc_ap(test_df_result, true_label_col_to_use, label_encoder, output_dir='figures')
     
     plot_bailey_diagram(test_df_result, "xgb_predicted_class", output_dir='figures')
@@ -722,18 +767,26 @@ def generate_visualizations(model, label_encoder, test_df_result, label_col, eva
 #########################################
 
 def main():
-    """Main execution function of the script."""
+    """
+    Main execution logic.
+    
+    1. Checks command line arguments for file paths.
+    2. Checks if valid output files already exist (Caching).
+    3. If cached files match current settings -> Skip training, Load data, Visualize.
+    4. If not -> Load data, Train model, Save data, Visualize.
+    """
     # --- Hyperparameters ---
-    set_learning_rate = 1E-3
-    set_max_depth = 50
-    set_subsample = 0.95
-    set_colsample_bytree = 0.1
-    set_reg_alpha = 0.01
-    set_reg_lambda = 0.1
-    set_num_boost_round = 1000000 
-    set_early_stopping_rounds = 5000
-    set_use_adaptive_lr = True
-    set_test_size = 0.05
+    # These control how the XGBoost model learns.
+    set_learning_rate = 1E-3        # Initial step size
+    set_max_depth = 50              # Max tree depth (higher = more complex model)
+    set_subsample = 0.95            # % of data used per tree (prevent overfitting)
+    set_colsample_bytree = 0.1      # % of features used per tree
+    set_reg_alpha = 0.01            # L1 Regularization
+    set_reg_lambda = 0.1            # L2 Regularization
+    set_num_boost_round = 1000000   # Max iterations (very high because we use early stopping)
+    set_early_stopping_rounds = 5000 # Stop if no improvement for this many rounds
+    set_use_adaptive_lr = True      # Use cosine decay scheduler
+    set_test_size = 0.05            # % of training data reserved for validation
 
     # --- File Path Handling ---
     if len(sys.argv) >= 3:
@@ -741,7 +794,7 @@ def main():
         test_path = sys.argv[2]
         out_file = sys.argv[3] if len(sys.argv) > 3 else "xgb_predictions.fits"
     else:
-        # Provide default paths for easier testing.
+        # Default paths for easy testing/debugging
         print("Using default file paths.")
         train_path = ".data/PRIMVS_P_training_new.fits"
         test_path = ".data/PRIMVS_P.fits"
@@ -754,12 +807,13 @@ def main():
 
     # --- Main Execution Block ---
     try:
-        # Load training data first to check num_classes for hyperparam dict
+        # Load training data to determine the number of classes (needed for params dict)
         train_df = load_fits_to_df(train_path)
         
-        # Auto-detect label column if not 'Type'.
+        # Identify the column containing the class labels (e.g., "Type")
         label_col = "Type"
         if label_col not in train_df.columns:
+            # Fallback: search for columns like 'class' or 'type'
             available_cols = [c for c in train_df.columns if 'class' in c.lower() or 'type' in c.lower()]
             if available_cols:
                 label_col = available_cols[0]
@@ -767,15 +821,14 @@ def main():
             else:
                 raise ValueError("Could not find a suitable label column ('Type', 'class', etc.).")
         
-        # Get num_classes for the hyperparameter dictionary
+        # Calculate parameters needed for the check
         le_for_check = LabelEncoder()
         train_labels = train_df[label_col].fillna('UNKNOWN')
         y_train_encoded = le_for_check.fit_transform(train_labels)
         num_classes = len(le_for_check.classes_)
         num_gpus = get_gpu_count()
 
-        # Build the *current* hyperparameter dictionary for comparison
-        # This MUST match the 'params' dict inside train_xgb
+        # Build dictionary of current parameters to compare against cached file
         current_params = {
             'objective': 'multi:softprob',
             'num_class': num_classes,
@@ -794,86 +847,72 @@ def main():
             'num_boost_round_config': set_num_boost_round,
             'early_stopping_rounds_config': set_early_stopping_rounds,
             'test_size_config': set_test_size,
-            'use_adaptive_lr': set_use_adaptive_lr # Included in check
+            'use_adaptive_lr': set_use_adaptive_lr
         }
         
         # --- Caching Check ---
+        # If output files exist, check if we can reuse them instead of retraining.
         if os.path.exists(out_fits_file) and os.path.exists(model_file_path):
             print(f"Found existing files: {out_fits_file} and {model_file_path}")
             
             with fits.open(out_fits_file) as hdul:
-                # Use header from extension 1 (the table)
                 header = hdul[1].header 
-            
                 are_params_identical = check_hyperparameters(header, current_params)
                 
                 if are_params_identical:
                     print("Hyperparameters match. Skipping training and inference.")
                     
-                    # Load existing data from the (now) open FITS handle
+                    # 1. Load cached predictions
                     print(f"  Loading data from {out_fits_file}...")
                     test_df_result_table = Table(hdul[1].data) 
                     
-                    # The cached table contains the minimal output subset.
-                    # We need to load the FULL test_df for visualizations
+                    # 2. Load original full test data (for visualization columns that might not be in cache)
                     print(f"  Loading full test data from {test_path} for visualization...")
                     test_df_full_for_vis = load_fits_to_df(test_path)
-                    
-                    # Propagate labels in cached path to ensure viz works correctly
                     test_df_full_for_vis = propagate_labels(test_df_full_for_vis, train_df, label_col)
 
-                    # Convert the minimal FITS data to pandas
+                    # 3. Merge cached predictions with full data
                     test_df_minimal = test_df_result_table.to_pandas()
                     print("  Data loaded.")
 
-                    # Decode byte strings in the class column to ensure string compatibility.
+                    # Fix potential byte-string encoding issues in FITS columns
                     if not test_df_minimal.empty and isinstance(test_df_minimal['xgb_predicted_class'].iloc[0], bytes):
                         print("  Converting 'xgb_predicted_class' column from bytes to string for plotting...")
                         test_df_minimal['xgb_predicted_class'] = test_df_minimal['xgb_predicted_class'].str.decode('utf-8')
                     
-                    # We must re-create the 'test_df_result' that generate_visualizations expects,
-                    # which is the FULL test_df plus the prediction columns.
-                    
-                    # Get prediction columns from the minimal df
                     pred_cols = [col for col in test_df_minimal.columns if col.startswith('xgb_') or col.startswith('prob_') or col == 'xgb_training_class']
-                    
-                    # Join them back onto the full test_df
-                    # This assumes the index is aligned, which it should be.
                     test_df_result_for_vis = test_df_full_for_vis.join(test_df_minimal[pred_cols])
                     
-                    
+                    # 4. Load trained model
                     print(f"  Loading model from {model_file_path}...")
                     (model, label_encoder) = joblib.load(model_file_path)
                     print("  Model loaded.")
                     
-                    # Generate plots from existing files
+                    # 5. Generate plots
                     thresholds_dict = generate_visualizations(
                         model, label_encoder, test_df_result_for_vis, 
                         label_col, evals_result=None
                     )
                     
-                    # Update FITS header with the calculated thresholds (even in cached mode)
                     save_thresholds_to_header(out_fits_file, thresholds_dict)
-                    
                     print("\n=== XGBoost Visualization Complete (Skipped Training) ===")
-                    return # Exit script
+                    return # Exit script successfully
                 
                 else:
-                    # Parameters match failed, triggering retraining
                     print("Hyperparameters mismatch. Re-training model.")
             
         else:
             print("Output files not found. Starting new training session.")
 
         # --- Full Training Workflow ---
-        # Load test data (train_df is already loaded)
+        # If we didn't exit above, we need to train the model.
         test_df = load_fits_to_df(test_path)
         
         features = get_feature_list(train_df, test_df)
         if not features:
             raise ValueError("No common features found between training and test sets.")
             
-        # Run training and inference
+        # Run training
         test_df_result, evals_result, model, label_encoder = train_xgb(
             train_df=train_df, test_df=test_df, features=features, label_col=label_col,
             out_file=out_file, learning_rate=set_learning_rate, max_depth=set_max_depth,
@@ -884,13 +923,13 @@ def main():
             use_adaptive_lr=set_use_adaptive_lr
         )
         
-        # Generate plots
+        # Run visualization
         thresholds_dict = generate_visualizations(
             model, label_encoder, test_df_result, 
             label_col, evals_result=evals_result
         )
 
-        # Update FITS header with the calculated thresholds
+        # Update output file
         save_thresholds_to_header(out_fits_file, thresholds_dict)
 
         print("\n=== XGBoost Training Complete ===")
