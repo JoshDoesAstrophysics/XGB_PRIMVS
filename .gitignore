@@ -1,6 +1,7 @@
 *.joblib
 *.fits
 *.csv
+*.txt
 pca_tuning/
 **/*figures/
 .ipynb_checkpoints/

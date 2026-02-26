@@ -133,7 +133,7 @@ def propagate_labels(target_df, source_df, label_col):
     
     This is useful if you have a test set that technically contains "known" objects 
     from your training set, but the label column is missing or empty in the test file.
-    It matches rows based on unique identifiers (like 'source_id').
+    It matches rows based on unique identifiers (like 'sourceid').
 
     Args:
         target_df (pd.DataFrame): The dataframe receiving labels (e.g., test_df).
@@ -146,7 +146,7 @@ def propagate_labels(target_df, source_df, label_col):
     print(f"Attempting to match labels from source to target for column '{label_col}'...")
     id_col = None
     # We look for common names used for unique identifiers in astronomical catalogues.
-    potential_id_cols = ['uniqueid', 'source_id', 'id']
+    potential_id_cols = ['uniqueid', 'sourceid', 'source_id', 'id']
     
     # Find which ID column exists in both dataframes
     for col in potential_id_cols:
@@ -286,7 +286,7 @@ def get_feature_list(train, test):
     # Fallback: If none of our curated features are found, use ALL common numeric columns.
     if not usable_features:
         print("Warning: No predefined features found. Falling back to all common numeric columns.")
-        exclude_cols = {'source_id', 'id', 'index', 'best_class_name', 'uniqueid'}
+        exclude_cols = {'sourceid', 'source_id', 'id', 'index', 'best_class_name', 'uniqueid'}
         usable_features = [
             col for col in common_cols
             if pd.api.types.is_numeric_dtype(train[col]) and col not in exclude_cols
@@ -447,7 +447,8 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     5. **Training**: Runs XGBoost with specified hyperparameters and callbacks.
     6. **Inference**: Predicts classes and probabilities for the test set.
     7. **Formatting**: Selects columns and builds the final output dataframe.
-    8. **Saving**: Saves the model (.joblib) and data (.fits).
+    8. **Deduplication**: Removes duplicate source IDs, keeping the highest confidence result.
+    9. **Saving**: Saves the model (.joblib) and data (.fits).
 
     Args:
         train_df (pd.DataFrame): The training data.
@@ -467,7 +468,8 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
         use_adaptive_lr (bool): If True, reduces learning rate over time.
         
     Returns:
-        tuple: (test_df_result, evals_result, model, label_encoder)
+        tuple: (output_df, evals_result, model, label_encoder)
+        Note: output_df is the final, deduplicated dataframe used for saving.
     """
     print("\n=== XGBoost Training Workflow ===")
     start_time = time.time()
@@ -487,9 +489,14 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     stratify_flag = y if np.min(class_counts) >= 2 else None
     
     print(f"Splitting training data with test_size={test_size}...")
+    # -- BASH INJECTION ANCHOR --
+    
+    # --- SPLIT INJECTION POINT ---
+    # The bash folding script uses sed to replace this block. Do not change these marker lines.
     X_train_main, X_val, y_train_main, y_val = train_test_split(
-        X_train, y, test_size=test_size, random_state=42, stratify=stratify_flag
+        X_train, y, test_size=test_size, random_state=37, stratify=stratify_flag
     )
+    # --- END SPLIT INJECTION POINT ---
 
     # --- 4. Class Weighting ---
     # Astronomical datasets are often imbalanced (e.g., many variable stars, few supernovae).
@@ -526,7 +533,8 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
         'reg_lambda': reg_lambda,
         'tree_method': 'hist',         # Histogram-based method (fast)
         'grow_policy': 'lossguide',
-        'device': 'cuda' if num_gpus > 0 else 'cpu'
+        'device': 'cuda' if num_gpus > 0 else 'cpu',
+        'seed': 37                     # Fix XGBoost randomness for reproducibility
     }
     
     # Copy params to a dict for saving later.
@@ -599,7 +607,7 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     log_probs = np.log(probs, out=np.zeros_like(probs, dtype=float), where=(probs > 0))
     entropy = np.abs(np.sum(probs * log_probs, axis=1))
 
-    # Create the FULL results dataframe (for internal use/plotting)
+    # Create the FULL results dataframe (internal use only, for debugging if needed)
     test_df_result = test_df.copy()
 
     if label_col in test_df.columns:
@@ -621,19 +629,16 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     # We create a cleaner output file that only contains IDs, coordinates, inputs, and results.
     cols_to_export = []
     
-    # Find ID column
-    id_col = None
-    potential_id_cols = ['uniqueid', 'source_id', 'id']
+    # Find ID columns (Changed to include ALL id columns for deduplication logic)
+    # We explicitly look for 'uniqueid', 'sourceid', 'source_id', and 'id' to be robust
+    potential_id_cols = ['uniqueid', 'sourceid', 'source_id', 'id']
     for col in potential_id_cols:
-        if col in test_df.columns:
-            id_col = col
-            break
-    
-    if id_col:
-        cols_to_export.append(id_col)
-        print(f"  Adding ID column: {id_col}")
-    else:
-        print("  Warning: No 'uniqueid', 'source_id', or 'id' column found.")
+        if col in test_df.columns and col not in cols_to_export:
+            cols_to_export.append(col)
+            print(f"  Adding ID column to output: {col}")
+
+    if not cols_to_export:
+        print("  Warning: No 'uniqueid', 'sourceid', 'source_id' or 'id' column found.")
 
     # Find Coordinate columns
     coord_cols = ['ra', 'ra_error', 'dec', 'dec_error', 'l', 'b']
@@ -663,11 +668,34 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     
     for i, class_name in enumerate(label_encoder.classes_):
         output_df[f'prob_{class_name}'] = probs[:, i]
+    
+    # For each sourceid (or source_id), keep only the uniqueid with the highest confidence.
+    # We allow fallback to 'source_id' if 'sourceid' is missing to be robust.
+    dedupe_col = None
+    if 'sourceid' in output_df.columns:
+        dedupe_col = 'sourceid'
+    elif 'source_id' in output_df.columns:
+        dedupe_col = 'source_id'
+        
+    if dedupe_col:
+        print(f"  Deduplicating based on '{dedupe_col}' (keeping highest confidence, preserving ID in output)...")
+        len_before = len(output_df)
+        # Sort by confidence descending, so highest confidence comes first
+        output_df = output_df.sort_values(by='xgb_confidence', ascending=False)
+        # Drop duplicates based on the ID, keeping the first one (which is the highest confidence)
+        output_df = output_df.drop_duplicates(subset=[dedupe_col], keep='first')
+        # Sort by ID for clean output
+        output_df = output_df.sort_values(by=dedupe_col)
+        print(f"  Removed {len_before - len(output_df)} duplicate rows. Final count: {len(output_df)}")
+    else:
+        print("  Skipping deduplication: Neither 'sourceid' nor 'source_id' found in output.")
 
+    # --- 9. Save Model and Data ---
+    
     # Save model object (joblib)
     model_file_path = 'xgb_model.joblib'
-    joblib.dump((model, label_encoder), model_file_path)
-    print(f"Saved trained XGBoost model and label encoder to {model_file_path}")
+    joblib.dump((model, label_encoder, evals_result), model_file_path)
+    print(f"Saved trained XGBoost model, label encoder, and training history to {model_file_path}")
     
     # Save FITS file
     out_fits_file, _ = os.path.splitext(out_file)
@@ -690,7 +718,8 @@ def train_xgb(train_df, test_df, features, label_col, out_file, learning_rate, m
     elapsed_time = time.time() - start_time
     print(f"\nXGBoost workflow completed in {elapsed_time:.1f} seconds.")
     
-    return test_df_result, evals_result, model, label_encoder
+    # RETURN the deduplicated, final dataframe (output_df) instead of test_df_result
+    return output_df, evals_result, model, label_encoder
 
 def generate_visualizations(model, label_encoder, test_df_result, label_col, evals_result=None):
     """
@@ -727,7 +756,7 @@ def generate_visualizations(model, label_encoder, test_df_result, label_col, eva
     if true_label_col_to_use in test_df_result.columns:
         y_true = test_df_result[true_label_col_to_use].fillna('UNKNOWN')
         pred_labels = test_df_result['xgb_predicted_class']
-        print("\nTest set evaluation:")
+        print("\nTest set evaluation (on deduplicated data):")
         print(classification_report(y_true, pred_labels, zero_division=0))
     else:
         print(f"\nSkipping classification report: True label column ('{true_label_col_to_use}') not in test data.")
@@ -753,7 +782,7 @@ def generate_visualizations(model, label_encoder, test_df_result, label_col, eva
     # the optimal probability threshold for each class.
     thresholds_dict = plot_and_print_auc_ap(test_df_result, true_label_col_to_use, label_encoder, output_dir='figures')
     
-    plot_bailey_diagram(test_df_result, "xgb_predicted_class", output_dir='figures')
+    plot_bailey_diagram(test_df_result, "xgb_predicted_class", output_dir='figures', thresholds_dict=thresholds_dict)
     plot_confidence_distribution(confs, preds_int, label_encoder.classes_, output_dir="figures")
     plot_confidence_entropy(test_df_result, "xgb_predicted_class", output_dir='figures', use_brg_cmap=True)
     
@@ -777,16 +806,16 @@ def main():
     """
     # --- Hyperparameters ---
     # These control how the XGBoost model learns.
-    set_learning_rate = 1E-3        # Initial step size
-    set_max_depth = 50              # Max tree depth (higher = more complex model)
-    set_subsample = 0.95            # % of data used per tree (prevent overfitting)
-    set_colsample_bytree = 0.1      # % of features used per tree
-    set_reg_alpha = 0.01            # L1 Regularization
-    set_reg_lambda = 0.1            # L2 Regularization
-    set_num_boost_round = 1000000   # Max iterations (very high because we use early stopping)
+    set_learning_rate = 1E-3         # Initial step size
+    set_max_depth = 50               # Max tree depth (higher = more complex model)
+    set_subsample = 0.95             # % of data used per tree (prevent overfitting)
+    set_colsample_bytree = 0.1       # % of features used per tree
+    set_reg_alpha = 0.01             # L1 Regularization
+    set_reg_lambda = 0.1             # L2 Regularization
+    set_num_boost_round = 1000000    # Max iterations (very high because we use early stopping)
     set_early_stopping_rounds = 5000 # Stop if no improvement for this many rounds
-    set_use_adaptive_lr = True      # Use cosine decay scheduler
-    set_test_size = 0.05            # % of training data reserved for validation
+    set_use_adaptive_lr = True       # Use cosine decay scheduler
+    set_test_size = 0.05             # % of training data reserved for validation
 
     # --- File Path Handling ---
     if len(sys.argv) >= 3:
@@ -807,23 +836,24 @@ def main():
 
     # --- Main Execution Block ---
     try:
-        # Load training data to determine the number of classes (needed for params dict)
-        train_df = load_fits_to_df(train_path)
+        # Load training labels. This file is now assumed to be degenerate 
+        # (mostly just IDs and labels, with no features).
+        train_labels_df = load_fits_to_df(train_path)
         
         # Identify the column containing the class labels (e.g., "Type")
         label_col = "Type"
-        if label_col not in train_df.columns:
+        if label_col not in train_labels_df.columns:
             # Fallback: search for columns like 'class' or 'type'
-            available_cols = [c for c in train_df.columns if 'class' in c.lower() or 'type' in c.lower()]
+            available_cols = [c for c in train_labels_df.columns if 'class' in c.lower() or 'type' in c.lower()]
             if available_cols:
                 label_col = available_cols[0]
                 print(f"Warning: Using fallback label column: {label_col}")
             else:
-                raise ValueError("Could not find a suitable label column ('Type', 'class', etc.).")
+                raise ValueError("Could not find a suitable label column ('Type', 'class', etc.) in the training data.")
         
         # Calculate parameters needed for the check
         le_for_check = LabelEncoder()
-        train_labels = train_df[label_col].fillna('UNKNOWN')
+        train_labels = train_labels_df[label_col].fillna('UNKNOWN')
         y_train_encoded = le_for_check.fit_transform(train_labels)
         num_classes = len(le_for_check.classes_)
         num_gpus = get_gpu_count()
@@ -844,6 +874,7 @@ def main():
             'tree_method': 'hist',
             'grow_policy': 'lossguide',
             'device': 'cuda' if num_gpus > 0 else 'cpu',
+            'seed': 37,
             'num_boost_round_config': set_num_boost_round,
             'early_stopping_rounds_config': set_early_stopping_rounds,
             'test_size_config': set_test_size,
@@ -862,36 +893,36 @@ def main():
                 if are_params_identical:
                     print("Hyperparameters match. Skipping training and inference.")
                     
-                    # 1. Load cached predictions
+                    # 1. Load cached predictions from FITS
+                    # We load directly from the output FITS file, which guarantees we are using
+                    # the deduplicated data that was previously saved.
                     print(f"  Loading data from {out_fits_file}...")
                     test_df_result_table = Table(hdul[1].data) 
-                    
-                    # 2. Load original full test data (for visualization columns that might not be in cache)
-                    print(f"  Loading full test data from {test_path} for visualization...")
-                    test_df_full_for_vis = load_fits_to_df(test_path)
-                    test_df_full_for_vis = propagate_labels(test_df_full_for_vis, train_df, label_col)
-
-                    # 3. Merge cached predictions with full data
-                    test_df_minimal = test_df_result_table.to_pandas()
+                    test_df_result_final = test_df_result_table.to_pandas()
                     print("  Data loaded.")
 
                     # Fix potential byte-string encoding issues in FITS columns
-                    if not test_df_minimal.empty and isinstance(test_df_minimal['xgb_predicted_class'].iloc[0], bytes):
+                    if not test_df_result_final.empty and isinstance(test_df_result_final['xgb_predicted_class'].iloc[0], bytes):
                         print("  Converting 'xgb_predicted_class' column from bytes to string for plotting...")
-                        test_df_minimal['xgb_predicted_class'] = test_df_minimal['xgb_predicted_class'].str.decode('utf-8')
+                        test_df_result_final['xgb_predicted_class'] = test_df_result_final['xgb_predicted_class'].str.decode('utf-8')
                     
-                    pred_cols = [col for col in test_df_minimal.columns if col.startswith('xgb_') or col.startswith('prob_') or col == 'xgb_training_class']
-                    test_df_result_for_vis = test_df_full_for_vis.join(test_df_minimal[pred_cols])
-                    
-                    # 4. Load trained model
+                    # 2. Load trained model and history
                     print(f"  Loading model from {model_file_path}...")
-                    (model, label_encoder) = joblib.load(model_file_path)
-                    print("  Model loaded.")
+                    loaded_joblib = joblib.load(model_file_path)
                     
-                    # 5. Generate plots
+                    # Handle backward compatibility for older joblib files that might not have evals_result
+                    if len(loaded_joblib) == 3:
+                        model, label_encoder, evals_result = loaded_joblib
+                        print("  Model, encoder, and history loaded.")
+                    else:
+                        model, label_encoder = loaded_joblib
+                        evals_result = None
+                        print("  Model and encoder loaded (no history found).")
+
+                    # 3. Generate plots using the loaded data
                     thresholds_dict = generate_visualizations(
-                        model, label_encoder, test_df_result_for_vis, 
-                        label_col, evals_result=None
+                        model, label_encoder, test_df_result_final, 
+                        label_col, evals_result=evals_result
                     )
                     
                     save_thresholds_to_header(out_fits_file, thresholds_dict)
@@ -906,14 +937,61 @@ def main():
 
         # --- Full Training Workflow ---
         # If we didn't exit above, we need to train the model.
+        
+        # 1. Load the full dataset (PRIMVS_P.fits) which acts as our test_df AND provides features for train_df
+        print("Loading full dataset to extract features...")
         test_df = load_fits_to_df(test_path)
         
+        # 2. Construct train_df by cross-matching IDs and deduplicating based on best_FAP
+        print("\nConstructing full training dataset from matched IDs...")
+        potential_id_cols = ['sourceid', 'source_id', 'id', 'uniqueid']
+        id_col = None
+        for col in potential_id_cols:
+            if col in train_labels_df.columns and col in test_df.columns:
+                id_col = col
+                break
+                
+        if not id_col:
+            raise ValueError(f"Could not find a common ID column to match training labels with features. Looked for: {potential_id_cols}")
+
+        print(f"  Matching based on ID column: '{id_col}'")
+        
+        # Extract rows from the full dataset that belong to our training set
+        train_features_df = test_df[test_df[id_col].isin(train_labels_df[id_col])].copy()
+        
+        # Deduplicate duplicated source IDs using 'best_FAP' (lowest is best)
+        fap_col = next((c for c in train_features_df.columns if c.lower() == 'best_fap'), None)
+        if fap_col:
+            print(f"  Deduplicating training data using '{fap_col}' (keeping minimum value)...")
+            train_features_df = train_features_df.sort_values(by=fap_col, ascending=True)
+            train_features_df = train_features_df.drop_duplicates(subset=[id_col], keep='first')
+        else:
+            print("  Warning: 'best_FAP' column not found. Deduplicating by keeping the first occurrence.")
+            train_features_df = train_features_df.drop_duplicates(subset=[id_col], keep='first')
+            
+        # Merge the features with the labels
+        # Drop label_col from train_features_df if it happens to exist to prevent '_x'/'_y' suffixing
+        if label_col in train_features_df.columns:
+            train_features_df = train_features_df.drop(columns=[label_col])
+            
+        # Clean the original labels just in case it had duplicates itself
+        train_labels_clean = train_labels_df.drop_duplicates(subset=[id_col])
+        train_df = pd.merge(
+            train_features_df, 
+            train_labels_clean[[id_col, label_col]], 
+            on=id_col, 
+            how='inner'
+        )
+        print(f"  Final training dataset constructed with {len(train_df)} unique sources.\n")
+
+        # Now get our feature list using our constructed train_df and test_df
         features = get_feature_list(train_df, test_df)
         if not features:
             raise ValueError("No common features found between training and test sets.")
             
         # Run training
-        test_df_result, evals_result, model, label_encoder = train_xgb(
+        # Note: train_xgb returns output_df (the deduplicated dataframe)
+        output_df, evals_result, model, label_encoder = train_xgb(
             train_df=train_df, test_df=test_df, features=features, label_col=label_col,
             out_file=out_file, learning_rate=set_learning_rate, max_depth=set_max_depth,
             subsample=set_subsample, colsample_bytree=set_colsample_bytree,
@@ -923,9 +1001,9 @@ def main():
             use_adaptive_lr=set_use_adaptive_lr
         )
         
-        # Run visualization
+        # Run visualization on the OUTPUT dataframe (which is deduplicated)
         thresholds_dict = generate_visualizations(
-            model, label_encoder, test_df_result, 
+            model, label_encoder, output_df, 
             label_col, evals_result=evals_result
         )
 

@@ -50,7 +50,7 @@ SBATCH_PARTITION="mb-h100,mb-l40s,mb-a6000,mb-a30,teton-gpu,non-investor,beartoo
 SBATCH_ACCOUNT="gr-vvv"
 SBATCH_GRES="gpu:1"
 SBATCH_MEM="96G"
-SBATCH_TIME="1-00:00:00"
+SBATCH_TIME="12:00:00"
 SBATCH_CPUS="1"
 
 # --- Modules ---
@@ -140,8 +140,8 @@ for TS in "${TEST_SIZES[@]}"; do # Added TS loop
     sed -i -E "s/^(\s*set_reg_lambda\s*=\s*).*/\1${RL}/" "$RUN_SCRIPT_PATH"
     sed -i -E "s/^(\s*set_test_size\s*=\s*).*/\1${TS}/" "$RUN_SCRIPT_PATH"
 
-    # Comment out the joblib save line to prevent saving the model file
-    sed -i 's/joblib.dump((model, label_encoder), model_file_path)/# joblib.dump((model, label_encoder), model_file_path)/' "$RUN_SCRIPT_PATH"
+    # Comment out the joblib save line to prevent saving the model for large grids
+    # sed -i -E 's/^(.*joblib\.dump.*)/# \1/' "$RUN_SCRIPT_PATH"
 
     # Removed replacements for num_boost_round and early_stopping_rounds
 

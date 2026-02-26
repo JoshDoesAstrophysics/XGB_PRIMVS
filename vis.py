@@ -18,6 +18,17 @@ from sklearn.preprocessing import label_binarize
 from matplotlib.colors import ListedColormap, LogNorm, LinearSegmentedColormap, to_rgba
 from matplotlib.ticker import FuncFormatter
 
+# --- Optional Dustmaps Imports ---
+try:
+    from dustmaps.config import config
+    from dustmaps.bayestar import BayestarQuery
+    from dustmaps.decaps import DECaPSQuery 
+    import dustmaps.bayestar
+    import dustmaps.decaps
+    DUSTMAPS_AVAILABLE = True
+except ImportError:
+    DUSTMAPS_AVAILABLE = False
+
 #########################################
 # SECTION 1: STYLE & UTILITY FUNCTIONS
 #########################################
@@ -85,6 +96,13 @@ def load_fits_to_df(path):
     except Exception as e:
         print(f"Error loading FITS file: {e}")
         raise
+
+def normalize_cols(df):
+    """Helper to lowercase columns and standardize source_id"""
+    df.columns = [c.lower() for c in df.columns]
+    if 'source_id' in df.columns:
+        df.rename(columns={'source_id': 'sourceid'}, inplace=True)
+    return df
 
 def get_rrlyr_candidates(fits_path, threshold_override=None):
     """
@@ -354,17 +372,17 @@ def set_plot_style(large_text=False):
     plt.rcParams['figure.dpi'] = 100
     plt.rcParams['savefig.dpi'] = 300
     
-    base_size = 14
+    base_size = 18
     if large_text:
-        base_size = 18
+        base_size = 24
         
     # Set font sizes relative to the base size
     plt.rcParams['font.size'] = base_size
-    plt.rcParams['axes.labelsize'] = base_size + 2
-    plt.rcParams['axes.titlesize'] = base_size + 4
+    plt.rcParams['axes.labelsize'] = base_size + 4
+    plt.rcParams['axes.titlesize'] = base_size + 6
     plt.rcParams['xtick.labelsize'] = base_size + 2
     plt.rcParams['ytick.labelsize'] = base_size + 2
-    plt.rcParams['legend.fontsize'] = base_size - 2
+    plt.rcParams['legend.fontsize'] = base_size
     
     # Visual elements
     plt.rcParams['axes.linewidth'] = 1.5
@@ -378,9 +396,179 @@ def set_plot_style(large_text=False):
     plt.rcParams['grid.alpha'] = 0.5
     plt.rcParams['grid.color'] = "grey"
 
+# --- LIGHT CURVE UTILITIES (Ported from periods.py) ---
+
+def resolve_path(source_id, base_dir):
+    """Resolves file path based on source_id hierarchy."""
+    source_str = str(int(source_id))
+    if len(source_str) < 6:
+        source_str = source_str.zfill(6)
+    subdir1 = source_str[:3]
+    subdir2 = source_str[3:6]
+    return os.path.join(base_dir, subdir1, subdir2, f"{source_str}.csv")
+
+def remove_outliers(times, mags, errs):
+    """
+    Removes outliers using a percentile cut (1st to 99th percentile).
+    """
+    if len(mags) < 5: 
+        return times, mags, errs
+    
+    try:
+        # IQR-style cut using 0.01 and 0.99 quantiles
+        q_low = np.quantile(mags, 0.01)
+        q_high = np.quantile(mags, 0.99)
+        
+        # Keep data within the range [q_low, q_high]
+        mask = (mags >= q_low) & (mags <= q_high)
+        
+        if np.sum(mask) > 5:
+            return times[mask], mags[mask], errs[mask]
+        return times, mags, errs
+    except Exception as e:
+        print(f"Warning: Outlier removal failed: {e}")
+        return times, mags, errs
+
+def load_lc_data(source_id, light_curve_dir):
+    """Loads and cleans light curve data for a given source ID."""
+    csv_path = resolve_path(source_id, light_curve_dir)
+    if not os.path.exists(csv_path): return None, None, None
+    try:
+        df = pd.read_csv(csv_path)
+        required = ['mjd', 'ks_mag', 'ks_err']
+        if not all(col in df.columns for col in required): return None, None, None
+        
+        # --- Filter based on ast_res_chisq (same as periods.py) ---
+        if 'ast_res_chisq' in df.columns:
+            df = df[df['ast_res_chisq'] <= 10]
+            
+        df = df[required].dropna()
+        if len(df) < 10: return None, None, None
+        
+        times, mags, errs = df['mjd'].values, df['ks_mag'].values, df['ks_err'].values
+        return remove_outliers(times, mags, errs)
+    except Exception: 
+        return None, None, None
+
 #########################################
 # SECTION 2: PLOTTING FUNCTIONS
 #########################################
+
+def plot_alias_grid(min_line, max_line, is_foreground=False):
+    """
+    Plots the alias grid lines (1:1, harmonics, aliases).
+    
+    Inputs:
+        min_line, max_line: Extent of the plot lines.
+        is_foreground (bool): If True, plots faint lines on top of data.
+                              If False, plots solid lines behind data.
+    """
+    # Define styles
+    if is_foreground:
+        alpha = 0.15
+        zorder = 10
+        label_suffix = "_ignore"
+    else:
+        alpha = 0.4
+        zorder = 1
+        label_suffix = ""
+
+    # Color definitions for alias lines
+    c_identity = '#000000' # Black
+    c_harmonic = '#009E73' # Bluish Green
+    c_alias_1d = '#332288' # Indigo
+    c_alias_1d_dbl = '#E69F00' # Orange
+    c_alias_05d = '#56B4E9' # Sky Blue
+    c_alias_2d = '#882255' # Wine
+    c_alias_2d_half = '#CC79A7' # Reddish Purple
+    
+    linewidth = 1.0
+
+    # --- Reference Lines ---
+    # 1:1 Identity line (Perfect recovery)
+    lbl = '1:1' if not label_suffix else None
+    plt.plot([min_line, max_line], [min_line, max_line], color=c_identity, 
+             linestyle='--', alpha=alpha, label=lbl, linewidth=linewidth, zorder=zorder)
+    
+    # Harmonics (2:1 and 1:2)
+    log2 = np.log10(2)
+    lbl = '2:1 / 1:2' if not label_suffix else None
+    plt.plot([min_line, max_line], [min_line + log2, max_line + log2], color=c_harmonic, 
+             linestyle='--', alpha=0.6 if not is_foreground else alpha, label=lbl, linewidth=linewidth, zorder=zorder)
+    
+    log05 = np.log10(0.5)
+    plt.plot([min_line, max_line], [min_line + log05, max_line + log05], color=c_harmonic, 
+             linestyle='--', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+    
+    # --- Alias Logic ---
+    x_grid_log = np.linspace(min_line, max_line, 2000)
+    x_grid_linear = 10**x_grid_log
+    
+    # 1. Sidereal Day Aliases (Standard 1-day cycle)
+    y_alias_plus = x_grid_linear / (1 + x_grid_linear)
+    lbl = '1-day Aliases' if not label_suffix else None
+    plt.plot(x_grid_log, np.log10(y_alias_plus), color=c_alias_1d, 
+             linestyle='-.', alpha=0.6 if not is_foreground else alpha, label=lbl, linewidth=linewidth, zorder=zorder)
+    
+    y_alias_minus = x_grid_linear / np.abs(1 - x_grid_linear)
+    mask_lower = x_grid_linear < 0.99
+    mask_upper = x_grid_linear > 1.01
+    plt.plot(x_grid_log[mask_lower], np.log10(y_alias_minus[mask_lower]), color=c_alias_1d, 
+             linestyle='-.', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+    plt.plot(x_grid_log[mask_upper], np.log10(y_alias_minus[mask_upper]), color=c_alias_1d, 
+             linestyle='-.', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+
+    # 2. Period Doubled 1-day Aliases
+    y_dbl_alias_plus = 2 * x_grid_linear / (1 + x_grid_linear)
+    lbl = '2:1 1-day Aliases' if not label_suffix else None
+    plt.plot(x_grid_log, np.log10(y_dbl_alias_plus), color=c_alias_1d_dbl, 
+             linestyle=':', alpha=0.6 if not is_foreground else alpha, label=lbl, linewidth=linewidth, zorder=zorder)
+    
+    y_dbl_alias_minus = 2 * x_grid_linear / np.abs(1 - x_grid_linear)
+    plt.plot(x_grid_log[mask_lower], np.log10(y_dbl_alias_minus[mask_lower]), color=c_alias_1d_dbl, 
+             linestyle=':', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+    plt.plot(x_grid_log[mask_upper], np.log10(y_dbl_alias_minus[mask_upper]), color=c_alias_1d_dbl, 
+             linestyle=':', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+
+    # 3. 0.5-day Aliases
+    y_alias_2_plus = x_grid_linear / (1 + 2 * x_grid_linear)
+    lbl = '0.5-day Aliases' if not label_suffix else None
+    plt.plot(x_grid_log, np.log10(y_alias_2_plus), color=c_alias_05d, 
+             linestyle='--', alpha=0.6 if not is_foreground else alpha, label=lbl, linewidth=linewidth, zorder=zorder)
+    
+    y_alias_2_minus = x_grid_linear / np.abs(1 - 2 * x_grid_linear)
+    mask_lower_2 = x_grid_linear < 0.495
+    mask_upper_2 = x_grid_linear > 0.505
+    plt.plot(x_grid_log[mask_lower_2], np.log10(y_alias_2_minus[mask_lower_2]), color=c_alias_05d, 
+             linestyle='--', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+    plt.plot(x_grid_log[mask_upper_2], np.log10(y_alias_2_minus[mask_upper_2]), color=c_alias_05d, 
+             linestyle='--', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+
+    # 4. 2-day Aliases
+    y_alias_05_plus = x_grid_linear / (1 + 0.5 * x_grid_linear)
+    lbl = '2-day Aliases' if not label_suffix else None
+    plt.plot(x_grid_log, np.log10(y_alias_05_plus), color=c_alias_2d, 
+             linestyle='-.', alpha=0.6 if not is_foreground else alpha, label=lbl, linewidth=linewidth, zorder=zorder)
+    
+    y_alias_05_minus = x_grid_linear / np.abs(1 - 0.5 * x_grid_linear)
+    mask_lower_05 = x_grid_linear < 1.98
+    mask_upper_05 = x_grid_linear > 2.02
+    plt.plot(x_grid_log[mask_lower_05], np.log10(y_alias_05_minus[mask_lower_05]), color=c_alias_2d, 
+             linestyle='-.', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+    plt.plot(x_grid_log[mask_upper_05], np.log10(y_alias_05_minus[mask_upper_05]), color=c_alias_2d, 
+             linestyle='-.', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+
+    # 5. 1:2 2-day Aliases
+    y_half_alias_05_plus = 0.5 * x_grid_linear / (1 + 0.5 * x_grid_linear)
+    lbl = '1:2 2-day Aliases' if not label_suffix else None
+    plt.plot(x_grid_log, np.log10(y_half_alias_05_plus), color=c_alias_2d_half, 
+             linestyle=':', alpha=0.6 if not is_foreground else alpha, label=lbl, linewidth=linewidth, zorder=zorder)
+    
+    y_half_alias_05_minus = 0.5 * x_grid_linear / np.abs(1 - 0.5 * x_grid_linear)
+    plt.plot(x_grid_log[mask_lower_05], np.log10(y_half_alias_05_minus[mask_lower_05]), color=c_alias_2d_half, 
+             linestyle=':', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
+    plt.plot(x_grid_log[mask_upper_05], np.log10(y_half_alias_05_minus[mask_upper_05]), color=c_alias_2d_half, 
+             linestyle=':', alpha=0.6 if not is_foreground else alpha, linewidth=linewidth, zorder=zorder)
 
 def plot_xgb_training_loss(evals_result, output_dir='figures'):
     """
@@ -401,6 +589,9 @@ def plot_xgb_training_loss(evals_result, output_dir='figures'):
     Outputs:
         matplotlib.pyplot: The plot object (also saves to file).
     """
+
+    plt.rcParams['legend.fontsize'] = 18
+
     # Extract the loss values from the dictionary
     train_loss = list(evals_result['train'].values())[0]
     val_loss = list(evals_result['validation'].values())[0]
@@ -422,8 +613,8 @@ def plot_xgb_training_loss(evals_result, output_dir='figures'):
                  arrowprops=dict(arrowstyle='->'))
     
     plt.grid(True)
-    plt.xlabel('Iterations')
-    plt.ylabel('Log Loss')
+    plt.xlabel('Iterations', fontsize=22)
+    plt.ylabel('Log Loss', fontsize=22)
     plt.legend()
     
     plt.tight_layout()
@@ -455,7 +646,7 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
         5. Plot: Scatter plot with different colors/markers for each class.
     """
     set_plot_style(large_text=True)
-    plt.rcParams['legend.fontsize'] = 15
+    plt.rcParams['legend.fontsize'] = 20
     
     # Work on a copy to ensure we don't modify the data passed in
     df = df.copy()
@@ -507,7 +698,7 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
     color_map = get_consistent_color_map(unique_types)
     markers = ['o', 's', '^', 'D', 'v', 'X', 'P', '*', 'h']
     
-    fig, ax = plt.subplots(figsize=(15, 10))
+    fig, axes = plt.subplots(figsize=(15, 10))
     
     for i, var_type in enumerate(unique_types):
         type_df = sampled_df[sampled_df[class_column] == var_type]
@@ -519,10 +710,10 @@ def plot_bailey_diagram(df, class_column, output_dir='class_figures', min_prob=0
     leg = plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.0), ncol=min(len(unique_types), 5), markerscale=5, frameon=True)
     for handle in leg.legend_handles: handle.set_alpha(1.0)
     
-    ax.set_xlabel(r'log$_{10}$(Period) [days]')
-    ax.set_ylabel(r'Amplitude [mag]')
-    ax.set_xlim(left=-1) 
-    ax.set_ylim(0, 5)    
+    axes.set_xlabel(r'log$_{10}$(Period) [days]')
+    axes.set_ylabel(r'Amplitude [mag]')
+    axes.set_xlim(left=-1) 
+    axes.set_ylim(0, 5)    
     
     os.makedirs(output_dir, exist_ok=True)
     plt.savefig(f'{output_dir}/bailey_diagram.jpg', dpi=300, bbox_inches='tight')
@@ -549,7 +740,7 @@ def plot_training_bailey_diagram(df, class_column, output_dir='figures'):
         3. Plot: Scatter plot.
     """
     set_plot_style(large_text=True)
-    plt.rcParams['legend.fontsize'] = 15
+    plt.rcParams['legend.fontsize'] = 20
     
     df = df.copy()
 
@@ -581,7 +772,7 @@ def plot_training_bailey_diagram(df, class_column, output_dir='figures'):
     color_map = get_consistent_color_map(unique_types)
     markers = ['o', 's', '^', 'D', 'v', 'X', 'P', '*', 'h']
     
-    fig, ax = plt.subplots(figsize=(15, 10))
+    fig, axes = plt.subplots(figsize=(15, 10))
     
     for i, var_type in enumerate(unique_types):
         type_df = sampled_df[sampled_df[class_column] == var_type]
@@ -591,10 +782,10 @@ def plot_training_bailey_diagram(df, class_column, output_dir='figures'):
     
     leg = plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.0), ncol=min(len(unique_types), 5), markerscale=5, frameon=True)
     for handle in leg.legend_handles: handle.set_alpha(1.0)
-    ax.set_xlabel(r'log$_{10}$(Period) [days]')
-    ax.set_ylabel(r'Amplitude [mag]')
-    ax.set_xlim(left=-1)
-    ax.set_ylim(0, 5)
+    axes.set_xlabel(r'log$_{10}$(Period) [days]')
+    axes.set_ylabel(r'Amplitude [mag]')
+    axes.set_xlim(left=-1)
+    axes.set_ylim(0, 5)
     
     os.makedirs(output_dir, exist_ok=True)
     plt.savefig(f'{output_dir}/bailey_diagram_training.jpg', dpi=300, bbox_inches='tight')
@@ -757,7 +948,7 @@ def plot_xgb_feature_importance(feature_names, importance_values, top_n=20, outp
     plt.figure(figsize=(14, 10))
     plt.barh(range(len(top_features)), top_importance, align='center', color='skyblue', edgecolor='navy', alpha=0.8)
     plt.yticks(range(len(top_features)), top_features)
-    plt.xlabel('Importance (Gain)', fontsize=14)
+    plt.xlabel('Importance (Gain)', fontsize=18)
     plt.grid(axis='x', alpha=0.3, linestyle='--')
     plt.tight_layout()
     plt.savefig(f'{output_dir}/xgb_feature_importance.png', dpi=300)
@@ -895,8 +1086,8 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
         ax.barh(y_pos + bar_height / 2, metrics_df['ROC_AUC'], height=bar_height, label='ROC AUC', color='C2')
         
         for i, (ap, roc) in enumerate(zip(metrics_df['AP'], metrics_df['ROC_AUC'])):
-            if pd.notna(ap): ax.text(ap + 0.01, y_pos[i] - bar_height / 2, f'{ap:.2f}', va='center', fontsize=9)
-            if pd.notna(roc): ax.text(roc + 0.01, y_pos[i] + bar_height / 2, f'{roc:.2f}', va='center', fontsize=9)
+            if pd.notna(ap): ax.text(ap + 0.01, y_pos[i] - bar_height / 2, f'{ap:.2f}', va='center', fontsize=12)
+            if pd.notna(roc): ax.text(roc + 0.01, y_pos[i] + bar_height / 2, f'{roc:.2f}', va='center', fontsize=12)
 
         ax.set_yticks(y_pos)
         ax.set_yticklabels(metrics_df['Class'])
@@ -936,7 +1127,7 @@ def plot_and_print_auc_ap(df, true_label_col, label_encoder, output_dir='figures
         ax_roc.set_ylim([0.0, 1.05])
         ax_roc.set_xlabel('False Positive Rate')
         ax_roc.set_ylabel('True Positive Rate')
-        ax_roc.legend(loc="lower right", fontsize=12, ncol=1)
+        ax_roc.legend(loc="lower right", fontsize=16, ncol=1)
         ax_roc.grid(alpha=0.3)
     else:
         ax_roc.text(0.5, 0.5, "No valid ROC data available", ha='center', va='center')
@@ -1172,8 +1363,8 @@ def plot_pca_degeneracy_analysis(pca_df, df, pca_model, features, output_dir='./
                 xticklabels=pc_labels, yticklabels=True,
                 cbar_kws={'label': 'Correlation'})
                 
-    plt.xlabel("Principal Components (Explained Variance)")
-    plt.ylabel("Original Features")
+    plt.xlabel("Principal Components (Explained Variance)", fontsize=18)
+    plt.ylabel("Original Features", fontsize=18)
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     
@@ -1205,8 +1396,8 @@ def plot_period_comparison(periods_path, output_dir='figures'):
     try:
         df = load_fits_to_df(periods_path)
         
-        x_col = 'true_period'
-        y_col = 'P_1'
+        y_col = 'true_period'
+        x_col = 'P_1'
         
         if x_col not in df.columns or y_col not in df.columns:
             print(f"Missing period columns. Expected '{x_col}' and '{y_col}' in {periods_path}")
@@ -1219,88 +1410,27 @@ def plot_period_comparison(periods_path, output_dir='figures'):
         x_log = np.log10(valid_data[x_col])
         y_log = np.log10(valid_data[y_col])
         
-        plt.scatter(x_log, y_log, s=10, alpha=0.1, c='black', edgecolors='none')
-        
-        xlim = plt.gca().get_xlim()
-        ylim = plt.gca().get_ylim()
+        xlim = (x_log.min(), x_log.max())
+        ylim = (y_log.min(), y_log.max())
         min_line = min(xlim[0], ylim[0])
         max_line = max(xlim[1], ylim[1])
         
-        # Color definitions for alias lines
-        c_identity = '#000000' # Black
-        c_harmonic = '#009E73' # Bluish Green
-        c_alias_1d = '#332288' # Indigo
-        c_alias_1d_dbl = '#E69F00' # Orange
-        c_alias_05d = '#56B4E9' # Sky Blue
-        c_alias_2d = '#882255' # Wine
-        c_alias_2d_half = '#CC79A7' # Reddish Purple
+        # 1. Plot Lines Behind (Solid)
+        plot_alias_grid(min_line, max_line, is_foreground=False)
+        
+        # 2. Plot Points
+        plt.scatter(x_log, y_log, s=10, alpha=0.1, c='black', edgecolors='none', zorder=5)
+        
+        # 3. Plot Lines In Front (Faint/Alpha)
+        plot_alias_grid(min_line, max_line, is_foreground=True)
 
-        # --- Reference Lines ---
-        # 1:1 Identity line (Perfect recovery)
-        plt.plot([min_line, max_line], [min_line, max_line], color=c_identity, linestyle='-', alpha=0.6, label='1:1', linewidth=1.5)
+        # Force symmetric axes limits and square aspect ratio
+        plt.xlim(min_line, max_line)
+        plt.ylim(min_line, max_line)
+        plt.gca().set_aspect('equal', adjustable='box')
         
-        # Harmonics (2:1 and 1:2)
-        log2 = np.log10(2)
-        plt.plot([min_line, max_line], [min_line + log2, max_line + log2], color=c_harmonic, linestyle='--', alpha=0.8, label='2:1 / 1:2', linewidth=1.5)
-        log05 = np.log10(0.5)
-        plt.plot([min_line, max_line], [min_line + log05, max_line + log05], color=c_harmonic, linestyle='--', alpha=0.8, linewidth=1.5)
-        
-        # --- Alias Logic ---
-        # Formula: f_obs = f_true +/- k * f_sampling
-        x_grid_log = np.linspace(min_line, max_line, 2000)
-        x_grid_linear = 10**x_grid_log
-        
-        # 1. Sidereal Day Aliases (Standard 1-day cycle)
-        y_alias_plus = x_grid_linear / (1 + x_grid_linear)
-        plt.plot(x_grid_log, np.log10(y_alias_plus), color=c_alias_1d, linestyle='-.', alpha=0.8, label='1-day Aliases', linewidth=1.5)
-        
-        y_alias_minus = x_grid_linear / np.abs(1 - x_grid_linear)
-        mask_lower = x_grid_linear < 0.99
-        mask_upper = x_grid_linear > 1.01
-        plt.plot(x_grid_log[mask_lower], np.log10(y_alias_minus[mask_lower]), color=c_alias_1d, linestyle='-.', alpha=0.8, linewidth=1.5)
-        plt.plot(x_grid_log[mask_upper], np.log10(y_alias_minus[mask_upper]), color=c_alias_1d, linestyle='-.', alpha=0.8, linewidth=1.5)
-
-        # 2. Period Doubled 1-day Aliases
-        y_dbl_alias_plus = 2 * x_grid_linear / (1 + x_grid_linear)
-        plt.plot(x_grid_log, np.log10(y_dbl_alias_plus), color=c_alias_1d_dbl, linestyle=':', alpha=0.8, label='2:1 1-day Aliases', linewidth=1.5)
-        
-        y_dbl_alias_minus = 2 * x_grid_linear / np.abs(1 - x_grid_linear)
-        plt.plot(x_grid_log[mask_lower], np.log10(y_dbl_alias_minus[mask_lower]), color=c_alias_1d_dbl, linestyle=':', alpha=0.8, linewidth=1.5)
-        plt.plot(x_grid_log[mask_upper], np.log10(y_dbl_alias_minus[mask_upper]), color=c_alias_1d_dbl, linestyle=':', alpha=0.8, linewidth=1.5)
-
-        # 3. 0.5-day Aliases
-        y_alias_2_plus = x_grid_linear / (1 + 2 * x_grid_linear)
-        plt.plot(x_grid_log, np.log10(y_alias_2_plus), color=c_alias_05d, linestyle='--', alpha=0.8, label='0.5-day Aliases', linewidth=1.5)
-        
-        y_alias_2_minus = x_grid_linear / np.abs(1 - 2 * x_grid_linear)
-        mask_lower_2 = x_grid_linear < 0.495
-        mask_upper_2 = x_grid_linear > 0.505
-        plt.plot(x_grid_log[mask_lower_2], np.log10(y_alias_2_minus[mask_lower_2]), color=c_alias_05d, linestyle='--', alpha=0.8, linewidth=1.5)
-        plt.plot(x_grid_log[mask_upper_2], np.log10(y_alias_2_minus[mask_upper_2]), color=c_alias_05d, linestyle='--', alpha=0.8, linewidth=1.5)
-
-        # 4. 2-day Aliases
-        y_alias_05_plus = x_grid_linear / (1 + 0.5 * x_grid_linear)
-        plt.plot(x_grid_log, np.log10(y_alias_05_plus), color=c_alias_2d, linestyle='-.', alpha=0.8, label='2-day Aliases', linewidth=1.5)
-        
-        y_alias_05_minus = x_grid_linear / np.abs(1 - 0.5 * x_grid_linear)
-        mask_lower_05 = x_grid_linear < 1.98
-        mask_upper_05 = x_grid_linear > 2.02
-        plt.plot(x_grid_log[mask_lower_05], np.log10(y_alias_05_minus[mask_lower_05]), color=c_alias_2d, linestyle='-.', alpha=0.8, linewidth=1.5)
-        plt.plot(x_grid_log[mask_upper_05], np.log10(y_alias_05_minus[mask_upper_05]), color=c_alias_2d, linestyle='-.', alpha=0.8, linewidth=1.5)
-
-        # 5. 1:2 2-day Aliases
-        y_half_alias_05_plus = 0.5 * x_grid_linear / (1 + 0.5 * x_grid_linear)
-        plt.plot(x_grid_log, np.log10(y_half_alias_05_plus), color=c_alias_2d_half, linestyle=':', alpha=0.8, label='1:2 2-day Aliases', linewidth=1.5)
-        
-        y_half_alias_05_minus = 0.5 * x_grid_linear / np.abs(1 - 0.5 * x_grid_linear)
-        plt.plot(x_grid_log[mask_lower_05], np.log10(y_half_alias_05_minus[mask_lower_05]), color=c_alias_2d_half, linestyle=':', alpha=0.8, linewidth=1.5)
-        plt.plot(x_grid_log[mask_upper_05], np.log10(y_half_alias_05_minus[mask_upper_05]), color=c_alias_2d_half, linestyle=':', alpha=0.8, linewidth=1.5)
-
-        plt.xlim(xlim)
-        plt.ylim(ylim)
-        
-        plt.xlabel(r'log$_{10}$(PRIMVS Period) [days]')
-        plt.ylabel(r'log$_{10}$(OGLE-IV Period) [days]')
+        plt.ylabel(r'log$_{10}$(PRIMVS Period) [days]')
+        plt.xlabel(r'log$_{10}$(OGLE-IV Period) [days]')
         plt.legend(loc='upper left')
         
         os.makedirs(output_dir, exist_ok=True)
@@ -1312,6 +1442,232 @@ def plot_period_comparison(periods_path, output_dir='figures'):
         print(f"Error creating period plot: {e}")
         import traceback
         traceback.print_exc()
+
+def plot_bridge_period_comparisons(predictions_path, ogle_path, recalc_path, output_dir='figures'):
+    """
+    Generates three specific period comparison plots using direct file access.
+    
+    1. PRIMVS Period vs OGLE Period
+    2. PRIMVS Period vs Recalculated (Calc) Period
+    3. Recalculated (Calc) Period vs OGLE Period
+    """
+    print("\n--- Generating Bridge Period Comparisons ---")
+    
+    # 1. Load Datasets
+    try:
+        df_pred = normalize_cols(load_fits_to_df(predictions_path))
+        df_ogle = normalize_cols(load_fits_to_df(ogle_path))
+        df_calc = normalize_cols(pd.read_csv(recalc_path))
+        
+        # Normalize source_id names if needed in CSV loading (already done by normalize_cols)
+    except Exception as e:
+        print(f"Error loading files for period comparisons: {e}")
+        return
+
+    # Helper for consistent plotting
+    def plot_pair(data, col_x, col_y, label_x, label_y, filename):
+        valid = data[(data[col_x] > 0) & (data[col_y] > 0)]
+        if valid.empty:
+            print(f"No valid data for {filename}")
+            return
+
+        x_log = np.log10(valid[col_x])
+        y_log = np.log10(valid[col_y])
+        
+        set_plot_style()
+        plt.figure(figsize=(8, 8))
+        
+        xlim = (x_log.min(), x_log.max())
+        ylim = (y_log.min(), y_log.max())
+        min_line = min(xlim[0], ylim[0])
+        max_line = max(xlim[1], ylim[1])
+        
+        plot_alias_grid(min_line, max_line, is_foreground=False)
+        plt.scatter(x_log, y_log, s=10, alpha=0.1, c='black', edgecolors='none', zorder=5)
+        plot_alias_grid(min_line, max_line, is_foreground=True)
+
+        # Force symmetric axes limits and square aspect ratio
+        plt.xlim(min_line, max_line)
+        plt.ylim(min_line, max_line)
+        plt.gca().set_aspect('equal', adjustable='box')
+
+        plt.xlabel(label_x)
+        plt.ylabel(label_y)
+        plt.legend(loc='upper left')
+        
+        os.makedirs(output_dir, exist_ok=True)
+        plt.savefig(f"{output_dir}/{filename}", dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Saved {filename}")
+
+    # --- Plot 1: PRIMVS (True) vs OGLE ---
+    # Merge Predictions and OGLE on sourceid
+    # Predictions 'true_period' -> Primvs
+    # Ogle 'ogle_period' / 'p_1' -> Ogle
+    ogle_col = 'ogle_period' if 'ogle_period' in df_ogle.columns else ('p_1' if 'p_1' in df_ogle.columns else 'ogle_periods')
+    if ogle_col in df_ogle.columns and 'true_period' in df_pred.columns:
+        merged_1 = pd.merge(df_pred[['sourceid', 'true_period']], df_ogle[['sourceid', ogle_col]], on='sourceid')
+        plot_pair(merged_1, 'true_period', ogle_col, 
+                  r'log$_{10}$(PRIMVS Period) [days]', r'log$_{10}$(OGLE Period) [days]', 
+                  'period_primvs_vs_ogle.png')
+    else:
+        print("Missing columns for PRIMVS vs OGLE plot.")
+
+    # --- Plot 2: PRIMVS vs Calc ---
+    # Merge Predictions and Calc
+    calc_col = 'recalc_period' if 'recalc_period' in df_calc.columns else 'calc_period'
+    if 'true_period' in df_pred.columns and calc_col in df_calc.columns:
+        merged_2 = pd.merge(df_pred[['sourceid', 'true_period']], df_calc[['sourceid', calc_col]], on='sourceid')
+        plot_pair(merged_2, 'true_period', calc_col,
+                  r'log$_{10}$(PRIMVS Period) [days]', r'log$_{10}$(Recalc Period) [days]',
+                  'period_primvs_vs_calc.png')
+
+    # --- Plot 3: Calc vs OGLE ---
+    # Merge Calc and Ogle
+    if calc_col in df_calc.columns and ogle_col in df_ogle.columns:
+        # Load thresholds for RRLyr cut
+        thresholds = {}
+        try:
+            with fits.open(predictions_path) as hdul:
+                header = hdul[1].header if len(hdul) > 1 else hdul[0].header
+                for key in header:
+                    if key.startswith('THR_'):
+                        cls_name = key.replace('THR_', '').strip()
+                        thresholds[cls_name] = float(header[key])
+        except:
+            pass
+        
+        rrlyr_thresh = thresholds.get('RRLyr', 0.5)
+
+        # Merge prediction info to filter for RRLyr
+        merged_3 = pd.merge(df_calc[['sourceid', calc_col]], df_ogle[['sourceid', ogle_col]], on='sourceid')
+        merged_3 = pd.merge(merged_3, df_pred, on='sourceid', how='inner')
+
+        # Filter for RRLyr
+        if 'xgb_predicted_class' in merged_3.columns and 'prob_rrlyr' in merged_3.columns:
+             merged_3['xgb_predicted_class'] = merged_3['xgb_predicted_class'].astype(str).str.strip()
+             merged_3 = merged_3[
+                 (merged_3['xgb_predicted_class'] == 'RRLyr') & 
+                 (merged_3['prob_rrlyr'] >= rrlyr_thresh)
+             ]
+
+        plot_pair(merged_3, calc_col, ogle_col,
+                  r'log$_{10}$(Recalc Period) [days]', r'log$_{10}$(OGLE Period) [days]',
+                  'period_calc_vs_ogle.png')
+
+
+def plot_bridge_bailey(predictions_path, recalc_path, output_dir='figures'):
+    """
+    Plots Bailey Diagram using Recalculated values, colored by Prediction Status.
+    """
+    print("\n--- Generating Bridge Bailey Diagram ---")
+    
+    try:
+        df_pred = normalize_cols(load_fits_to_df(predictions_path))
+        df_calc = normalize_cols(pd.read_csv(recalc_path))
+    except Exception as e:
+        print(f"Error loading files for Bailey: {e}")
+        return
+
+    # Merge on sourceid
+    # We need: calc_period, calc_amplitude from df_calc
+    # We need: predicted_class, training_class, probs, header from df_pred/fits
+    
+    # 1. Get Thresholds
+    thresholds = {}
+    try:
+        with fits.open(predictions_path) as hdul:
+            header = hdul[1].header if len(hdul) > 1 else hdul[0].header
+            for key in header:
+                if key.startswith('THR_'):
+                    cls_name = key.replace('THR_', '').strip()
+                    thresholds[cls_name] = float(header[key])
+    except:
+        pass
+
+    # 2. Merge Data
+    try:
+        df = pd.merge(df_pred, df_calc, on='sourceid', how='inner')
+    except Exception as e:
+        print(f"Merge failed: {e}")
+        return
+
+    # 3. Determine Status
+    if 'xgb_predicted_class' in df.columns:
+        df['xgb_predicted_class'] = df['xgb_predicted_class'].astype(str).str.strip()
+        if 'xgb_training_class' in df.columns:
+            df['xgb_training_class'] = df['xgb_training_class'].astype(str).str.strip()
+        
+        df['is_confident'] = False
+        unique_classes = df['xgb_predicted_class'].unique()
+        for cls in unique_classes:
+            prob_col = f"prob_{cls}".lower()
+            thresh = thresholds.get(cls, 0.5)
+            # Find matching column case-insensitive
+            col_candidates = [c for c in df.columns if c == prob_col]
+            if col_candidates:
+                mask = (df['xgb_predicted_class'] == cls) & (df[col_candidates[0]] >= thresh)
+                df.loc[mask, 'is_confident'] = True
+
+        conditions = [
+            (df['is_confident']) & (df['xgb_training_class'] == df['xgb_predicted_class']),
+            (df['is_confident']) & (df['xgb_training_class'] == 'UNKNOWN'),
+            (df['is_confident']) & (df['xgb_training_class'] != df['xgb_predicted_class']) & (df['xgb_training_class'] != 'UNKNOWN')
+        ]
+        choices = ['Known', 'New', 'Reclassified']
+        df['derived_status'] = np.select(conditions, choices, default='Low Confidence')
+    else:
+        df['derived_status'] = 'Unknown'
+
+    # Filter for RRLyr only
+    if 'xgb_predicted_class' in df.columns:
+        df = df[df['xgb_predicted_class'] == 'RRLyr']
+
+    # 4. Plot
+    set_plot_style(large_text=True)
+    plt.figure(figsize=(15, 10))
+    
+    p_col = 'recalc_period' if 'recalc_period' in df.columns else 'calc_period'
+    a_col = 'recalc_amplitude' if 'recalc_amplitude' in df.columns else 'calc_amplitude'
+    
+    if p_col not in df.columns or a_col not in df.columns:
+        print("Missing period/amplitude columns.")
+        return
+
+    valid_mask = (df[p_col] > 0) & (df[a_col] < 0.25)
+    plot_df = df[valid_mask].copy()
+    plot_df['log_p'] = np.log10(plot_df[p_col])
+    
+    styles = {
+        'Known': {'color': '#009E73', 'marker': '*', 'label': 'Known', 'z': 2, 'alpha': 0.6},
+        'New': {'color': '#56B4E9', 'marker': 'o', 'label': 'New', 'z': 4, 'alpha': 0.6},
+        'Reclassified': {'color': '#D55E00', 'marker': 'X', 'label': 'Reclassified', 'z': 3, 'alpha': 0.6},
+        'Unknown': {'color': 'gray', 'marker': '.', 'label': 'Unknown', 'z': 1, 'alpha': 0.2}
+    }
+    
+    status_order = ['Unknown', 'Known', 'Reclassified', 'New']
+    
+    for status in status_order:
+        subset = plot_df[plot_df['derived_status'] == status]
+        if subset.empty: continue
+        s = styles.get(status, styles['Unknown'])
+        if status == 'New':
+             plt.scatter(subset['log_p'], subset[a_col], c='none', edgecolors=s['color'], marker=s['marker'], s=5, alpha=s['alpha'], label=s['label'], zorder=s['z'])
+        else:
+            plt.scatter(subset['log_p'], subset[a_col], color=s['color'], marker=s['marker'], s=5, alpha=s['alpha'], label=s['label'], zorder=s['z'])
+    
+    plt.legend(markerscale=2)
+    plt.xlabel(r'log$_{10}$(Calc Period) [days]')
+    plt.ylabel(r'Calc Amplitude [mag]')
+    
+    # Custom Limits
+    plt.xlim(-0.7, 0.1)
+    plt.ylim(0, 0.25)
+    
+    os.makedirs(output_dir, exist_ok=True)
+    plt.savefig(f'{output_dir}/bailey_diagram_bridge.png', dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved bailey_diagram_bridge.png")
 
 def plot_rrlyr_galactic_distribution(fits_path, output_dir='figures'):
     """
@@ -1605,7 +1961,6 @@ def analyze_rrlyr_reddening(fits_path, output_dir='figures'):
                 plt.xlabel(r'Extinction $E(J-K_s)$ [mag]')
                 plt.ylabel('Number (log scale)')
                 plt.legend(loc='upper right')
-                plt.xlim(0, max(3.0, combined_data.max()))
                 plt.grid(True, which='major', linestyle='--', alpha=0.3)
                 
                 os.makedirs(output_dir, exist_ok=True)
@@ -1706,7 +2061,6 @@ def analyze_global_reddening(fits_path, output_dir='figures'):
                 plt.xlabel(r'Extinction $E(J-K_s)$ [mag]')
                 plt.ylabel('Number (log scale)')
                 plt.legend(loc='upper right')
-                plt.xlim(0, max(3.0, combined_data.max()))
                 plt.grid(True, which='major', linestyle='--', alpha=0.3)
                 
                 os.makedirs(output_dir, exist_ok=True)
@@ -1722,6 +2076,155 @@ def analyze_global_reddening(fits_path, output_dir='figures'):
         print(f"Error processing Surot map: {e}")
         import traceback
         traceback.print_exc()
+
+def setup_dustmaps_decaps():
+    """
+    Configures dustmaps to use local data directory and downloads DECaPS map if missing.
+    Returns the DECaPS Query object if successful, None otherwise.
+    """
+    if not DUSTMAPS_AVAILABLE:
+        print("Dustmaps package not available.")
+        return None
+    
+    # Configure data directory
+    data_dir = os.path.join(os.getcwd(), '.data', 'dustmaps')
+    os.makedirs(data_dir, exist_ok=True)
+    config['data_dir'] = data_dir
+    
+    # Check if map exists. Path typically ./decaps/decaps_mean.h5 or similar depending on fetch
+    # We will trigger fetch if we don't detect the folder or file
+    # Note: `fetch` usually checks internally but can be slow, so explicit check is good.
+    decaps_dir = os.path.join(data_dir, 'decaps')
+    if not os.path.exists(decaps_dir) or not os.listdir(decaps_dir):
+        print("DECaPS map not found locally. Downloading (this may take a while)...")
+        try:
+            dustmaps.decaps.fetch()
+        except Exception as e:
+            print(f"Failed to download DECaPS map: {e}")
+            return None
+            
+    try:
+        # DECaPSQueryLite is preferred for memory efficiency if available
+        try:
+            from dustmaps.decaps import DECaPSQueryLite as QueryClass
+        except ImportError:
+            from dustmaps.decaps import DECaPSQuery as QueryClass
+            
+        return QueryClass()
+    except Exception as e:
+        print(f"Error loading DECaPS map: {e}")
+        return None
+
+def analyze_decaps_reddening(subset, output_dir, label_prefix=""):
+    """
+    Generalized function to analyze DECaPS B-V reddening for a given subset.
+    Integrates 3D map to infinity to get 2D approximation.
+    """
+    if subset is None or subset.empty:
+        return
+
+    if 'l' not in subset.columns or 'b' not in subset.columns:
+        print("Error: Missing 'l' or 'b' columns required for DECaPS lookup.")
+        return
+
+    decaps_map = setup_dustmaps_decaps()
+    if decaps_map is None:
+        return
+
+    # Create SkyCoord object
+    # Crucial: Set distance to a large value to "integrate along line of sight"
+    # DECaPS/Bayestar returns cumulative reddening. 200kpc is effectively infinity for galactic dust.
+    coords = SkyCoord(
+        l=subset['l'].values*u.deg, 
+        b=subset['b'].values*u.deg, 
+        distance=200*u.kpc, 
+        frame='galactic'
+    )
+    
+    # Query the map
+    # DECaPS/Bayestar returns E(B-V) or similar reddening units (often arbitrary or calibrated to SFD)
+    # We will assume standard map units for the histogram
+    try:
+        reddening = decaps_map(coords, mode='mean')
+    except Exception as e:
+        print(f"Error querying DECaPS map: {e}")
+        return
+        
+    subset['E(B-V)_DECaPS'] = reddening
+    
+    # Check for NaNs (sources outside DECaPS footprint)
+    valid_subset = subset.dropna(subset=['E(B-V)_DECaPS'])
+    
+    if valid_subset.empty:
+        print(f"No sources in {label_prefix} subset fell within DECaPS footprint.")
+        return
+        
+    # --- Plotting ---
+    col_name = 'E(B-V)_DECaPS'
+    
+    # Determine status column (Status for RRLyr, Global_Status for Global)
+    status_col = 'Status' if 'Status' in valid_subset.columns else 'Global_Status'
+    known_label = 'Known RRLyr' if status_col == 'Status' else 'Known'
+    new_label = 'New Candidate' if status_col == 'Status' else 'New' # 'New' is global label
+    
+    # If Global_Status, the labels are just 'Known' and 'New'
+    if status_col == 'Global_Status':
+        known_vals = ['Known']
+        new_vals = ['New']
+    else:
+        known_vals = ['Known RRLyr']
+        new_vals = ['New Candidate']
+
+    hist_subset = valid_subset[valid_subset[status_col].isin(known_vals + new_vals)]
+    
+    if not hist_subset.empty:
+        set_plot_style()
+        plt.figure(figsize=(10, 6))
+        
+        c_known = '#009E73'
+        c_new = '#56B4E9'
+        
+        data_known = hist_subset[hist_subset[status_col].isin(known_vals)][col_name]
+        data_new = hist_subset[hist_subset[status_col].isin(new_vals)][col_name]
+        
+        combined_data = pd.concat([data_known, data_new])
+        
+        if not combined_data.empty:
+            bins = np.linspace(combined_data.min(), combined_data.max(), 50)
+            
+            if not data_new.empty:
+                plt.hist(data_new, bins=bins, color=c_new, alpha=0.6, 
+                         label=f'New (n={len(data_new)})', 
+                         log=True, histtype='stepfilled')
+
+            if not data_known.empty:
+                plt.hist(data_known, bins=bins, color=c_known, alpha=0.6, 
+                         label=f'Known (n={len(data_known)})', 
+                         log=True, histtype='stepfilled')
+            
+            plt.xlabel(r'DECaPS Reddening $E(B-V)$ [mag]')
+            plt.ylabel('Number (log scale)')
+            plt.legend(loc='upper right')
+            plt.grid(True, which='major', linestyle='--', alpha=0.3)
+            plt.title(f"{label_prefix} DECaPS Reddening Distribution")
+            
+            os.makedirs(output_dir, exist_ok=True)
+            fname = f"{label_prefix.lower().replace(' ', '_')}_decaps_reddening_hist.png"
+            plt.savefig(os.path.join(output_dir, fname), dpi=300, bbox_inches='tight')
+            plt.close()
+            print(f"Saved {fname}")
+        else:
+             print(f"No valid data to plot for {label_prefix}")
+
+def analyze_rrlyr_decaps_reddening(fits_path, output_dir='figures'):
+    """Wrapper to analyze DECaPS reddening for RRLyr candidates only."""
+    subset = get_rrlyr_candidates(fits_path)
+    analyze_decaps_reddening(subset, output_dir, label_prefix="RRLyr")
+
+def analyze_global_decaps_reddening(fits_path, output_dir='figures'):
+    """Wrapper to analyze DECaPS reddening for ALL candidates."""
+    subset = get_all_candidates(fits_path)
+    analyze_decaps_reddening(subset, output_dir, label_prefix="Global")
 
 def print_class_statistics(fits_path):
     """
@@ -1805,53 +2308,243 @@ def print_class_statistics(fits_path):
     print(f"{'TOTAL':<15} | {total_pred:8d} | {total_cand:10d} | {total_true:12d} | {total_true_cut:12d} | {'-':>9}")
     print("\n")
 
+def plot_light_curve_progression(predictions_path, recalc_path, light_curve_dir="./.data/light_curves/", output_dir="figures"):
+    """
+    Plots a stacked sequence of phased light curves sorted by prob_RRLyr.
+    
+    Goal:
+        To visualize how the light curve shape "cleans up" as the model probability increases.
+        Mimics stellar spectral plots where multiple lines are stacked vertically.
+        
+    Inputs:
+        predictions_path: Path to predictions FITS.
+        recalc_path: Path to recalculated periods CSV.
+        light_curve_dir: Directory containing light curve CSVs.
+    """
+    print("\n--- Generating Light Curve Progression Plot ---")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # 1. Retrieve RRLyr Threshold from Header
+    rrlyr_thresh = 0.5
+    try:
+        with fits.open(predictions_path) as hdul:
+            header = hdul[1].header if len(hdul) > 1 else hdul[0].header
+            if 'THR_RRLyr' in header:
+                rrlyr_thresh = float(header['THR_RRLyr'])
+    except Exception as e:
+        print(f"Warning: Could not read threshold from header, defaulting to 0.5. Error: {e}")
+
+    try:
+        df_pred = normalize_cols(load_fits_to_df(predictions_path))
+        df_calc = normalize_cols(pd.read_csv(recalc_path))
+        df = pd.merge(df_pred, df_calc, on='sourceid', how='inner')
+        
+        prob_col = 'prob_rrlyr' # normalized
+        period_col = 'recalc_period' if 'recalc_period' in df.columns else 'calc_period'
+        id_col = 'sourceid' # normalized
+        
+        if prob_col not in df.columns or period_col not in df.columns:
+            print("Missing prob or period columns.")
+            return
+    except Exception as e:
+        print(f"Error loading data for progression plot: {e}")
+        return
+
+    # 2. Define Dynamic Bins
+    # Coarser sampling below threshold (4 bins)
+    # Finer sampling above threshold (5 bins)
+    bins_low = np.linspace(0, rrlyr_thresh, 5) 
+    ranges_low = [(bins_low[i], bins_low[i+1]) for i in range(len(bins_low)-1)]
+    
+    bins_high = np.linspace(rrlyr_thresh, 1.0, 6)
+    ranges_high = [(bins_high[i], bins_high[i+1]) for i in range(len(bins_high)-1)]
+    
+    ranges = ranges_low + ranges_high
+    
+    # 3. Select Representative Stars (with locked seed)
+    np.random.seed(37) 
+    selected_data = [] # List of tuples: (source_id, prob, times, mags, period)
+    
+    for (low, high) in ranges:
+        # Get candidates in this probability range
+        mask = (df[prob_col] >= low) & (df[prob_col] < high) & (df[period_col] > 0)
+        candidates = df[mask].sample(frac=1) # Shuffle
+        
+        found = False
+        for _, row in candidates.iterrows():
+            sid = row[id_col]
+            period = row[period_col]
+            prob = row[prob_col]
+            
+            # Try loading light curve
+            times, mags, errs = load_lc_data(sid, light_curve_dir)
+            
+            if times is not None and len(times) > 20:
+                selected_data.append({
+                    'id': sid, 'prob': prob, 'P': period,
+                    't': times, 'm': mags
+                })
+                found = True
+                break # Found one for this bin, move to next
+        
+        if not found:
+            # Only warn if range is significant
+            if high - low > 0.01:
+                print(f"Warning: No valid light curve found for range {low:.2f}-{high:.2f}")
+
+    if not selected_data:
+        print("No light curves found for progression plot.")
+        return
+
+    # Sort by probability for plotting order
+    selected_data.sort(key=lambda x: x['prob'])
+    
+    # 4. Plotting
+    set_plot_style()
+    fig, ax = plt.subplots(figsize=(10, 12))
+    
+    offset_step = 1.2 # Vertical separation
+    
+    # Create unique colors using the provided palette cycled (reversed)
+    base_lc_colors = [
+        '#97A69D', '#A65B69', '#DABFAF', '#76846E', '#DAC096', '#8F97A4',
+        '#424856', '#F37F64', '#F3C151', '#90D585', '#68B9C0', '#266489'
+    ]
+    colors = (base_lc_colors * 2)[:len(selected_data)]
+    
+    for i, data in enumerate(selected_data):
+        times = data['t']
+        mags = data['m']
+        period = data['P']
+        
+        # Phase the data: (t % P) / P
+        raw_phase = (times % period) / period
+        
+        # Fit a 3rd order Fourier series to robustly find the phase of minimum light (maximum magnitude)
+        if len(raw_phase) >= 7: # Need at least 7 points for 7 parameters (mean + 3 sines + 3 cosines)
+            # Create design matrix for: mag = c0 + sum_{k=1}^3 (a_k * cos(2*pi*k*phi) + b_k * sin(2*pi*k*phi))
+            X = np.ones((len(raw_phase), 7))
+            for k in range(1, 4):
+                X[:, 2*k - 1] = np.cos(2 * np.pi * k * raw_phase)
+                X[:, 2*k] = np.sin(2 * np.pi * k * raw_phase)
+            
+            # Solve linear least squares
+            coeffs, _, _, _ = np.linalg.lstsq(X, mags, rcond=None)
+            
+            # Evaluate on a dense grid to find the exact phase of the maximum (faintest point)
+            dense_phase = np.linspace(0, 1.0, 1000)
+            X_dense = np.ones((1000, 7))
+            for k in range(1, 4):
+                X_dense[:, 2*k - 1] = np.cos(2 * np.pi * k * dense_phase)
+                X_dense[:, 2*k] = np.sin(2 * np.pi * k * dense_phase)
+                
+            fit_mags = np.dot(X_dense, coeffs)
+            phase_offset = dense_phase[np.argmax(fit_mags)]
+        else:
+            # Fallback for very sparse data
+            phase_offset = raw_phase[np.argmax(mags)]
+            
+        # Shift phase so the minimum light is at 0.0 (which repeats at 1.0, the center of the plot)
+        phase = (raw_phase - phase_offset) % 1.0
+        
+        # We plot 2 cycles: 0..1 and 1..2
+        phase = np.concatenate([phase, phase + 1.0])
+        
+        # Normalize Magnitude to range ~0-1 and Invert
+        raw_y = -np.concatenate([mags, mags])
+        y_min, y_max = np.percentile(raw_y, [1, 99]) # Robust min/max
+        if y_max > y_min:
+            norm_y = (raw_y - y_min) / (y_max - y_min)
+        else:
+            norm_y = raw_y * 0
+            
+        # Add offset
+        plot_y = norm_y + (i * offset_step)
+        
+        # Scatter Plot with unique color
+        ax.scatter(phase, plot_y, s=5, alpha=0.7, color=colors[i])
+        
+        # Simplified Label (Prob only)
+        label_text = f"Prob: {data['prob']:.2f}"
+        ax.text(2.05, i * offset_step + 0.3, label_text, va='center', fontsize=22)
+
+    ax.set_xlabel("Phase (Double Cycle)")
+    ax.set_ylabel("Relative Flux (Stacked + Offset)")
+    ax.set_title("Light Curve Progression by RRLyr Probability")
+    
+    # Remove Y ticks as they are arbitrary offsets
+    ax.set_yticks([])
+    ax.set_xlim(0, 2)
+    
+    plt.tight_layout()
+    # Make room for labels on right
+    plt.subplots_adjust(right=0.8)
+    
+    out_path = f"{output_dir}/lc_progression_stacked.png"
+    plt.savefig(out_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved {out_path}")
+
+
 if __name__ == "__main__":
     # --- Main Execution Block ---
     # This allows the script to be run as a standalone program to generate plots.
     # It checks for data files in the default locations and generates whatever figures possible.
     
     # Default file paths
-    periods_file = ".data/periods.fits" 
-    training_file = ".data/PRIMVS_P_training_new.fits"
     predictions_file = "./xgb_predictions.fits"
+    combined_periods_file = "./combined_periods.csv"
+    ogle_file = "./.data/ogle.fits"
 
     # Allow command line arguments to override defaults
-    # Usage: python vis.py [periods_file] [training_file]
-    if len(sys.argv) >= 2:
-        periods_file = sys.argv[1]
-    if len(sys.argv) >= 3:
-        training_file = sys.argv[2]
+    # Usage: python vis.py [predictions_file]
+    if len(sys.argv) >= 2: predictions_file = sys.argv[1]
         
-    # 1. Period Comparison Plot
-    if os.path.exists(periods_file):
-        plot_period_comparison(periods_file)
+    # 1. Bridge Analysis (Period Comparisons & Bailey)
+    # Trigger based on the existence of data files
+    if os.path.exists(combined_periods_file) and os.path.exists(predictions_file) and os.path.exists(ogle_file):
+        print(f"Found datasets, generating combined plots...")
+        
+        # New Period Comparisons (Primvs vs Ogle, Primvs vs Calc, Calc vs Ogle)
+        plot_bridge_period_comparisons(predictions_file, ogle_file, combined_periods_file)
+        
+        # New Bailey Diagram (Calc values + Status Labels)
+        plot_bridge_bailey(predictions_file, combined_periods_file)
+
+        # Light Curve Progression
+        plot_light_curve_progression(predictions_file, combined_periods_file)
+
     else:
-        print(f"File not found: {periods_file}. Skipping period comparison.")
+        print(f"One or more required files missing for bridge plots: {combined_periods_file}, {predictions_file}, {ogle_file}")
 
     # 2. Training Data Bailey Diagram
-    if os.path.exists(training_file):
+    # Since the predictions file now contains the 'xgb_training_class' for known objects, we can derive the training set directly from it.
+    if os.path.exists(predictions_file):
         try:
-            df_train = load_fits_to_df(training_file)
+            df_preds = load_fits_to_df(predictions_file)
+            df_preds = normalize_cols(df_preds)
             
-            # Auto-detect label column if not standard 'Type'
-            class_col = "Type"
-            if class_col not in df_train.columns:
-                 candidates = [c for c in df_train.columns if 'type' in c.lower() or 'class' in c.lower()]
-                 if candidates: class_col = candidates[0]
-            
-            if class_col in df_train.columns:
-                plot_training_bailey_diagram(df_train, class_col)
+            if 'xgb_training_class' in df_preds.columns:
+                df_preds['xgb_training_class'] = df_preds['xgb_training_class'].astype(str).str.strip()
+                # Filter out the unknown sources to isolate the training set
+                df_train = df_preds[df_preds['xgb_training_class'].str.upper() != 'UNKNOWN']
+                
+                if not df_train.empty:
+                    plot_training_bailey_diagram(df_train, 'xgb_training_class')
+                else:
+                    print("No training labels found in predictions file. Skipping training bailey diagram.")
         except Exception as e:
             print(f"Error plotting training diagram: {e}")
 
     # 3. RRLyr Analysis & Global Reddening
+    # These rely on coordinates (l, b) which are in predictions.fits
     if os.path.exists(predictions_file):
         print_class_statistics(predictions_file)
-        
         plot_rrlyr_galactic_distribution(predictions_file)
         plot_rrlyr_color_color(predictions_file)
         analyze_rrlyr_reddening(predictions_file, output_dir='figures')
-        
         analyze_global_reddening(predictions_file, output_dir='figures')
-    else:
-        print(f"File not found: {predictions_file}. Skipping RRLyr plots.")
+        
+        # --- DECaPS ANALYSIS ---
+        analyze_rrlyr_decaps_reddening(predictions_file, output_dir='figures')
+        analyze_global_decaps_reddening(predictions_file, output_dir='figures')
